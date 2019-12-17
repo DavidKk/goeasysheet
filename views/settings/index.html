@@ -125,15 +125,19 @@
   <script>
     function submit () {
       var $key = document.getElementById('key');
+      var token = $key.value || '';
       var payload = {
-        token: $key.nodeValue
+        token: token
       };
 
-      google.script.run.onSubmitSettings(payload);
+      google.script.run.onSettingsSubmit(payload);
     }
 
     var $submit = document.getElementById('submit');
     $submit.addEventListener('click', submit);
+
+    var formData = google.script.run.reqSettingsDatas();
+    document.getElementById('key').value = formData.token || '';
   </script>
 </body>
 </html>

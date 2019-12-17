@@ -31,7 +31,7 @@ var KvModel = {
     range.setFontColor('#ffffff');
     range.setBackground('#22538f');
     range.setValues([fileds]);
-    sheet.setFrozenRows(1);
+    sheet.setFrozenColumns(1);
 
     /**
      * 设置仅自身具有编辑权限
@@ -48,6 +48,7 @@ var KvModel = {
     var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = spreadsheet.getSheetByName(table);
     if (sheet === null) {
+      SpreadsheetApp.flush();
       return null;
     }
 
@@ -59,17 +60,69 @@ var KvModel = {
     });
 
     if (-1 === col) {
+      SpreadsheetApp.flush();
       return null;
     }
 
+    SpreadsheetApp.flush();
     return sheet.getRange(1, col);
-  },
-  get: function (table, key) {
-    var range = KvModel.getRangeByKey(table, key);
-    return range.getValues();
   },
   set: function (table, key, value) {
     var range = KvModel.getRangeByKey(table, key);
-    return range.setValue(value);
+    return range.setValues([value]);
+  },
+  get: function (table, key) {
+    var data = KvModel.getAll(table);
+    return data[key];
+  },
+  getAll: function (table) {
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = spreadsheet.getSheetByName(table);
+    if (sheet === null) {
+      SpreadsheetApp.flush();
+      return null;
+    }
+
+    var row = sheet.getMaxRows();
+    var range = sheet.getRange(1, 1, row, 2);
+    var values = range.getValues();
+    var result = {};
+    var names = values[0];
+    var values = values[1];
+
+    for (var i = 0; i < names.length; i ++) {
+      var name = names[i];
+      var value = values[i];
+      result[name] = value;
+    }
+
+    SpreadsheetApp.flush();
+    return result;
+  },
+  setAll: function (table, datas) {
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = spreadsheet.getSheetByName(table);
+    if (sheet === null) {
+      SpreadsheetApp.flush();
+      return false;
+    }
+
+    var row = sheet.getMaxRows();
+    var range = sheet.getRange(1, 1, row);
+    var heads = range.getValues();
+
+    var params = [];
+    for (var row = 0; row < heads.length; row ++) {
+      var head = heads[row][0];
+      if (head) {
+        var value = datas[head] || '';
+        params.push([value]);
+      }
+    }
+
+    range = sheet.getRange(1, 2, 1, params.length);
+    range.setValues(params);
+
+    SpreadsheetApp.flush();
   }
 };
