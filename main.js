@@ -8,27 +8,11 @@ function onRobotSetting () {
   Gui.openSettings();
 }
 
-// 打开提醒设置
-function onAlarmSetting () {
-  Gui.openAlarmSettings();
-}
-
 // 提交配置回调
-function onSubmitSettings () {
+function onSubmitSettings (payload) {
+  payload = payload || {};
 
+  var token = payload.token || '';
+  Model.set(SettingsTable, 'KEY', token);
+  Robot.configure({ token: token });
 }
-
-// 每日执行钩子
-function onDaily () {
-}
-
-// 重新安装钩子
-function onReInstall () {
-  App.reInstall();
-}
-
-// 销毁钩子
-function onDestroy () {
-  App.destroy();
-}
-

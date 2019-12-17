@@ -1,4 +1,4 @@
-var WeChatRobot = {
+var Robot = {
   /**
    * 配置
    */
@@ -15,7 +15,7 @@ var WeChatRobot = {
    */
   configure: function (options) {
     options = options || {};
-    objectAssign(WeChatRobot.settings, options);    
+    objectAssign(WeChatRobot.settings, options);
   },
   /**
    * 发送信息

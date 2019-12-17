@@ -1,18 +1,5 @@
 var Pm = {
   /**
-   * 安装
-   */
-  install: function () {
-    SpreadsheetApp.getUi()
-      .createMenu('微信机器人')
-      .addItem('提示', 'Pm.showSettings')
-      .addSeparator()
-      .addToUi();
-  },
-  showSettings: function () {
-    
-  },
-  /**
    * 提醒
    */
   alarm: function () {
