@@ -6,10 +6,19 @@
   "license": "MIT",
   "husky": {
     "hooks": {
-      "pre-push": "./bin/clasp"
+      "pre-push": "lint-staged"
     }
   },
+  "lint-staged": {
+    "googlescripts/**/*.js": [
+      "./bin/clasp"
+    ]
+  },
+  "scripts": {
+    "lint-staged": "lint-staged"
+  },
   "devDependencies": {
-    "husky": "^3.1.0"
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0"
   }
 }
