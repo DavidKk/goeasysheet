@@ -62,4 +62,4 @@ var WeChatRobot = {
   
     return true
   }
-}
+};

@@ -74,4 +74,4 @@ var Schedule = {
     spreadsheet.deleteSheet(sheet);
     SpreadsheetApp.flush();
   }
-}
+};

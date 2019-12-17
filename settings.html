@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>设置</title>
+  <style>
+    * {
+      outline: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-size: 14px;
+      color: #303030;
+      background: #f2f4f5;
+    }
+
+    .form-group {
+      padding-left: 10px;
+      background-color: #fff;
+    }
+
+    .form-group:last-of-type .form-control {
+      border-bottom: 0;
+    }
+
+    .form-control {
+      display: flex;
+      border-bottom: 1px solid #ebeced;
+    }
+
+    .label {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+      padding: 0;
+      width: 100px;
+      height: 50px;
+      line-height: 50px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      background-color: transparent;
+    }
+
+    .inputbox {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: right;
+      flex: 1;
+      box-sizing: border-box;
+      border: 0;
+      padding: 0 20px 0 5px;
+      height: 50px;
+      line-height: 50px;
+      font-size: 14px;
+      color: #303030;
+      background-color: transparent;
+    }
+
+    .btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 20px 10px 0;
+      border: none;
+      border-radius: 23px;
+      height: 46px;
+      line-height: 46px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #303030;
+      background-color: #fcc968;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn.disabled {
+      background-color: #e0e0e0;
+      color: #fff;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="form">
+    <div class="form-group">
+      <div class="form-control">
+        <label class="label" for="key">机器人KEY</label>
+        <input id="key" class="inputbox" type="text" placeholder="请输入机器人KEY">
+      </div>
+    </div>
+    
+    <a id="submit" class="btn" role="button">提交</a>
+  </div>
+
+  <script>
+    function submit () {
+      var $key = document.getElementById('key');
+      var payload = {
+        token: $key.nodeValue
+      };
+
+      google.script.run.onSubmitSettings(payload);
+    }
+
+    var $submit = document.getElementById('submit');
+    $submit.addEventListener('click', submit);
+  </script>
+</body>
+</html>
