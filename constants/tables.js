@@ -3,13 +3,16 @@ var ScheduleTable = {
   name: '计划任务',
   columns: [
     {
-      name: '执行时间'
+      id: 'table',
+      name: '表格名称'
     },
     {
-      name: '发送内容'
+      id: 'datetime',
+      name: '执行时间(列)'
     },
     {
-      name: '状态'
+      id: 'content',
+      name: '发送内容(列)'
     }
   ]
 };
@@ -19,7 +22,8 @@ var SettingsTable = {
   name: '配置',
   rows: [
     {
-      name: 'KEY'
+      id: 'key',
+      name: '令牌'
     }
   ]
 };
