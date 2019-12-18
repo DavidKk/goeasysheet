@@ -34,6 +34,10 @@ function onDaily () {
 }
 
 function test () {
-  var data = KvModel.getAll(SettingsTable.name);
-  Logger.log(data);
+  ScriptApp
+    .newTrigger('onDaily')
+    .timeBased()
+    .everyDays(1)
+    .everyHours(10)
+    .create();
 }
