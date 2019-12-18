@@ -2,6 +2,16 @@
 .clasprc.json
 
 
+# Npm or Yarn
+node_modules
+npm-debug.log
+npm-shrinkwrap.json
+package-lock.json
+.npmrc
+yarn.lock
+.yarnrc
+
+
 # Numerous always-ignore extensions
 *.bak
 *.diff
