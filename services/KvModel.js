@@ -44,35 +44,14 @@ var KvModel = {
 
     SpreadsheetApp.flush();
   },
-  getRangeByKey: function (table, key) {
-    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = spreadsheet.getSheetByName(table);
-    if (sheet === null) {
-      SpreadsheetApp.flush();
-      return null;
-    }
-
-    var row = sheet.getMaxRows();
-    var range = sheet.getRange(1, 1, row);
-    var values = range.getValues();
-    var col = values[0].findIndex(function (item) {
-      return item.name === key
-    });
-
-    if (-1 === col) {
-      SpreadsheetApp.flush();
-      return null;
-    }
-
-    SpreadsheetApp.flush();
-    return sheet.getRange(1, col);
-  },
   set: function (table, key, value) {
-    var range = KvModel.getRangeByKey(table, key);
-    return range.setValues([value]);
+    var data = {};
+    data[key] = value;
+
+    this.setAll(table, data);
   },
   get: function (table, key) {
-    var data = KvModel.getAll(table);
+    var data = this.getAll(table);
     return data[key];
   },
   getAll: function (table) {
@@ -86,14 +65,16 @@ var KvModel = {
     var row = sheet.getMaxRows();
     var range = sheet.getRange(1, 1, row, 2);
     var values = range.getValues();
-    var result = {};
-    var names = values[0];
-    var values = values[1];
 
-    for (var i = 0; i < names.length; i ++) {
-      var name = names[i];
-      var value = values[i];
-      result[name] = value;
+    var result = {};
+    for (var i = 0; i < values.length; i ++) {
+      var data = values[i];
+      var name = data[0];
+      var value = data[1];
+
+      if (name) {
+        result[name] = value;
+      }
     }
 
     SpreadsheetApp.flush();

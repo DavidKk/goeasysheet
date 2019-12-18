@@ -130,14 +130,31 @@
         token: token
       };
 
-      google.script.run.onSettingsSubmit(payload);
+      google.script.run
+      .withSuccessHandler(function () {
+        alert('保存成功')
+      })
+      .withFailureHandler(function () {
+        alert('保存失败')
+      })
+      .onSettingsSubmit(payload);
     }
 
     var $submit = document.getElementById('submit');
     $submit.addEventListener('click', submit);
 
-    var formData = google.script.run.reqSettingsDatas();
-    document.getElementById('key').value = formData.token || '';
+    google.script.run
+    .withSuccessHandler(function (data) {
+      data = data || {};
+
+      var key = data.KEY || '';
+      var $key = document.getElementById('key');
+      $key.value = key;
+    })
+    .withFailureHandler(function () {
+      alert('获取配置信息失败');
+    })
+    .reqSettingsDatas();
   </script>
 </body>
 </html>
