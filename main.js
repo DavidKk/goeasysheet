@@ -33,11 +33,12 @@ function onDaily () {
   MailApp.sendEmail(email, '提测提醒', '今天要提测 ' + tasks.join(',') + ' 啦!!!');
 }
 
-function test () {
+// 调试
+function develop () {
   ScriptApp
-    .newTrigger('onDaily')
-    .timeBased()
-    .everyDays(1)
-    .everyHours(10)
-    .create();
+  .newTrigger('onDaily')
+  .timeBased()
+  .everyDays(1)
+  .everyHours(10)
+  .create();
 }

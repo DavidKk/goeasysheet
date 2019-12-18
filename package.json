@@ -1,0 +1,15 @@
+{
+  "name": "robot4googleshhets",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:DavidKk/googlesheets-wechatrobot.git",
+  "author": "zhongjiahao <zhongjiahao@yy.com>",
+  "license": "MIT",
+  "scripts": {
+    "develop": "clasp run develop",
+    "start": "npm run develop"
+  },
+  "peerDependencies": {
+    "clasp": "2.3.0"
+  }
+}
