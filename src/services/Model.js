@@ -8,40 +8,40 @@ var Model = {
    * @param {Array<{ name: string }>} [table.rows] 字段名
    */
   createTable: function (table) {
-    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = spreadsheet.getSheetByName(table.name);
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+    var sheet = spreadsheet.getSheetByName(table.name)
     if (sheet != null) {
-      return;
+      return
     }
 
-    var sheets = spreadsheet.getSheets();
-    sheet = spreadsheet.insertSheet(table.name, sheets.length);
+    var sheets = spreadsheet.getSheets()
+    sheet = spreadsheet.insertSheet(table.name, sheets.length)
 
     /**
      * 写入字段
      */
     var fileds = table.columns.map(function (item) {
-      return item.name;
-    });
+      return item.name
+    })
 
-    var range = sheet.getRange(1, 1, 1, fileds.length);
-    range.setHorizontalAlignment('center');
-    range.setFontSize(12);
-    range.setFontWeight('bold');
-    range.setFontColor('#ffffff');
-    range.setBackground('#22538f');
-    range.setValues([fileds]);
-    sheet.setFrozenRows(1);
+    var range = sheet.getRange(1, 1, 1, fileds.length)
+    range.setHorizontalAlignment('center')
+    range.setFontSize(12)
+    range.setFontWeight('bold')
+    range.setFontColor('#ffffff')
+    range.setBackground('#22538f')
+    range.setValues([fileds])
+    sheet.setFrozenRows(1)
 
     /**
      * 设置仅自身具有编辑权限
      */
-    var protection = sheet.protect().setDescription('数据受保护');
-    var me = Session.getEffectiveUser();
-    protection.addEditor(me);
-    protection.removeEditors(protection.getEditors());
-    protection.canDomainEdit() && protection.setDomainEdit(false);
+    var protection = sheet.protect().setDescription('数据受保护')
+    var me = Session.getEffectiveUser()
+    protection.addEditor(me)
+    protection.removeEditors(protection.getEditors())
+    protection.canDomainEdit() && protection.setDomainEdit(false)
 
-    SpreadsheetApp.flush();
+    SpreadsheetApp.flush()
   }
-};
+}

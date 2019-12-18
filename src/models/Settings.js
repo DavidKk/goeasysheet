@@ -1,8 +1,8 @@
-var Settings = {
+var SettingsModel = {
   install: function () {
-    KvModel.createTable(SettingsTable);
+    KvModel.createTable(SettingsTable)
   },
   getToken: function () {
-    return KvModel.get('配置', 'KEY');
+    return KvModel.get('配置', 'KEY')
   }
-};
+}

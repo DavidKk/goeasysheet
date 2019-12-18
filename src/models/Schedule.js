@@ -1,21 +1,21 @@
-var Schedule = {
+var ScheduleModel = {
   install: function () {
-    Model.createTable(ScheduleTable);
+    Model.createTable(ScheduleTable)
   },
   getTasks: function () {
-    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
-    var sheet = spreadsheet.getSheetByName(ScheduleTable.name);
+    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+    var sheet = spreadsheet.getSheetByName(ScheduleTable.name)
     if (sheet === null) {
-      return [];
+      return []
     }
 
-    var row = sheet.getMaxRows();
-    var col = ScheduleTable.columns.length;
-    var range = sheet.getRange(2, 1, row, col);
+    var row = sheet.getMaxRows()
+    var col = ScheduleTable.columns.length
+    var range = sheet.getRange(2, 1, row, col)
     var tasks = range.getValues().filter(function (datas) {
-      return datas[1] instanceof Date;
-    });
+      return datas[1] instanceof Date
+    })
 
-    return tasks;
+    return tasks
   }
-};
+}

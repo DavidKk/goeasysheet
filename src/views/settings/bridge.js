@@ -1,17 +1,12 @@
-// 打开微信机器人设置
-function onSettingsOpen () {
-  Gui.openSettings();
-}
-
 function onSettingsSubmit (payload) {
-  payload = payload || {};
+  payload = payload || {}
 
-  var token = payload.token || '';
-  KvModel.set(SettingsTable.name, 'KEY', token);
-  Robot.configure({ token: token });
+  var token = payload.token || ''
+  KvModel.set(SettingsTable.name, 'KEY', token)
+  Robot.configure({ token: token })
 }
 
 function reqSettingsDatas () {
-  var options = KvModel.getAll(SettingsTable.name);
-  return options;
+  var options = KvModel.getAll(SettingsTable.name)
+  return options
 }

@@ -1,12 +1,25 @@
 var App = {
-  install: function () {
-    // Schedule.install();
-    // Settings.install();
+  onOpen: function () {
+    var ui = SpreadsheetApp.getUi()
 
-    Gui.install();
-
-    // WeChatRobot.configure({
-    //   token: '924fa3b7-4b9f-4f92-8cb4-0391b45d3949-123'
-    // });
+    ui.createMenu('Robot')
+    .addItem('安装', 'onAppInstall')
+    .addItem('配置', 'onSettingsOpen')
+    .addToUi()
+  },
+  onInstall: function () {
+    ScheduleServ.install()
+  },
+  openSettings: function () {
+    var html = HtmlService.createHtmlOutputFromFile('src/views/settings/index.html')
+    SpreadsheetApp.getUi().showSidebar(html)
   }
-};
+}
+
+function onAppInstall () {
+  App.onInstall()
+}
+
+function onSettingsOpen () {
+  App.openSettings()
+}

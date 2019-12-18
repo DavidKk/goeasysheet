@@ -15,7 +15,7 @@ var ScheduleTable = {
       name: '发送内容(列)'
     }
   ]
-};
+}
 
 // 配置表
 var SettingsTable = {
@@ -26,4 +26,4 @@ var SettingsTable = {
       name: '令牌'
     }
   ]
-};
+}
