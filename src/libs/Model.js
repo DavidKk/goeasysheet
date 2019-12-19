@@ -14,6 +14,7 @@ var Model = {
       return
     }
 
+    var activeSheet = spreadsheet.getActiveSheet()
     var sheets = spreadsheet.getSheets()
     sheet = spreadsheet.insertSheet(table.name, sheets.length)
 
@@ -42,6 +43,7 @@ var Model = {
     protection.removeEditors(protection.getEditors())
     protection.canDomainEdit() && protection.setDomainEdit(false)
 
+    spreadsheet.setActiveSheet(activeSheet)
     SpreadsheetApp.flush()
   }
 }

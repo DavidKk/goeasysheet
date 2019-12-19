@@ -16,5 +16,21 @@ var Utils = {
       var name = names[i]
       object[name] = props[name]
     }
+  },
+  find: function () {
+    for (var i = 0; i < array.length; i ++) {
+      if (callback(array[i], i) === true) {
+        return array[i]
+      }
+    }
+  },
+  findIndex: function (array, callback) {
+    for (var i = 0; i < array.length; i ++) {
+      if (callback(array[i], i) === true) {
+        return i
+      }
+    }
+
+    return -1
   }
 }

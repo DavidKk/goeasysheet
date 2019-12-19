@@ -7,7 +7,6 @@ function onOpen () {
 }
 
 function onDaily () {
-
 }
 
 // 每日任务触发器

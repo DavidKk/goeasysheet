@@ -8,11 +8,11 @@ var ScheduleTable = {
     },
     {
       id: 'datetime',
-      name: '执行时间(列)'
+      name: '执行时间'
     },
     {
       id: 'content',
-      name: '发送内容(列)'
+      name: '发送内容'
     }
   ]
 }

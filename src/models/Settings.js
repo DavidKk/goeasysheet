@@ -6,3 +6,10 @@ var SettingsModel = {
     return KvModel.get('配置', 'KEY')
   }
 }
+
+new KvModel('配置', [
+  {
+    id: 'key',
+    name: '令牌'
+  }
+])

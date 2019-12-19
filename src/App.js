@@ -1,14 +1,16 @@
 var App = {
   onOpen: function () {
-    var ui = SpreadsheetApp.getUi()
-
-    ui.createMenu('Robot')
+    SpreadsheetApp.getUi()
+    .createMenu('Robot')
     .addItem('安装', 'onAppInstall')
     .addItem('配置', 'onSettingsOpen')
+    .addItem('卸载', 'onAppDestroy')
     .addToUi()
   },
   onInstall: function () {
-    ScheduleServ.install()
+    // ScheduleModel.install()
+    // SettingsModel.install()
+    // ScheduleServ.install()
   },
   openSettings: function () {
     var html = HtmlService.createHtmlOutputFromFile('src/views/settings/index.html')
@@ -22,4 +24,7 @@ function onAppInstall () {
 
 function onSettingsOpen () {
   App.openSettings()
+}
+
+function onAppDestroy () {
 }
