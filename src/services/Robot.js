@@ -1,4 +1,4 @@
-var Robot = {
+CreateService('robot', {
   /**
    * 配置
    */
@@ -15,7 +15,7 @@ var Robot = {
    */
   configure: function (options) {
     options = options || {}
-    Utils.assign(WeChatRobot.settings, options)
+    utils.assign(WeChatRobot.settings, options)
   },
   /**
    * 发送信息
@@ -33,13 +33,13 @@ var Robot = {
     }
 
     if (options.mentionedList) {
-      Utils.assign(payload[type], {
+      utils.assign(payload[type], {
         mentioned_list: options.mentionedList
       })
     }
 
     if (options.mentionedMobileList) {
-      Utils.assign(payload[type], {
+      utils.assign(payload[type], {
         mentioned_mobile_list: options.mentionedMobileList
       })
     }
@@ -62,4 +62,4 @@ var Robot = {
   
     return true
   }
-}
+})

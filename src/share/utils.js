@@ -1,4 +1,4 @@
-var Utils = {
+var utils = {
   isSameDate: function (aDate, bDate) {
     if (aDate.getFullYear() == bDate.getFullYear()) {
       if (aDate.getMonth() == bDate.getMonth()) {
@@ -17,12 +17,12 @@ var Utils = {
       object[name] = props[name]
     }
   },
-  find: function () {
+  find: function (array, callback) {
     for (var i = 0; i < array.length; i ++) {
       if (callback(array[i], i) === true) {
         return array[i]
       }
-    }
+    }d 
   },
   findIndex: function (array, callback) {
     for (var i = 0; i < array.length; i ++) {

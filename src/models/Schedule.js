@@ -1,21 +1,18 @@
-var ScheduleModel = {
-  install: function () {
-    Model.createTable(ScheduleTable)
+CreateModel(LsModel, 'schedule', '计划任务', [
+  {
+    id: 'task',
+    name: '任务名称'
   },
-  getTasks: function () {
-    var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-    var sheet = spreadsheet.getSheetByName(ScheduleTable.name)
-    if (sheet === null) {
-      return []
-    }
-
-    var row = sheet.getMaxRows()
-    var col = ScheduleTable.columns.length
-    var range = sheet.getRange(2, 1, row, col)
-    var tasks = range.getValues().filter(function (datas) {
-      return datas[1] instanceof Date
-    })
-
-    return tasks
+  {
+    id: 'content',
+    name: '发送内容'
+  },
+  {
+    id: 'datetime',
+    name: '执行时间'
+  },
+  {
+    id: 'status',
+    name: '任务状态'
   }
-}
+])
