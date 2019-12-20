@@ -63,10 +63,7 @@ Module('KvModel', ['BsModel'], function (BsModel) {
       return result
     },
     get: function (key) {
-      var index = utils.findIndex(this.fileds, function (filed) {
-        return filed.id === key
-      })
-    
+      var index = utils.findIndex(this.fileds, { id: key })
       if (-1 === index) {
         return null
       }
@@ -77,10 +74,7 @@ Module('KvModel', ['BsModel'], function (BsModel) {
       return item[0]
     },
     set: function (key, value) {
-      var index = utils.findIndex(this.fileds, function (filed) {
-        return filed.id === key
-      })
-    
+      var index = utils.findIndex(this.fileds, { id: key })
       if (-1 === index) {
         return
       }

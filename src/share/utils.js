@@ -45,7 +45,7 @@ var utils = {
       }
     }
   },
-  findIndex: function findIndex (array, callback) {
+  findIndex: function (array, callback) {
     if (typeof callback === 'function') {
       for (var i = 0; i < array.length; i ++) {
         if (callback(array[i], i) === true) {

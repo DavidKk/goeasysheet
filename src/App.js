@@ -3,22 +3,14 @@ function onInstall (event) {
 }
 
 function onOpen () {
-  /**
-   * 加载所有的模块
-   */
-  GlobalModules.forEach(function (module) {
-    Require(module.name)
-  })
+  Module.run()
 
-  /**
-   * 创建UI
-   */
-  SpreadsheetApp.getUi()
-  .createMenu('Robot')
-  .addItem('安装', 'MenuInstall')
-  .addItem('配置', 'MenuOpenSettings')
-  .addItem('卸载', 'MenuDestroy')
-  .addToUi()
+  // SpreadsheetApp.getUi()
+  // .createMenu('助手')
+  // .addItem('安装', 'MenuInstall')
+  // .addItem('配置', 'MenuOpenSettings')
+  // .addItem('卸载', 'MenuDestroy')
+  // .addToUi()
 }
 
 function MenuInstall () {
@@ -26,6 +18,7 @@ function MenuInstall () {
 }
 
 function MenuOpenSettings () {
+  Logger.log(Leader.loadController('settings'))
   Leader.loadController('settings').display()
 }
 

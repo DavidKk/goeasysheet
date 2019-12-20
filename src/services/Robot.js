@@ -15,7 +15,7 @@ Service('robot', {
    */
   configure: function (options) {
     options = options || {}
-    utils.assign(WeChatRobot.settings, options)
+    assign(WeChatRobot.settings, options)
   },
   /**
    * 发送信息
@@ -33,13 +33,13 @@ Service('robot', {
     }
 
     if (options.mentionedList) {
-      utils.assign(payload[type], {
+      assign(payload[type], {
         mentioned_list: options.mentionedList
       })
     }
 
     if (options.mentionedMobileList) {
-      utils.assign(payload[type], {
+      assign(payload[type], {
         mentioned_mobile_list: options.mentionedMobileList
       })
     }

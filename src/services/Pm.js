@@ -15,7 +15,7 @@
 //     // tasks.forEach(function (data, index) {
 //     //   var dateCol = SCHEDULE_TABLE_HEAD.indexOf(SCHEDULE_DATE_TEXT)
 //     //   var date = data[dateCol]
-//     //   if (!utils.isSameDate(date, now)) {
+//     //   if (!isSameDate(date, now)) {
 //     //     return
 //     //   }
   

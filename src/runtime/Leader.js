@@ -14,7 +14,11 @@ var Leader = {
   },
   load: function (type, id) {
     var collection = this.getCollectionByType(type)
+    Logger.log(collection)
+
     var Module = collection[id]
+    Logger.log(Module)
+
     if (typeof Module === 'function') {
       return collection[id] = new Module
     }

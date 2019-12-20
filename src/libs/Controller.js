@@ -1,5 +1,7 @@
 function Controller (id, Ctrl, props) {
-  Module(id + '@controller', [type], function () {
+  Module(id + '@controller', function () {
+    Logger.log('Register Controller ' + id)
+
     var ctrl = new oo.class(Ctrl, props)
 
     return Leader.controllers[id] = function (method) {
