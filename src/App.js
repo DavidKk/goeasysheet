@@ -3,6 +3,16 @@ function onInstall (event) {
 }
 
 function onOpen () {
+  /**
+   * 加载所有的模块
+   */
+  GlobalModules.forEach(function (module) {
+    Require(module.name)
+  })
+
+  /**
+   * 创建UI
+   */
   SpreadsheetApp.getUi()
   .createMenu('Robot')
   .addItem('安装', 'MenuInstall')

@@ -1,4 +1,4 @@
-CreateService('robot', {
+Service('robot', {
   /**
    * 配置
    */

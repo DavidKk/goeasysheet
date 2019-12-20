@@ -1,4 +1,4 @@
-CreateService('schedule', function () {
+Service('schedule', function () {
   var ss = SpreadsheetApp.getActiveSpreadsheet()
   var triggers = ScriptApp.getUserTriggers(ss)
   var dailyTriggers = triggers.filter(function (triggers) {

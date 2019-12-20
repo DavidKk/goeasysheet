@@ -1,6 +1,6 @@
 function SettingsController () {}
 
-SettingsController = CreateController('settings', {
+Controller('settings', SettingsController, {
   display: function () {
     var html = HtmlService.createHtmlOutputFromFile('src/views/settings/index.html')
     SpreadsheetApp.getUi().showSidebar(html)

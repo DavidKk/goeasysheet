@@ -1,4 +1,4 @@
-CreateModel(KvModel, 'settings', '系统设置', [
+Model('KvModel', 'settings', '系统设置', [
   {
     id: 'version',
     name: '版本号'

@@ -18,16 +18,56 @@ var utils = {
     }
   },
   find: function (array, callback) {
-    for (var i = 0; i < array.length; i ++) {
-      if (callback(array[i], i) === true) {
-        return array[i]
+    if (typeof callback === 'function') {
+      for (var i = 0; i < array.length; i ++) {
+        if (callback(array[i], i) === true) {
+          return array[i]
+        }
       }
-    }d 
+
+      return
+    }
+
+    if (typeof callback === 'object') {
+      var props = Object.keys(callback)
+      for (var i = 0; i < array.length; i ++) {
+        var item = array[i]
+        var mathced = 0
+
+        for (var j = 0; j < props.length; j ++) {
+          var prop = props[j]
+          item[prop] === callback[prop] && mathced ++
+        }
+
+        if (mathced === props.length) {
+          return item
+        }
+      }
+    }
   },
-  findIndex: function (array, callback) {
-    for (var i = 0; i < array.length; i ++) {
-      if (callback(array[i], i) === true) {
-        return i
+  findIndex: function findIndex (array, callback) {
+    if (typeof callback === 'function') {
+      for (var i = 0; i < array.length; i ++) {
+        if (callback(array[i], i) === true) {
+          return i
+        }
+      }
+    }
+
+    if (typeof callback === 'object') {
+      var props = Object.keys(callback)
+      for (var i = 0; i < array.length; i ++) {
+        var item = array[i]
+        var mathced = 0
+
+        for (var j = 0; j < props.length; j ++) {
+          var prop = props[j]
+          item[prop] === callback[prop] && mathced ++
+        }
+
+        if (mathced === props.length) {
+          return i
+        }
       }
     }
 

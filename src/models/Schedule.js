@@ -1,4 +1,4 @@
-CreateModel(LsModel, 'schedule', '计划任务', [
+Model('LsModel', 'schedule', '计划任务', [
   {
     id: 'task',
     name: '任务名称'
