@@ -1,7 +1,7 @@
-class Robot {
-  private settings: RobotOptions
+class RobotService extends Service {
+  private settings: RobotSettings
 
-  public configure (options: RobotOptions = {}): void {
+  public configure (options: Optional<RobotSettings> = {}): void {
     assign(this.settings, options)
   }
 
@@ -39,4 +39,8 @@ class Robot {
   
     return true
   }
+}
+
+interface RobotSettings {
+  apiToken: string
 }
