@@ -30,6 +30,7 @@ export const Plugins: webpack.Plugin[] = [
     /\.d\.ts$/
   ]),
   new CopyPlugin([
+    'src/main.js',
     'appsscript.json',
     'creds.json',
     '.clasp.json',
@@ -41,7 +42,7 @@ export const Config: webpack.Configuration = {
   stats: 'errors-only',
   mode: 'production',
   entry: {
-    app: path.join(srcDir, 'index.ts')
+    app: path.join(srcDir, 'App.ts')
   },
   output: {
     path: outDir,
