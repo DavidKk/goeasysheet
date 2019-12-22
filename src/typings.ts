@@ -5,6 +5,7 @@ type Optional<T> = { [K in keyof T]?: T[K] }
 interface AppOptions {
   model?: { [key: string]: SheetModel }
   service?: { [key: string]: Service }
+  controller?: { [key: string]: Service }
 }
 
 type ModelFileds = Array<{

@@ -1,7 +1,5 @@
-class ScheduleServ extends Service {
+class ScheduleService {
   constructor () {
-    super()
-
     const ss = SpreadsheetApp.getActiveSpreadsheet()
     const triggers = ScriptApp.getUserTriggers(ss)
     const dailyTriggers = triggers.filter(function (triggers) {

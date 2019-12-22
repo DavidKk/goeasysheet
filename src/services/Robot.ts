@@ -1,4 +1,4 @@
-class RobotService extends Service {
+class RobotService {
   private settings: RobotSettings
 
   public configure (options: Optional<RobotSettings> = {}): void {

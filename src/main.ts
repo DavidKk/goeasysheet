@@ -1,34 +1,18 @@
+let app: App
+
 function onInstall () {
   onOpen()
 }
 
 function onOpen () {
+  app = new App()
+
   SpreadsheetApp.getUi()
   .createMenu('助手')
-  .addItem('安装', 'MenuInstall')
-  .addItem('配置', 'MenuOpenSettings')
-  .addItem('卸载', 'MenuDestroy')
+  .addItem('设置', 'onMenuOpenSettings')
   .addToUi()
 }
 
-function onMenuInstall () {
-  const model = {
-    schedule: new ScheduleModel,
-    settings: new SettingsModel
-  }
-
-  const service = {
-    robot: new RobotServ,
-    schedule: new ScheduleServ
-  }
-
-  new App({ model, service })
-}
-
 function onMenuOpenSettings () {
-
-}
-
-function onMenuDestroy () {
-
+  app.openSettings()
 }

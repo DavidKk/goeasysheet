@@ -1,23 +1,11 @@
-let runtime: Runtime
+class App {
+  private settings: SettingsComponent
 
-class App extends Runtime {
-  constructor (options: AppOptions) {
-    super()
+  constructor () {
+    this.settings = new SettingsComponent()
+  }
 
-    runtime = this
-
-    if (Object.prototype.hasOwnProperty.call(options, 'model')) {
-      Object.keys(options.model).forEach((id) => {
-        const model = options.model[id]
-        this.model(id, model)
-      })
-    }
-
-    if (Object.prototype.hasOwnProperty.call(options, 'service')) {
-      Object.keys(options.service).forEach((id) => {
-        const service = options.service[id]
-        this.service(id, service)
-      })
-    }
+  public openSettings () {
+    this.settings.display()
   }
 }
