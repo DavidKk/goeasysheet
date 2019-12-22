@@ -7,11 +7,7 @@ export function Model <T extends { new(): {} }>(Model: T) {
     if (!GlobalModels[Model.name]) {
       const model = new Model
       GlobalModels[Model.name] = model
-
-      Object.defineProperty(target, propertyKey, {
-        writable: false,
-        get: () => model
-      })
+      target[propertyKey] = model
     }
   }
 }
@@ -21,11 +17,7 @@ export function Service <T extends { new(): {} }>(Service: T) {
     if (!GlobalServices[Service.name]) {
       const service = new Service
       GlobalServices[Service.name] = service
-
-      Object.defineProperty(target, propertyKey, {
-        writable: false,
-        get: () => service
-      })
+      target[propertyKey] = service
     }
   }  
 }

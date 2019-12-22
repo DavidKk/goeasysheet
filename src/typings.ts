@@ -7,6 +7,11 @@ type ModelFileds = Array<{
   name: string
 }>
 
+interface SettingsModelFields {
+  version: string
+  robotApiKey: string
+}
+
 type RobotSendMessageType = 'text' | 'markdown' | 'news'
 type RobotSendMessageParams<T extends RobotSendMessageType> = T extends 'text' ? {
   msgtype: T

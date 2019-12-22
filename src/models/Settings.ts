@@ -14,8 +14,3 @@ export default class SettingsModel extends KeyvalueSheetModel {
     ])
   }
 }
-
-interface SettingsModelFields {
-  version: string
-  robotApiKey: string
-}

@@ -7,7 +7,7 @@ export default class App {
     this.settings = new SettingsComponent()
   }
 
-  // public openSettings () {
-  //   this.settings.display()
-  // }
+  public openSettings () {
+    this.settings.display()
+  }
 }
