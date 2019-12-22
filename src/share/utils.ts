@@ -1,4 +1,4 @@
-function isSameDate (aDate: Date, bDate: Date) {
+export function isSameDate (aDate: Date, bDate: Date) {
   if (aDate.getFullYear() == bDate.getFullYear()) {
     if (aDate.getMonth() == bDate.getMonth()) {
       if (aDate.getDate() == bDate.getDate()) {
@@ -10,7 +10,7 @@ function isSameDate (aDate: Date, bDate: Date) {
   return false
 }
 
-function assign (object: { [key: string]: any }, props: { [key: string]: any }) {
+export function assign (object: { [key: string]: any }, props: { [key: string]: any }) {
   var names = Object.keys(object)
   for (var i = 0; i < names.length; i ++) {
     var name = names[i]
@@ -18,9 +18,9 @@ function assign (object: { [key: string]: any }, props: { [key: string]: any }) 
   }
 }
 
-function find (array: any[], callback: (value: any, index: number) => boolean): any | undefined
-function find (array: any[], match: { [key: string]: any }): any | undefined
-function find (...args: any[]): any | undefined {
+export function find (array: any[], callback: (value: any, index: number) => boolean): any | undefined
+export function find (array: any[], match: { [key: string]: any }): any | undefined
+export function find (...args: any[]): any | undefined {
   if (typeof args[1] === 'function') {
     const [array, callback] = args
     for (var i = 0; i < array.length; i ++) {
@@ -51,9 +51,9 @@ function find (...args: any[]): any | undefined {
   }
 }
 
-function findIndex (array: any[], callback: (value: any, index: number) => boolean): number
-function findIndex (array: any[], match: { [key: string]: any }): number
-function findIndex (...args: any[]): number {
+export function findIndex (array: any[], callback: (value: any, index: number) => boolean): number
+export function findIndex (array: any[], match: { [key: string]: any }): number
+export function findIndex (...args: any[]): number {
   if (typeof args[1] === 'function') {
     const [array, callback] = args
     for (let i = 0; i < array.length; i ++) {

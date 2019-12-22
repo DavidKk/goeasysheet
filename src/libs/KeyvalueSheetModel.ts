@@ -1,4 +1,7 @@
-class KeyvalueSheetModel extends SheetModel {
+import SheetModel from './SheetModel'
+import { findIndex } from '../share/utils'
+
+export default class KeyvalueSheetModel extends SheetModel {
   constructor (name: string, fields: ModelFileds) {
     super(name, fields)
 

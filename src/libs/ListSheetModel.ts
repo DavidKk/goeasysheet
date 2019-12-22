@@ -1,4 +1,6 @@
-class ListSheetModel extends SheetModel {
+import SheetModel from './SheetModel'
+
+export class ListSheetModel extends SheetModel {
   constructor (name: string, fields: ModelFileds) {
     super(name, fields)
 

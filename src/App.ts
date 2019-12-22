@@ -1,11 +1,13 @@
-class App {
-  private settings: SettingsComponent
+// import SettingsComponent from './component/settings'
 
-  constructor () {
-    this.settings = new SettingsComponent()
-  }
+export default class App {
+  // private settings: SettingsComponent
 
-  public openSettings () {
-    this.settings.display()
-  }
+  // constructor () {
+  //   this.settings = new SettingsComponent()
+  // }
+
+  // public openSettings () {
+  //   this.settings.display()
+  // }
 }

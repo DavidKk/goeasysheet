@@ -1,12 +1,12 @@
-const GlobalModels = new Map
-const GlobalServices = new Map
-const GlobalBridges = new Map
+const GlobalModels = {}
+const GlobalServices = {}
+const GlobalBridges = {}
 
 function Model <T extends { new(): {} }>(Model: T) {
   return function (target: Object, propertyKey: string) {
-    if (!GlobalModels.get(Model.name)) {
+    if (!GlobalModels[Model.name]) {
       const model = new Model
-      GlobalModels.set(Model.name, model)
+      GlobalModels[Model.name] = model
 
       Object.defineProperty(target, propertyKey, {
         writable: false,
@@ -18,9 +18,9 @@ function Model <T extends { new(): {} }>(Model: T) {
 
 function Service <T extends { new(): {} }>(Service: T) {
   return function (target: Object, propertyKey: string) {
-    if (!GlobalServices.get(Service.name)) {
+    if (!GlobalServices[Service.name]) {
       const service = new Service
-      GlobalServices.set(Service.name, service)
+      GlobalServices[Service.name] = service
 
       Object.defineProperty(target, propertyKey, {
         writable: false,
@@ -32,7 +32,7 @@ function Service <T extends { new(): {} }>(Service: T) {
 
 function Bridge <T extends Object>(target: T, _propertyKey: string, descriptor: PropertyDescriptor) {
   const { name: namespace } = target.constructor
-  if (!GlobalBridges.get(namespace)) {
-    GlobalBridges.set(namespace, descriptor.value)
+  if (!GlobalBridges[namespace]) {
+    GlobalBridges[namespace] = descriptor.value
   }
 }

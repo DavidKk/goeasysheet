@@ -1,4 +1,4 @@
-class SheetModel {
+export default class SheetModel {
   public name: string
   public fields: ModelFileds
 

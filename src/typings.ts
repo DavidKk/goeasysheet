@@ -2,12 +2,6 @@
 type Get<data extends { [key: string]: any }, T extends string> = data[T]
 type Optional<T> = { [K in keyof T]?: T[K] }
 
-interface AppOptions {
-  model?: { [key: string]: SheetModel }
-  service?: { [key: string]: Service }
-  controller?: { [key: string]: Service }
-}
-
 type ModelFileds = Array<{
   id: string
   name: string
