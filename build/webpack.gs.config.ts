@@ -4,7 +4,6 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyPlugin from 'copy-webpack-plugin'
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin'
-import WrapperPlugin from 'wrapper-webpack-plugin'
 import { srcDir, outDir } from './constants/conf'
 
 /**
