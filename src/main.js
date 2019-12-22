@@ -3,5 +3,5 @@ function onInstall () {
 }
 
 function onOpen () {
-  App()
+  Bootstrap['default']()
 }

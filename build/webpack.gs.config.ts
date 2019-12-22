@@ -42,13 +42,13 @@ export const Config: webpack.Configuration = {
   stats: 'errors-only',
   mode: 'production',
   entry: {
-    app: path.join(srcDir, 'App.ts')
+    app: path.join(srcDir, 'index.ts')
   },
   output: {
     path: outDir,
     filename: '[name].bundle.js',
     libraryTarget: 'var',
-    library: 'App'
+    library: 'Bootstrap'
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],

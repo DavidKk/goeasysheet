@@ -5,16 +5,6 @@
   "repository": "git@github.com:DavidKk/googlesheets-wechatrobot.git",
   "author": "zhongjiahao <zhongjiahao@yy.com>",
   "license": "MIT",
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "./src/**/*.js": [
-      "clasp push"
-    ]
-  },
   "scripts": {
     "lint-staged": "lint-staged",
     "develop": "cross-env NODE_ENV=\"production\" TS_NODE_PROJECT=\"build/tsconfig.json\" webpack --config ./build/webpack.gs.config.ts",
