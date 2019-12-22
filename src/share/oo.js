@@ -2,10 +2,15 @@ var oo = {
   class: function (Constructor, props) {
     var classArgs = Array.prototype.slice.call(arguments)
     if (classArgs.length === 1) {
-      return this.class(Function, Constructor)
+      return this.class(function () {}, Constructor)
     }
 
-    Constructor.prototype = Object.create(props)
+    console.log(Constructor)
+    if (typeof props === 'object' && props !== null) {
+      Constructor.prototype = Object.create(props)
+    }
+
+    Logger.log(Constructor.prototype)
     Object.defineProperty(Constructor.prototype, 'constructor', { 
       value: Constructor, 
       enumerable: false,
@@ -25,7 +30,7 @@ var oo = {
     }
 
     if (inheritArgs.length === 0) {
-      return this.inherit(null, Function)
+      return this.inherit(null, function () {})
     }
 
     var Sub = function () {

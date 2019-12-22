@@ -17,13 +17,14 @@
   },
   "scripts": {
     "lint-staged": "lint-staged",
-    "develop": "clasp run develop",
+    "develop": "clasp push --watch",
     "start": "npm run develop"
   },
   "peerDependencies": {
     "clasp": "2.3.0"
   },
   "devDependencies": {
+    "@types/google-apps-script": "^1.0.7",
     "husky": "^3.1.0",
     "lint-staged": "^9.5.0"
   }
