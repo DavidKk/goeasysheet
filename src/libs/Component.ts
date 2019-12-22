@@ -2,7 +2,7 @@ const GlobalModels = {}
 const GlobalServices = {}
 const GlobalBridges = {}
 
-function Model <T extends { new(): {} }>(Model: T) {
+export function Model <T extends { new(): {} }>(Model: T) {
   return function (target: Object, propertyKey: string) {
     if (!GlobalModels[Model.name]) {
       const model = new Model
@@ -16,7 +16,7 @@ function Model <T extends { new(): {} }>(Model: T) {
   }
 }
 
-function Service <T extends { new(): {} }>(Service: T) {
+export function Service <T extends { new(): {} }>(Service: T) {
   return function (target: Object, propertyKey: string) {
     if (!GlobalServices[Service.name]) {
       const service = new Service
@@ -30,7 +30,7 @@ function Service <T extends { new(): {} }>(Service: T) {
   }  
 }
 
-function Bridge <T extends Object>(target: T, _propertyKey: string, descriptor: PropertyDescriptor) {
+export function Bridge <T extends Object>(target: T, _propertyKey: string, descriptor: PropertyDescriptor) {
   const { name: namespace } = target.constructor
   if (!GlobalBridges[namespace]) {
     GlobalBridges[namespace] = descriptor.value
