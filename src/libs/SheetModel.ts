@@ -7,6 +7,11 @@ export default class SheetModel {
     this.fields = fields
   }
 
+  public isReady (): boolean {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+    return !!spreadsheet.getSheetByName(this.name)
+  }
+
   protected getSheet (): GoogleAppsScript.Spreadsheet.Sheet {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
     const sheet = spreadsheet.getSheetByName(this.name)

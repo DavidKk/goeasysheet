@@ -1,7 +1,28 @@
-import { assign } from '../share/utils'
+import { assign } from '../../../share/utils'
 
 export default class RobotService {
   private settings: RobotSettings
+
+  constructor () {
+    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
+    const triggers = ScriptApp.getUserTriggers(spreadsheet)
+    const dailyTriggers = triggers.filter((triggers) => {
+      const isClockEvent = triggers.getEventType() === ScriptApp.EventType.CLOCK
+      const isOnDailyEvent = triggers.getHandlerFunction() === 'onDaily'
+      return isClockEvent && isOnDailyEvent
+    })
+
+    if (dailyTriggers.length === 0) {
+      const ui = SpreadsheetApp.getUi()
+      const response = ui.alert('未发现任何触发器, 是否需要自动创建每日提醒触发器?', ui.ButtonSet.YES_NO)
+
+      if (response == ui.Button.YES) {
+        ScriptApp.newTrigger('onDaily')
+        .timeBased().everyDays(1).atHour(8)
+        .create()
+      }
+    }
+  }
 
   public configure (options: Optional<RobotSettings> = {}): void {
     assign(this.settings, options)
@@ -20,7 +41,7 @@ export default class RobotService {
       [type]: content
     }
   }
-  
+
   public sendMessage (content: string, type: RobotSendMessageType = 'text') {
     const payload = this.resolveAraguments(content, type as any)
     const url = `${ROBOT_SEND_URL}?key=?key=${this.settings.apiToken}`

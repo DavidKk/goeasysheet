@@ -2,12 +2,25 @@
 type Get<data extends { [key: string]: any }, T extends string> = data[T]
 type Optional<T> = { [K in keyof T]?: T[K] }
 
+interface GoogleRun {
+  withSuccessHandler: (response: any) => this
+  withFailureHandler: (response: any) => this
+  withUserObject: (object: Object) => this
+  bridge: (namespace: string, ...args: any[]) => this
+}
+
+declare var google: {
+  script: {
+    run: GoogleRun
+  }
+}
+
 type ModelFileds = Array<{
   id: string
   name: string
 }>
 
-interface SettingsModelFields {
+interface WeChatRobotSettingModelFields {
   version: string
   robotApiKey: string
 }

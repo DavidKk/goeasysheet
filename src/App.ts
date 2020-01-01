@@ -1,13 +1,17 @@
-import SettingsComponent from './component/settings/Component'
+import Robot from './component/WeChatRobot'
 
 export default class App {
-  private settings: SettingsComponent
+  private robot: Robot
 
   constructor () {
-    this.settings = new SettingsComponent()
+    this.robot = new Robot()
   }
 
-  public openSettings () {
-    this.settings.display()
+  public onWeChatRobot () {
+    this.robot.display()
+  }
+
+  public onDaily () {
+    this.robot.onDuty()
   }
 }

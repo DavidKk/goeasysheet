@@ -1,6 +1,6 @@
 import SheetModel from './SheetModel'
 
-export class ListSheetModel extends SheetModel {
+export default class ListSheetModel extends SheetModel {
   constructor (name: string, fields: ModelFileds) {
     super(name, fields)
 
@@ -13,11 +13,7 @@ export class ListSheetModel extends SheetModel {
 
       const range = sheet.getRange(1, 1, 1, keys.length)
       range.setHorizontalAlignment('center')
-      range.setFontSize(12)
-      range.setFontWeight('bold')
-      range.setFontColor('#ffffff')
-      range.setBackground('#22538f')
-      range.setValues([fields])
+      range.setValues([keys])
       
       sheet.setFrozenRows(1)
 

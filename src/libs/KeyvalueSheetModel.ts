@@ -1,7 +1,7 @@
 import SheetModel from './SheetModel'
 import { findIndex } from '../share/utils'
 
-export default class KeyvalueSheetModel extends SheetModel {
+export default class KeyValueSheetModel extends SheetModel {
   constructor (name: string, fields: ModelFileds) {
     super(name, fields)
 
@@ -12,13 +12,9 @@ export default class KeyvalueSheetModel extends SheetModel {
       const sheet = spreadsheet.insertSheet(this.name, sheets.length)
       const keys = fields.map(item => item.name)
 
-      const range = sheet.getRange(1, 1, 1, keys.length)
+      const range = sheet.getRange(1, 1, keys.length)
       range.setHorizontalAlignment('center')
-      range.setFontSize(12)
-      range.setFontWeight('bold')
-      range.setFontColor('#ffffff')
-      range.setBackground('#22538f')
-      range.setValues([fields])
+      range.setValues(keys.map(key => [key]))
 
       sheet.setFrozenColumns(1)
 
@@ -50,12 +46,12 @@ export default class KeyvalueSheetModel extends SheetModel {
 
   public getValues (): { [key: string] : any } {
     const values = this.getValueRange().getValues()
-    const fileds = this.fields.map((item) => item.name)
+    const fileds = this.fields.map((item) => item.id)
     const result: { [key: string] : any } = {}
 
     for (let i = 0; i < fileds.length; i ++) {
-      const name = fileds[i]
-      result[name] = values[i][0]
+      const id = fileds[i]
+      result[id] = values[i][0]
     }
   
     return result
@@ -86,12 +82,14 @@ export default class KeyvalueSheetModel extends SheetModel {
     SpreadsheetApp.flush()
   }
 
-  public multiSet (values: { [key: string]: any }): void {
+  public multiSet (data: { [key: string]: any }): void {
+    const originValues = this.getValues()
     const metadata = this.fields.map((filed) => {
-      const value = values[filed.id]
-      return [value]
+      const key = filed.id
+      const value = data[key]
+      return typeof value === 'undefined' ? [originValues[key]] : [value]
     })
-  
+
     const range = this.getValueRange()
     range.setValues(metadata)
   }

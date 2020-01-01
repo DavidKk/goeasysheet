@@ -4,6 +4,7 @@ import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import CopyPlugin from 'copy-webpack-plugin'
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin'
 import UglifyJSPlugin from 'uglifyjs-webpack-plugin'
+import ClaspPlugin from './plugins/ClaspWebpackPlugin'
 import { srcDir, outDir } from './constants/conf'
 
 /**
@@ -17,6 +18,75 @@ export const Rules: webpack.RuleSetRule[] = [
   {
     test: /\.tsx?$/,
     loader: 'ts-loader'
+  },
+  {
+    test: /\.html$/,
+    use: [
+      {
+        loader: 'file-loader',
+        options: {
+          // 5.0之后默认开启
+          esModule: false
+        }
+      },
+      {
+        loader: 'extract-loader'
+      },
+      {
+        loader: 'html-loader',
+        options: {
+          interpolate: true,
+          attrs: ['link:href', 'script:src']
+        }
+      }
+    ]
+  },
+  {
+    test: /component\/.+?\/view\/.+?\.tsx?$/,
+    use: [
+      {
+        loader: 'file-loader',
+        options: {
+          esModule: false,
+          name: '[contenthash].html'
+        }
+      },
+      {
+        loader: 'ts-loader'
+      }
+    ]
+  },
+  {
+    test: /\.s[ac]ss$/i,
+    use: [
+      {
+        loader: 'file-loader',
+        options: {
+          esModule: false,
+          name: '[contenthash].html'
+        }
+      },
+      {
+        loader: 'extract-loader'
+      },
+      {
+        loader: 'css-loader'
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          plugins: [
+            require('autoprefixer')
+          ]
+        }
+      },
+      {
+        loader: 'sass-loader',
+        options: {
+          prependData: '@import "styles/bootstrap.scss";'
+        }
+      }
+    ]
   }
 ]
 
@@ -30,20 +100,28 @@ export const Plugins: webpack.Plugin[] = [
     /\.d\.ts$/
   ]),
   new CopyPlugin([
-    'src/main.js',
+    {
+      from: 'src/pioneer/*',
+      to: '[contenthash].[ext]',
+      flatten: true
+    },
     'appsscript.json',
     'creds.json',
     '.clasp.json',
     '.clasprc.json'
-  ])
+  ], {
+    copyUnmodified: true
+  }),
+  new ClaspPlugin()
 ]
 
 export const Config: webpack.Configuration = {
   stats: 'errors-only',
   mode: 'production',
-  entry: {
-    app: path.join(srcDir, 'index.ts')
-  },
+  devtool: 'cheap-source-map',
+  entry: [
+    path.join(srcDir, 'index.ts')
+  ],
   output: {
     path: outDir,
     filename: '[name].bundle.js',
@@ -63,9 +141,6 @@ export const Config: webpack.Configuration = {
       ...Rules
     ]
   },
-  plugins: [
-    ...Plugins
-  ],
   optimization: {
     minimizer: [
       new UglifyJSPlugin({
@@ -75,7 +150,10 @@ export const Config: webpack.Configuration = {
         }
       })
     ]
-  }
+  },
+  plugins: [
+    ...Plugins
+  ]
 }
 
 export default Config
