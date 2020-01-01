@@ -31,26 +31,29 @@ export default class ListSheetModel extends SheetModel {
     }
   }
 
-  public select (keys: string[], count: number): Array<{ [key: string]: any }> {
-    count = count || this.getSheet().getMaxRows()
-
-    const range = this.getRange(2, this.fields.length, count)
+  public select (keys: string[] = this.getKeys(), count: number = this.getSheet().getMaxRows()): Array<{ [key: string]: any }> {
+    const range = this.getRange(2, 1, count, this.fields.length)
     const metadata = range.getValues()
     const results = []
   
-    const validkeys = keys.length === 0 ? this.getKeys() : this.fields.map((filed) => {
+    const validkeys = this.fields.map((filed) => {
       if (-1 !== keys.indexOf(filed.id)) {
         return filed.id
       }
     })
-  
+
     for (let row = 0; row < metadata.length; row ++) {
+      const rowdata = metadata[row]
+      if (rowdata.filter((item) => item).length === 0) {
+        continue
+      }
+
       let data: { [key: string]: any } = {}
-      for (let col = 0; col < metadata[row].length; col ++) {
+      for (let col = 0; col < rowdata.length; col ++) {
         const key = validkeys[col]
-        const value = metadata[row][col]
+        const value = rowdata[col]
   
-        if (key) {
+        if (key && value) {
           data[key] = value
         }
       }

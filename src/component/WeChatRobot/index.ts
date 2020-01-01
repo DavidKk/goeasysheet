@@ -29,11 +29,16 @@ export default class WeChatRobot {
   }
 
   public onDuty () {
-    const apiToken = this.mSetting.get('apikey')
-    if (!apiToken) {
+    const apikey = this.mSetting.get('apikey')
+    if (!apikey) {
       return
     }
 
-    this.sSchedule.configure({ apiToken })
+    const schedule = this.mSchedule.select()
+    if (schedule.length === 0) {
+      return
+    }
+
+    this.sSchedule.configure({ apikey })
   }
 }

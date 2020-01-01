@@ -58,14 +58,14 @@ export default class KeyValueSheetModel extends SheetModel {
   }
 
   public get (key: string): any {
-    var index = findIndex(this.fields, { id: key })
+    const index = findIndex(this.fields, { id: key })
     if (-1 === index) {
       return null
     }
   
-    var row = index + 1
-    var range = this.getRange(row, 2)
-    var item = range.getValues()
+    const row = index + 1
+    const range = this.getRange(row, 2)
+    const item = range.getValues()
     return item[0]
   }
 

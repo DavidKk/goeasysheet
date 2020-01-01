@@ -22,7 +22,11 @@ type ModelFileds = Array<{
 
 interface WeChatRobotSettingModelFields {
   version: string
-  robotApiKey: string
+  apikey: string
+}
+
+interface WeChatRobotSettings {
+  apikey: string
 }
 
 type RobotSendMessageType = 'text' | 'markdown' | 'news'

@@ -1,7 +1,9 @@
 import { assign } from '../../../share/utils'
 
 export default class RobotService {
-  private settings: RobotSettings
+  private settings: WeChatRobotSettings = {
+    apikey: ''
+  }
 
   constructor () {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
@@ -24,7 +26,7 @@ export default class RobotService {
     }
   }
 
-  public configure (options: Optional<RobotSettings> = {}): void {
+  public configure (options: Optional<WeChatRobotSettings> = {}): void {
     assign(this.settings, options)
   }
 
@@ -44,7 +46,7 @@ export default class RobotService {
 
   public sendMessage (content: string, type: RobotSendMessageType = 'text') {
     const payload = this.resolveAraguments(content, type as any)
-    const url = `${ROBOT_SEND_URL}?key=?key=${this.settings.apiToken}`
+    const url = `${ROBOT_SEND_URL}?key=?key=${this.settings.apikey}`
     const params = {
       method: 'post',
       payload: payload
@@ -62,8 +64,4 @@ export default class RobotService {
   
     return true
   }
-}
-
-interface RobotSettings {
-  apiToken: string
 }
