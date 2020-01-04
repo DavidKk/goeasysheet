@@ -108,8 +108,7 @@ export default class WeChatRobot {
 
     needExecTasks.forEach((task) => {
       const { content } = task
-      // this.sRobot.sendMessage(content)
-      MailApp.sendEmail('qowera@gmail.com', '提醒', content)
+      this.sRobot.sendMessage(content)
     })
   }
 
