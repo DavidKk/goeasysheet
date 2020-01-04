@@ -1,5 +1,6 @@
 export interface SettingModelFields {
   apikey: string
+  minutes: string
 }
 
 export interface RobotServiceSettings {

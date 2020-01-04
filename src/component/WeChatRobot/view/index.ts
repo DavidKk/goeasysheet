@@ -7,8 +7,11 @@ const GoRun = (name: string, params?: any): Promise<any> => new Promise((resolve
 
 document.getElementById('submit').addEventListener('click', () => {
   const keyNode = document.getElementById('key') as HTMLInputElement
+  const minutesNode = document.getElementById('minutes') as HTMLInputElement
+
   const { value: apikey } = keyNode
-  GoRun('WeChatRobot.submit', { apikey }).then(() => {
+  const { value: minutes } = minutesNode
+  GoRun('WeChatRobot.submit', { apikey, minutes }).then(() => {
     alert('保存成功')
   })
   .catch((error) => {
@@ -17,7 +20,11 @@ document.getElementById('submit').addEventListener('click', () => {
 })
 
 GoRun('WeChatRobot.fetch').then((data) => {
-  const { apikey = '' } = data || {}
+  const { apikey = '', minutes = 5 } = data || {}
+
   const keyNode = document.getElementById('key') as HTMLInputElement
+  const minutesNode = document.getElementById('minutes') as HTMLInputElement
+
   keyNode.value = apikey
+  minutesNode.value = minutes
 })
