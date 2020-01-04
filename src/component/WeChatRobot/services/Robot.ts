@@ -32,8 +32,9 @@ export default class RobotService {
     const payload = this.resolveAraguments(content, type as any)
     const url = `${ROBOT_SEND_URL}?key=${this.settings.apikey}`
     const params = {
-      method: 'post',
-      payload: payload
+      method : "post",
+      contentType : "application/json",
+      payload: JSON.stringify(payload)
     }
 
     const response = UrlFetchApp.fetch(url, params as any)
@@ -43,7 +44,7 @@ export default class RobotService {
     const errcode = responseData.errcode
     const errmsg = responseData.errmsg
     if (errcode !== 0) {
-      return errmsg
+      return `错误码: ${errcode}; 错误信息: ${errmsg}; 请求参数: ${JSON.stringify(payload)}`
     }
 
     return true
