@@ -1,7 +1,8 @@
 import SheetModel from './SheetModel'
+import * as GASTypings from '../typings.gas'
 
 export default class ListSheetModel extends SheetModel {
-  constructor (name: string, fields: ModelFileds) {
+  constructor (name: string, fields: GASTypings.ModelFileds) {
     super(name, fields)
 
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
@@ -32,30 +33,32 @@ export default class ListSheetModel extends SheetModel {
   }
 
   public select (keys: string[] = this.getKeys(), count: number = this.getSheet().getMaxRows()): Array<{ [key: string]: any }> {
-    const range = this.getRange(2, 1, count, this.fields.length)
-    const metadata = range.getValues()
-    const results = []
-  
-    const validkeys = this.fields.map((filed) => {
+    const ids = this.fields.map((filed) => {
       if (-1 !== keys.indexOf(filed.id)) {
         return filed.id
       }
     })
 
-    for (let row = 0; row < metadata.length; row ++) {
-      const rowdata = metadata[row]
-      if (rowdata.filter((item) => item).length === 0) {
-        continue
+    const range = this.getRange(2, 1, count, this.fields.length)
+    const metadata = range.getValues()
+    const results = []
+
+    for (let i = 0; i < metadata.length; i ++) {
+      const row = metadata[i]
+      if (row.filter((item) => item).length === 0) {
+        break
       }
 
-      let data: { [key: string]: any } = {}
-      for (let col = 0; col < rowdata.length; col ++) {
-        const key = validkeys[col]
-        const value = rowdata[col]
+      const data: { [key: string]: any } = {}
+      for (let j = 0; j < row.length; j ++) {
+        const key = ids[j]
+        const value = row[j]
   
-        if (key && value) {
-          data[key] = value
+        if (!(key && value)) {
+          break
         }
+
+        data[key] = value
       }
   
       results.push(data)

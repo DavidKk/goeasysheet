@@ -1,8 +1,10 @@
+import * as GASTypings from '../typings.gas'
 export default class SheetModel {
-  public name: string
-  public fields: ModelFileds
 
-  constructor (name: string, fields: ModelFileds) {
+  public name: string
+  public fields: GASTypings.ModelFileds
+
+  constructor (name: string, fields: GASTypings.ModelFileds) {
     this.name = name
     this.fields = fields
   }

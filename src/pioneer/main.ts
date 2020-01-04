@@ -27,3 +27,7 @@ function onWeChatRobot () {
 function onDaily () {
   getApp().onDaily()
 }
+
+function onMinutely () {
+  getApp().onMinutely()
+}

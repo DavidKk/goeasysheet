@@ -12,6 +12,9 @@ export default class App {
   }
 
   public onDaily () {
-    this.robot.onDuty()
+  }
+
+  public onMinutely () {
+    this.robot.onMinutely()
   }
 }

@@ -1,8 +1,9 @@
 import SheetModel from './SheetModel'
 import { findIndex } from '../share/utils'
+import * as GASTypings from '../typings.gas'
 
 export default class KeyValueSheetModel extends SheetModel {
-  constructor (name: string, fields: ModelFileds) {
+  constructor (name: string, fields: GASTypings.ModelFileds) {
     super(name, fields)
 
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
