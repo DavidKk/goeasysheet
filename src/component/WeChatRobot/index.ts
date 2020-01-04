@@ -108,7 +108,8 @@ export default class WeChatRobot {
 
     needExecTasks.forEach((task) => {
       const { content } = task
-      this.sRobot.sendMessage(content)
+      const reason = this.sRobot.sendMessage(content)
+      reason !== true && Logger.log(reason)
     })
   }
 

@@ -1,4 +1,5 @@
 import { assign } from '../../../share/utils'
+import { ROBOT_SEND_URL } from '../constants/robot'
 import * as Typings from '../typings'
 
 export default class RobotService {
