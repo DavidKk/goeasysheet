@@ -16,7 +16,7 @@ function onOpen () {
   SpreadsheetApp.getUi()
   .createMenu('GoAsEasy')
   .addItem('微信机器人', 'onWeChatRobot')
-  .addItem('执行计划任务', 'onDaily')
+  .addItem('执行任务', 'onShedule')
   .addToUi()
 }
 
@@ -30,4 +30,9 @@ function onDaily () {
 
 function onMinutely () {
   getApp().onMinutely()
+}
+
+function onShedule () {
+  onDaily()
+  onMinutely()
 }

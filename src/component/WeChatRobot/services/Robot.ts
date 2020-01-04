@@ -25,10 +25,10 @@ export default class RobotService {
     }
   }
 
-  public sendMessage <T extends 'text'>(content: string | Get<Typings.RobotServiceSendMessageParams<'text'>, 'text'>, type?: 'text'): boolean | string
-  public sendMessage <T extends 'markdown'>(content: Get<Typings.RobotServiceSendMessageParams<'markdown'>, 'markdown'>, type?: 'markdown'): boolean | string
-  public sendMessage <T extends 'news'>(content: Get<Typings.RobotServiceSendMessageParams<'news'>, 'articles'>, type?: 'news'): boolean | string
-  public sendMessage (content: any, type: Typings.RobotServiceMessageType = 'text'): boolean | string {
+  public sendMessage <T extends 'text'>(content: string | Get<Typings.RobotServiceSendMessageParams<'text'>, 'text'>, type?: 'text'): true | string
+  public sendMessage <T extends 'markdown'>(content: Get<Typings.RobotServiceSendMessageParams<'markdown'>, 'markdown'>, type?: 'markdown'): true | string
+  public sendMessage <T extends 'news'>(content: Get<Typings.RobotServiceSendMessageParams<'news'>, 'articles'>, type?: 'news'): true | string
+  public sendMessage (content: any, type: Typings.RobotServiceMessageType = 'text'): true | string {
     const payload = this.resolveAraguments(content, type as any)
     const url = `${ROBOT_SEND_URL}?key=?key=${this.settings.apikey}`
     const params = {

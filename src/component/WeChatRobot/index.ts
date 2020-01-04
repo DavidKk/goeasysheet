@@ -109,7 +109,9 @@ export default class WeChatRobot {
     needExecTasks.forEach((task) => {
       const { content } = task
       const reason = this.sRobot.sendMessage(content)
-      reason !== true && Logger.log(reason)
+      if (reason !== true) {
+        MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
+      }
     })
   }
 
