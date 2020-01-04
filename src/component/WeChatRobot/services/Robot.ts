@@ -30,7 +30,7 @@ export default class RobotService {
   public sendMessage <T extends 'news'>(content: Get<Typings.RobotServiceSendMessageParams<'news'>, 'articles'>, type?: 'news'): true | string
   public sendMessage (content: any, type: Typings.RobotServiceMessageType = 'text'): true | string {
     const payload = this.resolveAraguments(content, type as any)
-    const url = `${ROBOT_SEND_URL}?key=?key=${this.settings.apikey}`
+    const url = `${ROBOT_SEND_URL}?key=${this.settings.apikey}`
     const params = {
       method: 'post',
       payload: payload
