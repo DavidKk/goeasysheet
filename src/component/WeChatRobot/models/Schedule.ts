@@ -84,7 +84,7 @@ export default class ScheduleModel extends ListSheetModel {
     }
 
     if (typeof datetime === 'string') {
-      const regexp = /((?:\d{2}:\d{2},?)+)(?:\/((?:(?:Weekday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?)+))/i
+      const regexp = /^((?:\d{2}:\d{2},?)+)(?:\/((?:(?:Weekday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?)+))?$/i
       const matched = regexp.exec(datetime)
 
       if (matched) {
@@ -99,7 +99,7 @@ export default class ScheduleModel extends ListSheetModel {
 
         const day = dayString.map((name: string) => Days.indexOf(name)).filter((index) => -1 !== index)
         const clock = times.split(',').map((time) => {
-          const [hours = '0', minutes = '0', seconds = '0'] = time.split(':')
+          const [hours, minutes, seconds] = time.split(':')
           return { hours: parseInt(hours), minutes: parseInt(minutes), seconds: parseInt(seconds) }
         })
   

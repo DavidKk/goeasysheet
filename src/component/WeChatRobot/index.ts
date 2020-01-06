@@ -106,13 +106,21 @@ export default class WeChatRobot {
       }
     })
 
+    const message = []
     needExecTasks.forEach((task) => {
       const { content } = task
+      if (message.indexOf(content) === -1) {
+        message.push(content)
+      }
+    })
+
+    if (message.length > 0) {
+      const content = message.join(';')
       const reason = this.sRobot.sendMessage(content)
       if (reason !== true) {
         MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
       }
-    })
+    }
   }
 
   public getMinutelyTrigger () {
