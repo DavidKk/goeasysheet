@@ -25,7 +25,7 @@ export const inEffectTimeRange = (hitHours: number, hitMinutes: number, hours: n
     return true
   }
 
-  if (hours < hitHours || hitHours === 0 && hours === 23) {
+  if (hours === hitHours - 1 || hitHours === 0 && hours === 23) {
     if (hitMinutes - minutely < 0 && minutes + minutely > 60) {
       return true
     }
