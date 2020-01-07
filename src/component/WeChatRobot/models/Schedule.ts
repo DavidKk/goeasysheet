@@ -90,7 +90,7 @@ export default class ScheduleModel extends ListSheetModel {
       if (matched) {
         const [, times, days] = matched
 
-        let dayString: Array<string> = days ? days.split(';').filter((v) => v) : []
+        let dayString: Array<string> = days ? days.split(',').filter((v) => v) : []
         if (dayString.length === 0) {
           dayString = [].concat(Days)
         } else if (-1 !== dayString.indexOf('Weekday')) {
