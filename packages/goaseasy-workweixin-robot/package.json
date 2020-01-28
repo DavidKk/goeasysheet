@@ -1,0 +1,12 @@
+{
+  "name": "goaseasy-workweixin-robot",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "dependencies": {
+    "goaseasy-core": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/google-apps-script": "1.0.7"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "goaseasy",
+  "version": "1.0.0",
+  "repository": "git@github.com:DavidKk/goaseasy.git",
+  "author": "DavidJones <qowera@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "lint-staged": "lint-staged",
+    "develop": "cross-env NODE_ENV=\"production\" TS_NODE_PROJECT=\"build/tsconfig.json\" webpack --config ./build/webpack.gs.config.ts --watch",
+    "product": "cross-env NODE_ENV=\"production\" TS_NODE_PROJECT=\"build/tsconfig.json\" webpack --config ./build/webpack.gs.config.ts",
+    "start": "npm run develop"
+  },
+  "peerDependencies": {
+    "clasp": "2.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.7.7",
+    "@types/clean-webpack-plugin": "^0.1.3",
+    "@types/copy-webpack-plugin": "^5.0.0",
+    "@types/google-apps-script": "^1.0.7",
+    "@types/uglifyjs-webpack-plugin": "^1.1.0",
+    "@types/webpack": "^4.41.0",
+    "autoprefixer": "^9.7.3",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "cross-env": "^6.0.3",
+    "css-loader": "^3.4.0",
+    "extract-loader": "^3.1.0",
+    "file-loader": "^5.0.2",
+    "html-loader": "^0.5.5",
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
+    "node-sass": "^4.13.0",
+    "postcss-loader": "^3.0.0",
+    "sass-loader": "^8.0.0",
+    "ts-loader": "^6.2.1",
+    "ts-node": "^8.5.4",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "typescript": "^3.7.4",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "url-loader": "^3.0.0",
+    "webpack": "^4.41.4",
+    "webpack-cli": "^3.3.10"
+  }
+}
