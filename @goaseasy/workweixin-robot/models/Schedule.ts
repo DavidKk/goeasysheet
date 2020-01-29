@@ -8,7 +8,7 @@ import * as Typings from '../types/schedule'
 
 export default class ScheduleModel extends ListSheetModel {
   constructor () {
-    super('计划任务', [
+    super('企业微信机器人', [
       {
         id: 'task',
         name: '任务名称'
