@@ -9,32 +9,25 @@ import RobotServ from './services/Robot'
 
 @useMenu('微信机器人')
 export default class WorkWeixinRobot extends Extension {
-  // 运行一次间隔时间
-  protected perMinutes: number
   protected mSchedule: ScheduleModel
-  protected mSetting: SettingModel
   protected sRobot: RobotServ
 
   constructor () {
     super()
 
-    this.perMinutes = 5
     this.mSchedule = new ScheduleModel()
-    this.mSetting = new SettingModel()
     this.sRobot = new RobotServ()
   }
 
   @useMenu('安装')
   public setup (): void {
     this.mSchedule.create()
-    this.mSetting.create()
     this.registerTriggers()
   }
 
   @useMenu('卸载')
   public destroy (): void {
     this.mSchedule.destroy()
-    this.mSetting.destroy()
     this.unregisterTriggers()
   }
 
@@ -48,25 +41,18 @@ export default class WorkWeixinRobot extends Extension {
     const minutes = now.getMinutes()
     const day = now.getDay()
 
-    // const apikey = this.mSetting.get('apikey')
-    // if (!apikey) {
-    //   return
-    // }
-
     const tasks = this.mSchedule.fetchTasks()
     if (tasks.length === 0) {
       return
     }
 
-    // this.sRobot.configure({ apikey })
-
     const needExecTasks = tasks.filter((task) => {
-      const { daytime } = task
+      const { daytime, apikey, minutes: perMinutes } = task
       if (daytime instanceof Date) {
         return daytime.getFullYear() === year
           && daytime.getMonth() === month
           && daytime.getDate() === date
-          && inEffectTimeRange(daytime.getHours(), daytime.getMinutes(), hours, minutes, this.perMinutes)
+          && inEffectTimeRange(daytime.getHours(), daytime.getMinutes(), hours, minutes, perMinutes)
       }
 
       const { day: days, clock: clocks } = daytime
@@ -77,31 +63,41 @@ export default class WorkWeixinRobot extends Extension {
       for (let i = 0; i < clocks.length; i ++) {
         const clock = clocks[i]
         if (clock instanceof Date) {
-          if (inEffectTimeRange(clock.getHours(), clock.getMinutes(), hours, minutes, this.perMinutes)) {
+          if (inEffectTimeRange(clock.getHours(), clock.getMinutes(), hours, minutes, perMinutes)) {
             return true
           }
         } else {
-          if (inEffectTimeRange(clock.hours, clock.minutes, hours, minutes, this.perMinutes)) {
+          if (inEffectTimeRange(clock.hours, clock.minutes, hours, minutes, perMinutes)) {
             return true
           }
         }
       }
     })
 
-    const message = []
+    const sender: { [key: string]: string[] } = {}
     needExecTasks.forEach((task) => {
-      const { content } = task
-      if (message.indexOf(content) === -1) {
-        message.push(content)
+      const { content, apikey } = task
+      if (!Array.isArray(sender[apikey])) {
+        sender[apikey] = []
+      }
+
+      const messages = sender[apikey]
+      if (messages.indexOf(content) === -1) {
+        messages.push(content)
       }
     })
 
-    if (message.length > 0) {
-      const content = message.join(';')
-      const reason = this.sRobot.sendMessage(content)
-      if (reason !== true) {
-        MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
+    Object.keys(sender).forEach((apikey) => {
+      const messages = sender[apikey]
+
+      if (messages.length > 0) {
+        const content = messages.join(';')
+        const reason = this.sRobot.sendMessage(content, 'text', { apikey })
+
+        if (reason !== true) {
+          MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
+        }
       }
-    }
+    })
   }
 }
