@@ -7,25 +7,19 @@ export default function useMenu (name: string) {
         const target: { [key: string]: any } = args[0]
         const descriptor: PropertyDescriptor = args[2]
 
-        !Array.isArray(target.$menu) && Object.defineProperty(target, '$menu', { writable: false, value: [] })
+        !Array.isArray(target.$menu) && Object.defineProperty(target, '$menu', { writable: true, value: [] })
         target.$menu.push({ name, action: descriptor.value })
         break
       }
 
       case 1: {
         const Constructor: { new(...args: any[]): any } = args[0]
-        const menus = Constructor.prototype.$menu
+        const submenu = Constructor.prototype.$menu
 
-        !Array.isArray(Global.Menus) && Object.defineProperty(Global, 'Menus', { writable: false, value: [] })
+        !Array.isArray(submenu) && Object.defineProperty(Constructor.prototype, '$menu', { writable: true, value: [] })
+        Constructor.prototype.$menu.push({ name, submenu })
 
-        return class MenuWrapper extends Constructor {
-          constructor (...args: any[]) {
-            super(...args)
-
-            const submenu = Array.isArray(menus) ? menus.map(({ name, action }) => ({ name, action: (...args: any[]) => action.apply(this, args) })) : []
-            Global.Menus.push({ name, submenu })
-          }
-        }
+        return Constructor
       }
     }
   }

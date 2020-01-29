@@ -2,7 +2,6 @@ import ListSheetModel from 'goaseasy-core/libs/ListSheetModel'
 import { parseGMTHours, parseGMTSeconds } from 'goaseasy-core/utils/datetime'
 import { sub, mul } from 'goaseasy-core/utils/math'
 import { Days } from '../constants/day'
-import * as Typings from '../typings'
 
 export default class ScheduleModel extends ListSheetModel {
   constructor () {
@@ -26,13 +25,13 @@ export default class ScheduleModel extends ListSheetModel {
     ])
   }
 
-  public fetchTasks (): Typings.ScheduleTask[] {
+  public fetchTasks (): WorkWeixinRobot.Schedule.Task[] {
     const rows = this.select()
     if (rows.length === 0) {
       return []
     }
 
-    const tasks: Typings.ScheduleTask[] = []
+    const tasks: WorkWeixinRobot.Schedule.Task[] = []
     for (let i = 0; i < rows.length; i ++) {
       const item = rows[i]
       const { task: sheetName, content: contentA1N, datetime: datetimeA1N } = item
@@ -66,7 +65,7 @@ export default class ScheduleModel extends ListSheetModel {
     return tasks
   }
 
-  protected convertDayTime (datetime: Date | string): Typings.ScheduleDayTime {
+  protected convertDayTime (datetime: Date | string): WorkWeixinRobot.Schedule.DayTime {
     if (datetime instanceof Date) {
       const day = []
 
@@ -108,7 +107,7 @@ export default class ScheduleModel extends ListSheetModel {
     }
   }
 
-  protected convertTime (datetime: Date): Typings.Clock {
+  protected convertTime (datetime: Date): WorkWeixinRobot.Schedule.Clock {
     const seconds = parseGMTSeconds(datetime)
     const floatHours = parseGMTHours(datetime)
     const hours = Math.floor(floatHours)

@@ -1,23 +1,26 @@
-import { useMenu } from 'goaseasy-core'
+import useMenu from 'goaseasy-core/decorators/menu'
+import Extension from 'goaseasy-core/libs/Extension'
 // import { MinutelyTrigger } from 'goaseasy-core/decorators/trigger'
+// import { inEffectTimeRange } from 'goaseasy-core/utils/datetime'
 import ScheduleModel from './models/Schedule'
 import SettingModel from './models/Setting'
-// import RobotServ from './services/Robot'
-// import { inEffectTimeRange } from 'goaseasy-core/utils/datetime'
+import RobotServ from './services/Robot'
 
 @useMenu('微信机器人')
-export default class WorkWeixinRobot {
+export default class WorkWeixinRobot extends Extension {
   // 运行一次间隔时间
   protected perMinutes: number
   protected mSchedule: ScheduleModel
   protected mSetting: SettingModel
-  // protected sRobot: RobotServ
+  protected sRobot: RobotServ
 
   constructor () {
+    super()
+
     this.perMinutes = 5
     this.mSchedule = new ScheduleModel()
     this.mSetting = new SettingModel()
-    // this.sRobot = new RobotServ()
+    this.sRobot = new RobotServ()
   }
 
   @useMenu('启动')
