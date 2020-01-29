@@ -4,7 +4,6 @@ import {
   inEffectTimeRange
 } from '@goaseasy/core'
 import ScheduleModel from './models/Schedule'
-import SettingModel from './models/Setting'
 import RobotServ from './services/Robot'
 
 @useMenu('微信机器人')
