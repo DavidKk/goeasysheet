@@ -12,6 +12,7 @@ export interface DayTime {
 export interface Task {
   content: string
   daytime: DayTime | Date
+  type: 'daily' | 'minutely'
+  intervals: number
   apikey: string
-  minutes: number
 }

@@ -1,8 +1,8 @@
 {
   "name": "@goaseasy/workweixin-robot",
   "version": "1.0.0",
-  "main": "libs/index.js",
-  "types": "libs/index.d.ts",
+  "main": "index.ts",
+  "types": "index.d.ts",
   "contributors": [
     {
       "name": "DavidJones",
@@ -12,10 +12,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "lint": "eslint --ext .ts ./src --fix",
-    "develop": "rimraf ./libs && tsc --project ./src --outDir ./libs --declaration --watch",
-    "product": "rimraf ./libs && tsc --project ./src --outDir ./libs --declaration",
-    "start": "npm run develop"
+    "lint": "eslint --ext .ts ./ --fix"
   },
   "dependencies": {
     "@goaseasy/core": "^1.0.0"
@@ -23,7 +20,6 @@
   "devDependencies": {
     "@types/goaseasy": "^1.0.0",
     "@types/google-apps-script": "1.0.7",
-    "typescript": "^3.7.4",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
     "eslint": "^6.8.0",

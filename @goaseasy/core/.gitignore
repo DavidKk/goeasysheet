@@ -1,7 +1,3 @@
-# Dest resouces
-/libs
-
-
 # Npm or Yarn
 node_modules
 npm-debug.log

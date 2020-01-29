@@ -5,7 +5,7 @@ import {
 } from '@goaseasy/core'
 import { Days } from '../constants/day'
 import * as Typings from '../types/schedule'
-// 924fa3b7-4b9f-4f92-8cb4-0391b45d3949
+import { Get } from '../types/utils'
 
 export default class ScheduleModel extends ListSheetModel {
   constructor () {
@@ -27,13 +27,17 @@ export default class ScheduleModel extends ListSheetModel {
         name: '机器人API_KEY'
       },
       {
-        id: 'minutes',
-        name: '触发器触发时间(分)'
+        id: 'type',
+        name: '触发类型'
+      },
+      {
+        id: 'intervals',
+        name: '触发器触发时间'
       },
     ])
   }
 
-  public fetchTasks (): Typings.Task[] {
+  public fetchTasks (type?: Get<Typings.Task, 'type'>): Typings.Task[] {
     const rows = this.select()
     if (rows.length === 0) {
       return []
@@ -46,10 +50,16 @@ export default class ScheduleModel extends ListSheetModel {
         task: sheetName,
         content: contentA1N,
         datetime: datetimeA1N,
-        apikey,
-        minutes
+        type: triggerType,
+        intervals,
+        apikey
       } = item
-      if (!sheetName && !contentA1N && !datetimeA1N) {
+
+      if (type && triggerType !== type) {
+        break
+      }
+
+      if (!(sheetName && contentA1N && datetimeA1N && type && intervals && apikey)) {
         break
       }
 
@@ -72,7 +82,7 @@ export default class ScheduleModel extends ListSheetModel {
           continue
         }
 
-        tasks.push({ content, daytime, apikey, minutes })
+        tasks.push({ content, daytime, type, intervals, apikey })
       }
     }
 

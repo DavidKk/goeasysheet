@@ -40,13 +40,17 @@ export default class WorkWeixinRobot extends Extension {
     const minutes = now.getMinutes()
     const day = now.getDay()
 
-    const tasks = this.mSchedule.fetchTasks()
+    const tasks = this.mSchedule.fetchTasks('minutely')
     if (tasks.length === 0) {
       return
     }
 
     const needExecTasks = tasks.filter((task) => {
-      const { daytime, apikey, minutes: perMinutes } = task
+      const { type, daytime, intervals: perMinutes } = task
+      if (type !== 'minutely') {
+        return false
+      }
+
       if (daytime instanceof Date) {
         return daytime.getFullYear() === year
           && daytime.getMonth() === month
