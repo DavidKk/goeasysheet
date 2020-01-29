@@ -21,6 +21,7 @@
     "@goaseasy/workweixin-robot": "^1.0.0"
   },
   "devDependencies": {
+    "@types/goaseasy": "^1.0.0",
     "@types/google-apps-script": "1.0.7",
     "@babel/core": "^7.7.7",
     "@types/clean-webpack-plugin": "^0.1.3",

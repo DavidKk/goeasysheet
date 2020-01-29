@@ -9,6 +9,7 @@ function onInstall (): void {
 }
 
 function onOpen (): void {
+
 }
 
 function onDaily (): void {

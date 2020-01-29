@@ -4,27 +4,20 @@ declare namespace Goaseasy {
     action?: Function
     submenu?: Menu[]
   }
-
+  
   interface Trigger {
-    type: string
+    type: 'daily' | 'minutely'
     action: Function
     payload?: { [key: string]: any }
   }
-
+  
   type Extension = { new(...args: any[]): any }
-
-  interface ModelFiled {
-    id: string
-    name: string
-  }
-
-  type ModelFileds = ModelFiled[]
 }
 
 declare const Global: typeof globalThis & {
-  Menus: Menu[]
-  Triggers: Trigger[]
-  Extensions: Extension[]
+  Menus: any[]
+  Triggers: any[]
+  Extensions: any[]
 }
 
 // eslint-disable-next-line @typescript-eslint/camelcase

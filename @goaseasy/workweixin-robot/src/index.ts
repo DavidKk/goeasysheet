@@ -28,14 +28,14 @@ export default class WorkWeixinRobot extends Extension {
   public setup (): void {
     this.mSchedule.create()
     this.mSetting.create()
-    this.createTrigger()
+    this.registerTriggers()
   }
 
   @useMenu('卸载')
   public destroy (): void {
     this.mSchedule.destroy()
     this.mSetting.destroy()
-    this.destroyTrigger()
+    this.unregisterTriggers()
   }
 
   @useTrigger('minutely')
@@ -48,17 +48,17 @@ export default class WorkWeixinRobot extends Extension {
     const minutes = now.getMinutes()
     const day = now.getDay()
 
-    const apikey = this.mSetting.get('apikey')
-    if (!apikey) {
-      return
-    }
+    // const apikey = this.mSetting.get('apikey')
+    // if (!apikey) {
+    //   return
+    // }
 
     const tasks = this.mSchedule.fetchTasks()
     if (tasks.length === 0) {
       return
     }
 
-    this.sRobot.configure({ apikey })
+    // this.sRobot.configure({ apikey })
 
     const needExecTasks = tasks.filter((task) => {
       const { daytime } = task
@@ -103,36 +103,5 @@ export default class WorkWeixinRobot extends Extension {
         MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
       }
     }
-  }
-
-  protected createTrigger (): void {
-    if (!this.existsMinutelyTrigger()) {
-      ScriptApp.newTrigger('onMinutely')
-      .timeBased().everyMinutes(this.perMinutes)
-      .create()
-    }
-  }
-
-  protected destroyTrigger (): void {
-    const minutelyTriggers = this.getMinutelyTrigger()
-    minutelyTriggers.forEach((trigger) => ScriptApp.deleteTrigger(trigger))
-  }
-
-  protected getMinutelyTrigger (): GoogleAppsScript.Script.Trigger[] {
-    const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-    const triggers = ScriptApp.getUserTriggers(spreadsheet)
-    const minutelyTriggers = triggers.filter((trigger) => {
-      const isClockEvent = trigger.getEventType() === ScriptApp.EventType.CLOCK
-      const isOnMinutelyEvent = trigger.getHandlerFunction() === 'onMinutely'
-
-      trigger.getTriggerSource()
-      return isClockEvent && isOnMinutelyEvent
-    })
-
-    return minutelyTriggers
-  }
-
-  protected existsMinutelyTrigger (): boolean {
-    return this.getMinutelyTrigger().length > 0
   }
 }

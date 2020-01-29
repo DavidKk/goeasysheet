@@ -4,6 +4,8 @@ import {
   sub, mul,
 } from '@goaseasy/core'
 import { Days } from '../constants/day'
+import * as Typings from '../types/schedule'
+// 924fa3b7-4b9f-4f92-8cb4-0391b45d3949
 
 export default class ScheduleModel extends ListSheetModel {
   constructor () {
@@ -21,22 +23,32 @@ export default class ScheduleModel extends ListSheetModel {
         name: '执行时间'
       },
       {
-        id: 'status',
-        name: '任务状态'
-      }
+        id: 'apikey',
+        name: '机器人API_KEY'
+      },
+      {
+        id: 'minutes',
+        name: '触发器触发时间(分)'
+      },
     ])
   }
 
-  public fetchTasks (): WorkWeixinRobot.Schedule.Task[] {
+  public fetchTasks (): Typings.Task[] {
     const rows = this.select()
     if (rows.length === 0) {
       return []
     }
 
-    const tasks: WorkWeixinRobot.Schedule.Task[] = []
+    const tasks: Typings.Task[] = []
     for (let i = 0; i < rows.length; i ++) {
       const item = rows[i]
-      const { task: sheetName, content: contentA1N, datetime: datetimeA1N } = item
+      const {
+        task: sheetName,
+        content: contentA1N,
+        datetime: datetimeA1N,
+        apikey,
+        minutes
+      } = item
       if (!sheetName && !contentA1N && !datetimeA1N) {
         break
       }
@@ -60,14 +72,14 @@ export default class ScheduleModel extends ListSheetModel {
           continue
         }
 
-        tasks.push({ content, daytime })
+        tasks.push({ content, daytime, apikey, minutes })
       }
     }
 
     return tasks
   }
 
-  protected convertDayTime (datetime: Date | string): WorkWeixinRobot.Schedule.DayTime {
+  protected convertDayTime (datetime: Date | string): Typings.DayTime {
     if (datetime instanceof Date) {
       const day = []
 
@@ -109,7 +121,7 @@ export default class ScheduleModel extends ListSheetModel {
     }
   }
 
-  protected convertTime (datetime: Date): WorkWeixinRobot.Schedule.Clock {
+  protected convertTime (datetime: Date): Typings.Clock {
     const seconds = parseGMTSeconds(datetime)
     const floatHours = parseGMTHours(datetime)
     const hours = Math.floor(floatHours)

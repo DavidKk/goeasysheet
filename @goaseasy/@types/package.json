@@ -1,0 +1,13 @@
+{
+  "name": "@types/goaseasy",
+  "version": "1.0.0",
+  "types": "typings.d.ts",
+  "contributors": [
+    {
+      "name": "DavidJones",
+      "email": "qowera@gmail.com",
+      "url": "https://github.com/DavidKk"
+    }
+  ],
+  "license": "MIT"
+}

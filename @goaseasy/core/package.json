@@ -13,15 +13,17 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint --ext .ts ./src --fix",
-    "develop": "tsc --project ./src --outDir ./libs --declaration --watch",
-    "product": "tsc --project ./src --outDir ./libs --declaration",
+    "develop": "rimraf ./libs && tsc --project ./src --outDir ./libs --declaration --watch",
+    "product": "rimraf ./libs && tsc --project ./src --outDir ./libs --declaration",
     "start": "npm run develop"
   },
   "devDependencies": {
+    "@types/goaseasy": "^1.0.0",
     "@types/google-apps-script": "1.0.7",
     "typescript": "^3.7.4",
     "@typescript-eslint/eslint-plugin": "^2.16.0",
     "@typescript-eslint/parser": "^2.16.0",
-    "eslint": "^6.8.0"
+    "eslint": "^6.8.0",
+    "rimraf": "^2.6.2"
   }
 }

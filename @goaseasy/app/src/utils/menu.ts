@@ -7,7 +7,7 @@ export function createMenus (menus: Goaseasy.Menu[] = Global.Menus || [], uiMenu
       uiMenu.addSubMenu(createMenus(menu.submenu, uiSubmenu))
 
     } else if (typeof menu.action === 'function') {
-      const alias = `__MENU_ACTION_${(++ GlobalMenuActionId).toString(32)}`
+      const alias = `__MENU_ACTION_${(++ GlobalMenuActionId).toString(32)}__`
       uiMenu.addItem(menu.name, alias)
       Global[alias] = menu.action
     }

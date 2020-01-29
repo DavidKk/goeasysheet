@@ -1,8 +1,10 @@
+import * as Typings from '../typings'
+
 export default class SheetModel {
   public name: string
-  public fields: Goaseasy.ModelFileds
+  public fields: Typings.ModelFileds
 
-  constructor (name: string, fields: Goaseasy.ModelFileds) {
+  constructor (name: string, fields: Typings.ModelFileds) {
     this.name = name
     this.fields = fields
   }

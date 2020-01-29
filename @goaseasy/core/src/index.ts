@@ -22,3 +22,4 @@ export {
   div
 } from './utils/math'
 export { assign } from './utils/object'
+export { pascalCase } from './utils/string'
