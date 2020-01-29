@@ -23,7 +23,7 @@ export default class ScheduleModel extends ListSheetModel {
       },
       {
         id: 'apikey',
-        name: '机器人API_KEY'
+        name: 'API_KEY'
       },
       {
         id: 'type',
