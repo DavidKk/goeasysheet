@@ -10,6 +10,7 @@
   ],
   "license": "MIT",
   "scripts": {
+    "login": "clasp login --creds creds.json",
     "lint": "eslint --ext .ts ./src --fix",
     "develop": "cross-env NODE_ENV=\"production\" TS_NODE_PROJECT=\"build/tsconfig.json\" webpack --config ./build/webpack.gs.config.ts --watch",
     "product": "cross-env NODE_ENV=\"production\" TS_NODE_PROJECT=\"build/tsconfig.json\" webpack --config ./build/webpack.gs.config.ts",
