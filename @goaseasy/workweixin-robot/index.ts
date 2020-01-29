@@ -31,7 +31,7 @@ export default class WorkWeixinRobot extends Extension {
   }
 
   @useTrigger('minutely')
-  public report (): void {
+  public minutelyReport (): void {
     const now = new Date()
     const year = now.getFullYear()
     const month = now.getMonth()

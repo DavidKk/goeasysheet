@@ -1,9 +1,8 @@
 import { pascalCase } from '../utils/string'
-import * as Typings from '../typings'
 
 export default class Extension {
-  protected $menu: Typings.Menu[]
-  protected $trigger: Typings.Trigger[]
+  protected $menu: Goaseasy.Menu[]
+  protected $trigger: Goaseasy.Trigger[]
 
   protected get triggerTypes (): string[] {
     if (!(Array.isArray(this.$trigger) && this.$trigger.length > 0)) {
@@ -55,8 +54,8 @@ export default class Extension {
     Global.Triggers.push(...triggers)
   }
 
-  private bindMenu (menus: Typings.Menu[] = this.$menu): Typings.Menu[] {
-    return menus.map((menu: Typings.Menu) => {
+  private bindMenu (menus: Goaseasy.Menu[] = this.$menu): Goaseasy.Menu[] {
+    return menus.map((menu: Goaseasy.Menu) => {
       const name = menu.name
       const action = typeof menu.action === 'function' ? (...args: any[]) => menu.action.apply(this, args) : undefined
       const submenu = Array.isArray(menu.submenu) ? this.bindMenu(menu.submenu) : undefined

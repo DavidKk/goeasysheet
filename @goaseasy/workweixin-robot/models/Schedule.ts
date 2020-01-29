@@ -5,7 +5,6 @@ import {
 } from '@goaseasy/core'
 import { Days } from '../constants/day'
 import * as Typings from '../types/schedule'
-import { Get } from '../types/utils'
 
 export default class ScheduleModel extends ListSheetModel {
   constructor () {

@@ -1,6 +1,5 @@
 import { assign } from '@goaseasy/core'
 import { ROBOT_SEND_URL } from '../constants/robot'
-import { Get } from '../types/utils'
 import * as Typings from '../types/robot'
 
 export default class RobotService {
@@ -31,8 +30,13 @@ export default class RobotService {
   public sendMessage <T extends 'news'>(content: Get<Typings.SendMessageParams<'news'>, 'articles'>, type?: 'news', options?: Partial<Typings.Settings>): true | string
   public sendMessage (content: any, type: Typings.MessageType = 'text', options: Partial<Typings.Settings> = {}): true | string {
     const settings: Typings.Settings = assign({}, this.settings, options)
+    const { apikey } = settings
+    if (!apikey) {
+      return `API_KEY 缺失`
+    }
+
     const payload = this.resolveAraguments(content, type as any)
-    const url = `${ROBOT_SEND_URL}?key=${settings.apikey}`
+    const url = `${ROBOT_SEND_URL}?key=${apikey}`
     const params = {
       method : 'post',
       contentType : 'application/json',

@@ -12,7 +12,7 @@ export interface DayTime {
 export interface Task {
   content: string
   daytime: DayTime | Date
-  type: 'daily' | 'minutely'
+  type: Get<Goaseasy.Trigger, 'type'>
   intervals: number
   apikey: string
 }

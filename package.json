@@ -20,7 +20,8 @@
     "commit": "git-cz",
     "lint": "lerna run lint --concurrency 1 --stream",
     "login": "lerna run login --scope=@goaseasy/app",
-    "develop": "lerna run start --scope=@goaseasy/app --stream",
+    "develop": "lerna run develop --scope=@goaseasy/app --stream",
+    "product": "lerna run product --scope=@goaseasy/app --stream",
     "start": "npm run develop"
   },
   "devDependencies": {

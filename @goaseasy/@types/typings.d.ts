@@ -1,3 +1,5 @@
+declare type Get<B extends { [key: string]: any }, T extends string> = B[T]
+
 declare namespace Goaseasy {
   interface Menu {
     name: string
@@ -12,6 +14,13 @@ declare namespace Goaseasy {
   }
   
   type Extension = { new(...args: any[]): any }
+
+  interface ModelFiled {
+    id: string
+    name: string
+  }
+  
+  type ModelFileds = ModelFiled[]
 }
 
 declare const Global: typeof globalThis & {
