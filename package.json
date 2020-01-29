@@ -1,5 +1,14 @@
 {
   "name": "goaseasy",
+  "version": "1.0.0",
+  "repository": "git@github.com:DavidKk/goaseasy.git",
+  "contributors": [
+    {
+      "name": "DavidJones",
+      "email": "qowera@gmail.com",
+      "url": "https://github.com/DavidKk"
+    }
+  ],
   "license": "MIT",
   "husky": {
     "hooks": {

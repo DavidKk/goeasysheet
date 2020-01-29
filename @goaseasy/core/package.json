@@ -3,6 +3,13 @@
   "version": "1.0.0",
   "main": "libs/index.js",
   "types": "libs/index.d.ts",
+  "contributors": [
+    {
+      "name": "DavidJones",
+      "email": "qowera@gmail.com",
+      "url": "https://github.com/DavidKk"
+    }
+  ],
   "license": "MIT",
   "scripts": {
     "lint": "eslint --ext .ts ./src --fix",

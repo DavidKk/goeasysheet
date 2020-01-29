@@ -1,7 +1,13 @@
 {
   "name": "@goaseasy/app",
   "version": "1.0.0",
-  "main": "index.js",
+  "contributors": [
+    {
+      "name": "DavidJones",
+      "email": "qowera@gmail.com",
+      "url": "https://github.com/DavidKk"
+    }
+  ],
   "license": "MIT",
   "scripts": {
     "lint": "eslint --ext .ts ./src --fix",
