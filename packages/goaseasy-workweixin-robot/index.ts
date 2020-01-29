@@ -1,7 +1,7 @@
 import { useMenu } from 'goaseasy-core'
 // import { MinutelyTrigger } from 'goaseasy-core/decorators/trigger'
-// import ScheduleModel from './models/Schedule'
-// import SettingModel from './models/Setting'
+import ScheduleModel from './models/Schedule'
+import SettingModel from './models/Setting'
 // import RobotServ from './services/Robot'
 // import { inEffectTimeRange } from 'goaseasy-core/utils/datetime'
 
@@ -9,14 +9,14 @@ import { useMenu } from 'goaseasy-core'
 export default class WorkWeixinRobot {
   // 运行一次间隔时间
   protected perMinutes: number
-  // protected mSchedule: ScheduleModel
-  // protected mSetting: SettingModel
+  protected mSchedule: ScheduleModel
+  protected mSetting: SettingModel
   // protected sRobot: RobotServ
 
   constructor () {
     this.perMinutes = 5
-    // this.mSchedule = new ScheduleModel()
-    // this.mSetting = new SettingModel()
+    this.mSchedule = new ScheduleModel()
+    this.mSetting = new SettingModel()
     // this.sRobot = new RobotServ()
   }
 
