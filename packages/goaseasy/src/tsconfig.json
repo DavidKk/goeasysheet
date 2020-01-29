@@ -7,6 +7,9 @@
     "experimentalDecorators": true,
     "sourceMap": true
   },
+  "files": [
+    "../node_modules/goaseasy-core/typings.d.ts"
+  ],
   "include": [
     "**/*.ts",
     "**/*.d.ts"
