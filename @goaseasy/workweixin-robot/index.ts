@@ -95,16 +95,9 @@ export default class WorkWeixinRobot extends Extension {
     senders.forEach((sender) => {
       const { apikey, messages } = sender
       if (Array.isArray(messages) && messages.length > 0) {
-        const content = messages.map(({ template, contents }) => {
-          return template ? renderTemplate(contents, template) : contents.join(',')
-        })
-
-        Logger.log(content.join('\n'))
-        // const reason = this.sRobot.sendMessage(content, 'text', { apikey })
-
-        // if (reason !== true) {
-        //   MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
-        // }
+        const content = messages.map(({ template, contents }) => template ? renderTemplate(contents, template) : contents.join(','))
+        const reason = this.sRobot.sendMessage(content.join('\n'), 'text', { apikey })
+        reason !== true && MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
       }
     })
   }
