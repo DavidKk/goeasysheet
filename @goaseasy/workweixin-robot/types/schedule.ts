@@ -1,5 +1,6 @@
 export interface ScheduleDate {
   year?: number
+  // 一月为1, 而非0
   month: number
   date: number
 }

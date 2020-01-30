@@ -35,7 +35,7 @@ export default class ScheduleModel extends ListSheetModel {
       {
         id: 'template',
         name: '消息模板',
-        comment: '发送消息模板, 可通过变量替换数据, 例如: 内容为 ${content}'
+        comment: '发送消息模板, 可通过变量替换数据, 例如: <echo>列表:</echo><each this><echo>- {this}\n</echo></each>'
       }
     ])
   }
@@ -113,7 +113,7 @@ export default class ScheduleModel extends ListSheetModel {
       }
 
       const year = datetime.getFullYear()
-      const month = datetime.getMonth()
+      const month = datetime.getMonth() + 1
       const date = datetime.getDate()
       dates.push({ year, month, date })
 
@@ -128,9 +128,9 @@ export default class ScheduleModel extends ListSheetModel {
         const matched = regexp.exec(date)
 
         if (matched) {
-          const year = parseInt(matched[0], 10)
-          const month = parseInt(matched[1], 10)
-          const date = parseInt(matched[2], 10)
+          const year = parseInt(matched[1], 10)
+          const month = parseInt(matched[2], 10)
+          const date = parseInt(matched[3], 10)
           dates.push({ year, month, date })
         }
       })

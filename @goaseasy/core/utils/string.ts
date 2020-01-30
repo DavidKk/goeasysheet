@@ -1,3 +1,28 @@
+import { find } from './array'
+
+const escapeChars = [
+  {
+    value: '\n',
+    escape: '\\n'
+  },
+  {
+    value: '\b',
+    escape: '\\b'
+  },
+  {
+    value: '\s',
+    escape: '\\s'
+  },
+  {
+    value: '\t',
+    escape: '\\t'
+  },
+  {
+    value: '\r',
+    escape: '\\r'
+  }
+]
+
 export function pascalCase (content: string): string {
   return `${content}`
     .replace(/[-_]+/g, ' ')
@@ -29,4 +54,18 @@ export function repeat (content: string, repeatNo: number): string {
   }
 
   return result
+}
+
+export function escape (content: string): string {
+  return content.replace(/(\n|\s|\t|\r)/ig, (value) => {
+    const item = find(escapeChars, { value })
+    return item ? item.escape : content
+  })
+}
+
+export function pursue (content: string): string {
+  return content.replace(/(\\n|\\s|\\t|\\r)/g, (escape) => {
+    const item = find(escapeChars, { escape })
+    return item ? item.value : content
+  })
 }

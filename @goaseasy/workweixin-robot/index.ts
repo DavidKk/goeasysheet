@@ -6,6 +6,7 @@ import { render as renderTemplate } from '@goaseasy/core/utils/template'
 import ScheduleModel from './models/Schedule'
 import RobotServ from './services/Robot'
 import * as ScheduleTypings from './types/schedule'
+import { find } from '@goaseasy/core/utils/array'
 
 @useMenu('微信机器人')
 export default class WorkWeixinRobot extends Extension {
@@ -54,36 +55,56 @@ export default class WorkWeixinRobot extends Extension {
   }
 
   public sendMessage <T extends ScheduleTypings.ScheduleType>(tasks: Array<ScheduleTypings.Schedule<T>>): void {
-    const sender: { [key: string]: string[] } = {}
-    const templates: { [key: string]: string } = {}
+    interface Message {
+      template: string
+      contents: string[]
+    }
 
+    interface Sender {
+      apikey: string
+      messages: Message[]
+    }
+
+    const senders: Sender[] = []
     tasks.forEach((task) => {
-      const { content, apikey, template } = task
-      if (!templates[apikey]) {
-        templates[apikey] = template
+      const { apikey, template, content } = task
+
+      let sender: Sender = find(senders, { apikey })
+      if (!sender) {
+        sender = { apikey, messages: [] }
+        senders.push(sender)
       }
 
-      if (!Array.isArray(sender[apikey])) {
-        sender[apikey] = []
+      if (!Array.isArray(sender.messages)) {
+        sender.messages = []
       }
 
-      const messages = sender[apikey]
-      if (messages.indexOf(content) === -1) {
-        messages.push(content)
+      let message: Message = find(sender.messages, { template })
+      if (!message) {
+        message = { template, contents: [] }
+        sender.messages.push(message)
       }
+
+      if (!Array.isArray(message.contents)) {
+        message.contents = []
+      }
+
+      message.contents.push(content)
     })
 
-    Object.keys(sender).forEach((apikey) => {
-      const messages = sender[apikey]
-      const template = templates[apikey]
+    senders.forEach((sender) => {
+      const { apikey, messages } = sender
+      if (Array.isArray(messages) && messages.length > 0) {
+        const content = messages.map(({ template, contents }) => {
+          return template ? renderTemplate(contents, template) : contents.join(',')
+        })
 
-      if (messages.length > 0) {
-        const content = template ? renderTemplate(messages, template) : messages.join(',')
-        const reason = this.sRobot.sendMessage(content, 'text', { apikey })
-  
-        if (reason !== true) {
-          MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
-        }
+        Logger.log(content.join('\n'))
+        // const reason = this.sRobot.sendMessage(content, 'text', { apikey })
+
+        // if (reason !== true) {
+        //   MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
+        // }
       }
     })
   }
@@ -101,7 +122,7 @@ export default class WorkWeixinRobot extends Extension {
 
     const now = new Date()
     const year = now.getFullYear()
-    const month = now.getMonth()
+    const month = now.getMonth() + 1
     const date = now.getDate()
     const hours = now.getHours()
     const minutes = now.getMinutes()
@@ -148,7 +169,7 @@ export default class WorkWeixinRobot extends Extension {
 
     const now = new Date()
     const year = now.getFullYear()
-    const month = now.getMonth()
+    const month = now.getMonth() + 1
     const date = now.getDate()
 
     const isSameDate = (datetime: Date) => {
