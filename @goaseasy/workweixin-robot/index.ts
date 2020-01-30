@@ -2,6 +2,7 @@ import { useMenu, useTrigger } from '@goaseasy/core/decorators/extension'
 import Extension from '@goaseasy/core/libs/Extension'
 import { inEffectTimeRange } from '@goaseasy/core/utils/datetime'
 import { minutelyInterval } from '@goaseasy/runtime/constants/settings'
+import { render as renderTemplate } from '@goaseasy/core/utils/template'
 import ScheduleModel from './models/Schedule'
 import RobotServ from './services/Robot'
 import * as ScheduleTypings from './types/schedule'
@@ -30,16 +31,38 @@ export default class WorkWeixinRobot extends Extension {
     this.mSchedule.destroy()
   }
 
+  @useMenu('触发每分触发器')
   @useTrigger('minutely')
   public minutelyReport (): void {
     const tasks = this.getMinutelyTasks()
-    if ((Array.isArray(tasks) && tasks.length > 0)) {
+    if (!(Array.isArray(tasks) && tasks.length > 0)) {
       return
     }
 
+    return this.sendMessage(tasks)
+  }
+
+  @useMenu('触发每日触发器')
+  @useTrigger('daily')
+  public dailyReport (): void {
+    const tasks = this.getDailyTasks()
+    if (!(Array.isArray(tasks) && tasks.length > 0)) {
+      return
+    }
+
+    return this.sendMessage(tasks)
+  }
+
+  public sendMessage <T extends ScheduleTypings.ScheduleType>(tasks: Array<ScheduleTypings.Schedule<T>>): void {
     const sender: { [key: string]: string[] } = {}
+    const templates: { [key: string]: string } = {}
+
     tasks.forEach((task) => {
-      const { content, apikey } = task
+      const { content, apikey, template } = task
+      if (!templates[apikey]) {
+        templates[apikey] = template
+      }
+
       if (!Array.isArray(sender[apikey])) {
         sender[apikey] = []
       }
@@ -52,26 +75,17 @@ export default class WorkWeixinRobot extends Extension {
 
     Object.keys(sender).forEach((apikey) => {
       const messages = sender[apikey]
+      const template = templates[apikey]
 
       if (messages.length > 0) {
-        const content = messages.join(';')
+        const content = template ? renderTemplate(messages, template) : messages.join(',')
         const reason = this.sRobot.sendMessage(content, 'text', { apikey })
-
+  
         if (reason !== true) {
           MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
         }
       }
     })
-  }
-
-  @useTrigger('daily')
-  public dailyReport (): void {
-    const tasks = this.getDailyTasks()
-    if ((Array.isArray(tasks) && tasks.length > 0)) {
-      return
-    }
-
-    Logger.log(tasks)
   }
 
   public getMinutelyTasks (): Array<ScheduleTypings.Schedule<'minutely'>> {

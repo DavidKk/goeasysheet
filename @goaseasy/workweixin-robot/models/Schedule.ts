@@ -31,6 +31,11 @@ export default class ScheduleModel extends ListSheetModel {
         id: 'type',
         name: '触发类型',
         comment: '枚举类型; 决定时间触发时机; daily: 每日触发,  minutely: 每几分钟触发'
+      },
+      {
+        id: 'template',
+        name: '消息模板',
+        comment: '发送消息模板, 可通过变量替换数据, 例如: 内容为 ${content}'
       }
     ])
   }
@@ -49,7 +54,8 @@ export default class ScheduleModel extends ListSheetModel {
         content: contentA1N,
         datetime: datetimeA1N,
         type: triggerType,
-        apikey
+        apikey,
+        template
       } = item
 
       if (type && triggerType !== type) {
@@ -79,7 +85,7 @@ export default class ScheduleModel extends ListSheetModel {
           continue
         }
 
-        tasks.push({ content, datetime, type, apikey })
+        tasks.push({ content, datetime, type, apikey, template })
       }
     }
 

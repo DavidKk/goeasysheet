@@ -1,1 +1,1 @@
-export { minutelyInterval } from '@goaseasy/core/constants/trigger'
+export { minutelyInterval, dailyTime } from '@goaseasy/core/constants/trigger'

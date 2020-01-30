@@ -5,6 +5,7 @@ import * as Typings from './types/runtime'
 
 let GlobalMenuActionId = 0
 
+@useMenu('核心库')
 export default class Runtime extends Extension {
   protected extensions: Extension[] = []
   protected mSettings: SettingsModel
@@ -21,13 +22,17 @@ export default class Runtime extends Extension {
     }
 
     if (Array.isArray(params.menus) && params.menus.length > 0) {
-      this.createMenus(params.menus).addToUi()
+      try {
+        this.createMenus(params.menus).addToUi()
+      } catch (error) {
+        // 因为可能使用触发器, 导致UI无法使用报错
+        // nothing todo...
+      }
     }
 
     this.mSettings = new SettingsModel()
   }
 
-  @useMenu('安装')
   public created (): void {
     super.created()
     this.mSettings.created()

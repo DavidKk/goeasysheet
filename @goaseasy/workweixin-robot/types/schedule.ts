@@ -31,4 +31,5 @@ export interface Schedule<T extends ScheduleType> {
   datetime: ScheduleDatetime<T> | Date
   type: T
   apikey: string
+  template?: string
 }
