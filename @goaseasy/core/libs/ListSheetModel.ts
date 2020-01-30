@@ -11,8 +11,9 @@ export default class ListSheetModel extends SheetModel {
 
       const range = sheet.getRange(1, 1, 1, keys.length)
       range.setHorizontalAlignment('center')
+      range.setVerticalAlignment('middle')
       range.setValues([keys])
-      
+
       sheet.setFrozenRows(1)
 
       /**

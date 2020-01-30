@@ -1,5 +1,5 @@
 {
-  "name": "@goaseasy/workweixin-robot",
+  "name": "@goaseasy/runtime",
   "version": "1.0.0",
   "main": "index.ts",
   "types": "index.d.ts",
@@ -15,8 +15,7 @@
     "lint": "eslint --ext .ts ./ --fix"
   },
   "dependencies": {
-    "@goaseasy/core": "^1.0.0",
-    "@goaseasy/runtime": "^1.0.0"
+    "@goaseasy/core": "^1.0.0"
   },
   "devDependencies": {
     "@types/goaseasy": "^1.0.0",

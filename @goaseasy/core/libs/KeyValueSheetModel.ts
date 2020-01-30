@@ -12,6 +12,7 @@ export default class KeyValueSheetModel extends SheetModel {
 
       const range = sheet.getRange(1, 1, keys.length)
       range.setHorizontalAlignment('center')
+      range.setVerticalAlignment('middle')
       range.setValues(keys.map(key => [key]))
 
       sheet.setFrozenColumns(1)

@@ -1,19 +1,21 @@
-import {
-  useMenu, useTrigger,
-  Extension,
-  inEffectTimeRange
-} from '@goaseasy/core'
+import { useMenu, useTrigger } from '@goaseasy/core/decorators/extension'
+import Extension from '@goaseasy/core/libs/Extension'
+import { inEffectTimeRange } from '@goaseasy/core/utils/datetime'
+import SettingsModel from '@goaseasy/runtime/models/Settings'
+import { minutelyInterval } from '@goaseasy/runtime/constants/settings'
 import ScheduleModel from './models/Schedule'
 import RobotServ from './services/Robot'
 
 @useMenu('微信机器人')
 export default class WorkWeixinRobot extends Extension {
+  protected mSettings: SettingsModel
   protected mSchedule: ScheduleModel
   protected sRobot: RobotServ
 
   constructor () {
     super()
 
+    this.mSettings = new SettingsModel()
     this.mSchedule = new ScheduleModel()
     this.sRobot = new RobotServ()
   }
@@ -21,12 +23,14 @@ export default class WorkWeixinRobot extends Extension {
   @useMenu('安装')
   public setup (): void {
     this.mSchedule.create()
+    this.mSettings.create()
     this.registerTriggers()
   }
 
   @useMenu('卸载')
   public destroy (): void {
     this.mSchedule.destroy()
+    this.mSettings.destroy()
     this.unregisterTriggers()
   }
 
@@ -45,8 +49,13 @@ export default class WorkWeixinRobot extends Extension {
       return
     }
 
+    const perMinutes = parseInt(this.mSettings.get('minutely') || minutelyInterval)
+    if (!(perMinutes > 0)) {
+      return
+    }
+
     const needExecTasks = tasks.filter((task) => {
-      const { type, daytime, intervals: perMinutes } = task
+      const { type, daytime } = task
       if (type !== 'minutely') {
         return false
       }

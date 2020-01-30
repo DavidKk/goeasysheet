@@ -1,8 +1,6 @@
-import {
-  ListSheetModel,
-  parseGMTHours, parseGMTSeconds,
-  sub, mul,
-} from '@goaseasy/core'
+import ListSheetModel from '@goaseasy/core/libs/ListSheetModel'
+import { sub, mul } from '@goaseasy/core/utils/math'
+import { parseGMTHours, parseGMTSeconds } from '@goaseasy/core/utils/datetime'
 import { Days } from '../constants/day'
 import * as Typings from '../types/schedule'
 
@@ -28,11 +26,7 @@ export default class ScheduleModel extends ListSheetModel {
       {
         id: 'type',
         name: '触发类型'
-      },
-      {
-        id: 'intervals',
-        name: '触发器触发时间'
-      },
+      }
     ])
   }
 
@@ -50,7 +44,6 @@ export default class ScheduleModel extends ListSheetModel {
         content: contentA1N,
         datetime: datetimeA1N,
         type: triggerType,
-        intervals,
         apikey
       } = item
 
@@ -58,7 +51,7 @@ export default class ScheduleModel extends ListSheetModel {
         break
       }
 
-      if (!(sheetName && contentA1N && datetimeA1N && type && intervals && apikey)) {
+      if (!(sheetName && contentA1N && datetimeA1N && type && apikey)) {
         break
       }
 
@@ -81,7 +74,7 @@ export default class ScheduleModel extends ListSheetModel {
           continue
         }
 
-        tasks.push({ content, daytime, type, intervals, apikey })
+        tasks.push({ content, daytime, type, apikey })
       }
     }
 

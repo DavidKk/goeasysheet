@@ -1,4 +1,4 @@
-import { assign } from '@goaseasy/core'
+import { assign } from '@goaseasy/core/utils/object'
 import { ROBOT_SEND_URL } from '../constants/robot'
 import * as Typings from '../types/robot'
 

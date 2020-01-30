@@ -1,4 +1,4 @@
-export default function useMenu (name: string) {
+export function useMenu (name: string) {
   function Decorator <T extends { new(...args: any[]): any }>(constructor: T): T
   function Decorator (target: { [key: string]: any }, propertyKey: string, descriptor: PropertyDescriptor): void
   function Decorator (...args: any[]): any {
@@ -25,4 +25,11 @@ export default function useMenu (name: string) {
   }
 
   return Decorator
+}
+
+export function useTrigger (type: Get<Goaseasy.Trigger, 'type'>, payload?: { [key: string]: any }) {
+  return function (target: { [key: string]: any }, _propertyKey: string, descriptor: PropertyDescriptor): void {
+    !Array.isArray(target.$trigger) && Object.defineProperty(target, '$trigger', { writable: true, value: [] })
+    target.$trigger.push({ type, payload, action: descriptor.value })
+  }
 }
