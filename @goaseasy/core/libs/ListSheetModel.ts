@@ -8,11 +8,14 @@ export default class ListSheetModel extends SheetModel {
       const sheets = spreadsheet.getSheets()
       const sheet = spreadsheet.insertSheet(this.name, sheets.length)
       const keys = this.fields.map(item => item.name)
+      const comments = this.fields.map(item => item.comment || '')
 
       const range = sheet.getRange(1, 1, 1, keys.length)
       range.setHorizontalAlignment('center')
       range.setVerticalAlignment('middle')
+
       range.setValues([keys])
+      range.setNotes([comments])
 
       sheet.setFrozenRows(1)
 

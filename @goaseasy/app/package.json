@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "@goaseasy/core": "^1.0.0",
-    "@goaseasy/workweixin-robot": "^1.0.0"
+    "@goaseasy/workweixin-robot": "^1.0.0",
+    "@goaseasy/runtime": "^1.0.0"
   },
   "devDependencies": {
     "@types/goaseasy": "^1.0.0",

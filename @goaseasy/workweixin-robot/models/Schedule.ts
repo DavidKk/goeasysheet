@@ -9,23 +9,28 @@ export default class ScheduleModel extends ListSheetModel {
     super('企业微信机器人', [
       {
         id: 'task',
-        name: '任务名称'
+        name: '任务名称',
+        comment: '字符串; 对应数据表名称; 例如: 微信提醒'
       },
       {
         id: 'content',
-        name: '发送内容'
+        name: '发送内容',
+        comment: '字符串; 对应数据表中发送内容的引用; 例如: !A1:A'
       },
       {
         id: 'datetime',
-        name: '执行时间'
+        name: '执行时间',
+        comment: '字符串; 对应数据表中发送时间的引用; 例如: !B1:B'
       },
       {
         id: 'apikey',
-        name: 'API_KEY'
+        name: 'API_KEY',
+        comment: '字符串; 企业微信机器人提供的 API KEY'
       },
       {
         id: 'type',
-        name: '触发类型'
+        name: '触发类型',
+        comment: '枚举类型; 决定时间触发时机; daily: 每日触发,  minutely: 每几分钟触发'
       }
     ])
   }

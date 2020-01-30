@@ -1,19 +1,31 @@
+import Runtime from '@goaseasy/runtime'
 import { pascalCase } from '../utils/string'
 import { minutelyInterval, dailyTime } from '../constants/trigger'
 import { findIndex } from '../utils/array'
 
 export default class Extension {
-  protected minutelyInterval: number
-  protected dailyTime: string
+  protected $runtime: Runtime
   protected $menu: Goaseasy.Menu[]
   protected $trigger: Goaseasy.Trigger[]
+  protected minutelyInterval: number
+  protected dailyTime: string
 
   constructor () {
+    this.$runtime = null
     this.minutelyInterval = minutelyInterval
     this.dailyTime = dailyTime
 
     this.initMenu()
     this.initTrigger()
+  }
+
+  public created (): void {
+    this.$runtime && this.$runtime.created()
+    this.registerTriggers()
+  }
+
+  public destroy (): void {
+    this.unregisterTriggers()
   }
 
   private initMenu (): void {
@@ -159,5 +171,19 @@ export default class Extension {
     })
 
     return types
+  }
+
+  protected alert (content: string): void {
+    SpreadsheetApp.getUi().alert(content)
+  }
+
+  protected confirm (content: string): boolean {
+    const ui = SpreadsheetApp.getUi()
+    const response = ui.alert(content, ui.ButtonSet.YES_NO)
+    return response === ui.Button.YES
+  }
+
+  public $setRuntime (runtime: Extension): void {
+    Object.defineProperty(this, '$runtime', { writable: false, value: runtime })
   }
 }
