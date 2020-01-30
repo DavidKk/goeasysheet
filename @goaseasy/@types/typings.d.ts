@@ -21,13 +21,15 @@ declare namespace Goaseasy {
   }
   
   type ModelFileds = ModelFiled[]
+
+  interface Global {
+    Menus: Menu[]
+    Triggers: Trigger[]
+    Extensions: Extension[]
+  }
 }
 
-declare const Global: typeof globalThis & {
-  Menus: any[]
-  Triggers: any[]
-  Extensions: any[]
-}
+declare var Global: typeof globalThis & Global
 
 // eslint-disable-next-line @typescript-eslint/camelcase
 declare const __webpack_public_path__: string

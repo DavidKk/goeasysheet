@@ -30,13 +30,13 @@ export default class ScheduleModel extends ListSheetModel {
     ])
   }
 
-  public fetchTasks (type?: Get<Typings.Task, 'type'>): Typings.Task[] {
+  public fetchTasks <T extends Typings.ScheduleType>(type?: T): Array<Typings.Schedule<T>> {
     const rows = this.select()
     if (rows.length === 0) {
       return []
     }
 
-    const tasks: Typings.Task[] = []
+    const tasks: Array<Typings.Schedule<T>> = []
     for (let i = 0; i < rows.length; i ++) {
       const item = rows[i]
       const {
@@ -63,39 +63,89 @@ export default class ScheduleModel extends ListSheetModel {
 
       for (let i = 0; i < contents.length; i ++) {
         const content = contents[i][0]
-        const datetime = datetimes[i][0]
+        const daytime = datetimes[i][0]
 
-        if (!(content && datetime)) {
+        if (!(content && daytime)) {
           break
         }
 
-        const daytime = this.convertDayTime(datetime)
-        if (!(content && daytime)) {
+        const datetime = this.convertDayTime(daytime, triggerType) as any
+        if (!(content && datetime)) {
           continue
         }
 
-        tasks.push({ content, daytime, type, apikey })
+        tasks.push({ content, datetime, type, apikey })
       }
     }
 
     return tasks
   }
 
-  protected convertDayTime (datetime: Date | string): Typings.DayTime {
-    if (datetime instanceof Date) {
-      const day = []
+  protected convertDayTime <T extends Typings.ScheduleType>(datetime: Date | string, type: T): Typings.ScheduleDatetime<T> {
+    switch (type) {
+      case 'daily':
+        return this.convertSpecifiedDateTime(datetime) as any
+      case 'minutely':
+        return this.convertPeriodicDateTime(datetime) as any
+    }
+  }
 
+  /**
+   * 转化成指定的任务时间格式
+   * @param datetime 时间
+   */
+  protected convertSpecifiedDateTime (datetime: Date | string): Typings.ScheduleSpecifiedDateTime {
+    const dates = []
+    if (datetime instanceof Date) {
+      if (datetime.getTime() < 0) {
+        return { dates }
+      }
+
+      const year = datetime.getFullYear()
+      const month = datetime.getMonth()
+      const date = datetime.getDate()
+      dates.push({ year, month, date })
+
+      return { dates }
+    }
+
+    if (typeof datetime === 'string') {
+      const regexp = /^(?:(\d{4})[-/])?(\d{1,2})[-/](\d{1,2})$/
+      const datetimes = datetime.split(/[;,|]/)
+
+      datetimes.forEach((date) => {
+        const matched = regexp.exec(date)
+
+        if (matched) {
+          const year = parseInt(matched[0], 10)
+          const month = parseInt(matched[1], 10)
+          const date = parseInt(matched[2], 10)
+          dates.push({ year, month, date })
+        }
+      })
+    }
+
+    return { dates }
+  }
+
+  /**
+   * 转化成周期性任务时间格式
+   * @param datetime 时间
+   */
+  protected convertPeriodicDateTime (datetime: Date | string): Typings.SchedulePeriodicDateTime {
+    if (datetime instanceof Date) {
+      const days = []
       if (datetime.getTime() < 0) {
         const { hours, minutes, seconds } = this.convertTime(datetime)
-        const clock = [{ hours, minutes, seconds }]
-        return { day, clock }
+        const clocks = [{ hours, minutes, seconds }]
+        return { days, clocks }
       }
 
       const hours = datetime.getHours()
       const minutes = datetime.getMinutes()
       const seconds = datetime.getSeconds()
-      const clock = [{ hours, minutes, seconds }]
-      return { day, clock }
+      const clocks = [{ hours, minutes, seconds }]
+      return { days, clocks }
     }
 
     if (typeof datetime === 'string') {
@@ -103,27 +153,27 @@ export default class ScheduleModel extends ListSheetModel {
       const matched = regexp.exec(datetime)
 
       if (matched) {
-        const [, times, days] = matched
+        const [, matchedTimes, matchedDays] = matched
 
-        let dayString: Array<string> = days ? days.split(',').filter((v) => v) : []
+        let dayString: string[] = matchedDays ? matchedDays.split(',').filter((v) => v) : []
         if (dayString.length === 0) {
           dayString = [].concat(Days)
         } else if (-1 !== dayString.indexOf('Weekday')) {
           dayString = Days.slice(1, 6)
         }
 
-        const day = dayString.map((name: string) => Days.indexOf(name)).filter((index) => -1 !== index)
-        const clock = times.split(',').map((time) => {
+        const days = dayString.map((name: string) => Days.indexOf(name)).filter((index) => -1 !== index)
+        const clocks = matchedTimes.split(',').map((time) => {
           const [hours, minutes, seconds] = time.split(':')
-          return { hours: parseInt(hours), minutes: parseInt(minutes), seconds: parseInt(seconds) }
+          return { hours: parseInt(hours, 10), minutes: parseInt(minutes, 10), seconds: parseInt(seconds, 10) }
         })
   
-        return { day, clock }
+        return { days, clocks }
       }
     }
   }
 
-  protected convertTime (datetime: Date): Typings.Clock {
+  protected convertTime (datetime: Date): Typings.ScheduleClock {
     const seconds = parseGMTSeconds(datetime)
     const floatHours = parseGMTHours(datetime)
     const hours = Math.floor(floatHours)

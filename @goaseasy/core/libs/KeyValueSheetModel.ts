@@ -2,7 +2,7 @@ import SheetModel from './SheetModel'
 import { findIndex } from '../utils/array'
 
 export default class KeyValueSheetModel extends SheetModel {
-  public create (): void {
+  public created (): void {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
     if (!spreadsheet.getSheetByName(this.name)) {
       const activeSheet = spreadsheet.getActiveSheet()

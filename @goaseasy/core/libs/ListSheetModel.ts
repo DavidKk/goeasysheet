@@ -1,7 +1,7 @@
 import SheetModel from './SheetModel'
 
 export default class ListSheetModel extends SheetModel {
-  public create (): void {
+  public created (): void {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
     if (!spreadsheet.getSheetByName(this.name)) {
       const activeSheet = spreadsheet.getActiveSheet()

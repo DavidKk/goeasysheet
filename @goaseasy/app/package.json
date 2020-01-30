@@ -11,7 +11,9 @@
   "license": "MIT",
   "scripts": {
     "login": "clasp login --creds creds.json",
-    "lint": "eslint --ext .ts ./src --fix",
+    "lint:pioneer": "eslint --ext .ts ./pioneer --fix",
+    "lint:src": "eslint --ext .ts ./src --fix",
+    "lint": "npm run lint:pioneer && npm run lint:src",
     "develop": "cross-env NODE_ENV=\"production\" TS_NODE_PROJECT=\"build/tsconfig.json\" webpack --config ./build/webpack.gs.config.ts --watch",
     "product": "cross-env NODE_ENV=\"production\" TS_NODE_PROJECT=\"build/tsconfig.json\" webpack --config ./build/webpack.gs.config.ts",
     "start": "npm run develop"

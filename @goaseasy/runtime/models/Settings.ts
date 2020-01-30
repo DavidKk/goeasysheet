@@ -1,5 +1,5 @@
 import KeyValueSheetModel from '@goaseasy/core/libs/KeyValueSheetModel'
-import { minutelyInterval, dailyTime } from '../constants/settings'
+import { minutelyInterval } from '../constants/settings'
 
 export default class SettingsModel extends KeyValueSheetModel {
   constructor () {
@@ -7,17 +7,13 @@ export default class SettingsModel extends KeyValueSheetModel {
       {
         id: 'minutely',
         name: '每分触发器触发间隔时间(分)'
-      },
-      {
-        id: 'daily',
-        name: '每日触发器默认触发时间(时:分)'
       }
     ])
   }
 
-  public create (): void {
-    super.create()
+  public created (): void {
+    super.created()
 
-    this.multiSet({ minutely: minutelyInterval, daily: dailyTime })
+    this.multiSet({ minutely: minutelyInterval })
   }
 }

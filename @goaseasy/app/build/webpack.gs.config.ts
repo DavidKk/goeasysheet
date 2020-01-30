@@ -124,9 +124,7 @@ export const Config: webpack.Configuration = {
   ],
   output: {
     path: outDir,
-    filename: '[name].bundle.js',
-    // libraryTarget: 'var',
-    // library: 'Bootstrap'
+    filename: '[name].bundle.js'
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],

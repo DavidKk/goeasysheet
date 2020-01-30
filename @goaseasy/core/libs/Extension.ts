@@ -1,25 +1,17 @@
 import { pascalCase } from '../utils/string'
+import { minutelyInterval, dailyTime } from '../constants/trigger'
+import { findIndex } from '../utils/array'
 
 export default class Extension {
+  protected minutelyInterval: number
+  protected dailyTime: string
   protected $menu: Goaseasy.Menu[]
   protected $trigger: Goaseasy.Trigger[]
 
-  protected get triggerTypes (): string[] {
-    if (!(Array.isArray(this.$trigger) && this.$trigger.length > 0)) {
-      return []
-    }
-
-    const types = []
-    this.$trigger.forEach(({ type }) => {
-      if (types.indexOf(type) === -1) {
-        types.push(`on${pascalCase(type)}`)
-      }
-    })
-
-    return types
-  }
-
   constructor () {
+    this.minutelyInterval = minutelyInterval
+    this.dailyTime = dailyTime
+
     this.initMenu()
     this.initTrigger()
   }
@@ -35,6 +27,15 @@ export default class Extension {
 
     const menus = this.bindMenu(this.$menu)
     Global.Menus.push(...menus)
+  }
+
+  private bindMenu (menus: Goaseasy.Menu[] = this.$menu): Goaseasy.Menu[] {
+    return menus.map((menu: Goaseasy.Menu) => {
+      const name = menu.name
+      const action = typeof menu.action === 'function' ? (...args: any[]) => menu.action.apply(this, args) : undefined
+      const submenu = Array.isArray(menu.submenu) ? this.bindMenu(menu.submenu) : undefined
+      return { name, action, submenu }
+    })
   }
 
   private initTrigger (): void {
@@ -54,39 +55,73 @@ export default class Extension {
     Global.Triggers.push(...triggers)
   }
 
-  private bindMenu (menus: Goaseasy.Menu[] = this.$menu): Goaseasy.Menu[] {
-    return menus.map((menu: Goaseasy.Menu) => {
-      const name = menu.name
-      const action = typeof menu.action === 'function' ? (...args: any[]) => menu.action.apply(this, args) : undefined
-      const submenu = Array.isArray(menu.submenu) ? this.bindMenu(menu.submenu) : undefined
-      return { name, action, submenu }
-    })
-  }
-
   protected registerTriggers (): void {
-    this.triggerTypes.forEach((name) => this.createTrigger(name))
-  }
-
-  protected unregisterTriggers (): void {
-    this.triggerTypes.forEach((name) => this.deleteTrigger(name))
-  }
-
-  protected createTrigger (name: string): void {
-    if (!this.existsTrigger(name)) {
-      ScriptApp.newTrigger(name)
-      .timeBased().everyMinutes(5)
-      .create()
+    const triggers = this.fetchUniqTriggerEvents()
+    if (Array.isArray(triggers) && triggers.length > 0) {
+      triggers.forEach(({ type, action }) => {
+        if (this.isClockTrigger(type)) {
+          this.createClockTrigger(type, action)
+        }
+      })
     }
   }
 
-  protected deleteTrigger (name: string): void {
-    const minutelyTriggers = this.fetchTrigger(name)
+  protected unregisterTriggers (): void {
+    const triggers = this.fetchUniqTriggerEvents()
+    if (Array.isArray(triggers) && triggers.length > 0) {
+      triggers.forEach(({ type, action }) => {
+        if (this.isClockTrigger(type)) {
+          this.deleteClockTrigger(action)
+        }
+      })
+    }
+  }
+
+  protected createClockTrigger (type: Get<Goaseasy.Trigger, 'type'>, name: string): boolean {
+    switch (type) {
+      case 'daily':
+        return this.createDailyTrigger(name)
+      case 'minutely':
+        return this.createMinutelyTrigger(name)
+    }
+  }
+
+  protected createDailyTrigger (name: string): boolean {
+    if (this.existsClockTrigger(name)) {
+      return false
+    }
+
+    const [sHour, sMinute] = this.dailyTime.split(':')
+    const hour = parseInt(sHour, 10)
+    const minute = parseInt(sMinute, 10)
+
+    ScriptApp.newTrigger(name)
+    .timeBased().everyDays(1).atHour(hour).nearMinute(minute)
+    .create()
+
+    return true
+  }
+
+  protected createMinutelyTrigger (name: string): boolean {
+    if (this.existsClockTrigger(name)) {
+      return false
+    }
+
+    ScriptApp.newTrigger(name)
+    .timeBased().everyMinutes(this.minutelyInterval)
+    .create()
+
+    return true
+  }
+
+  protected deleteClockTrigger (name: string): void {
+    const minutelyTriggers = this.fetchClockTrigger(name)
     if (Array.isArray(minutelyTriggers) && minutelyTriggers.length > 0) {
       minutelyTriggers.forEach((trigger) => ScriptApp.deleteTrigger(trigger))
     }
   }
 
-  protected fetchTrigger (name: string): GoogleAppsScript.Script.Trigger[] {
+  protected fetchClockTrigger (name: string): GoogleAppsScript.Script.Trigger[] {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
     const triggers = ScriptApp.getUserTriggers(spreadsheet)
     const minutelyTriggers = triggers.filter((trigger) => {
@@ -100,7 +135,29 @@ export default class Extension {
     return minutelyTriggers
   }
 
-  protected existsTrigger (name: string): boolean {
-    return this.fetchTrigger(name).length > 0
+  protected existsClockTrigger (name: string): boolean {
+    return this.fetchClockTrigger(name).length > 0
+  }
+
+  protected isClockTrigger (type: string): boolean {
+    return ['daily', 'minutely'].indexOf(type) !== -1
+  }
+  
+  protected fetchUniqTriggerEvents (): Array<{ type: Get<Goaseasy.Trigger, 'type'>, action: string }> {
+    if (!(Array.isArray(this.$trigger) && this.$trigger.length > 0)) {
+      return []
+    }
+
+    const types: Array<{ type: Get<Goaseasy.Trigger, 'type'>, action: string }> = []
+    this.$trigger.map(({ type }) => {
+      if (findIndex(types, { type }) === -1) {
+        const action = `on${pascalCase(type)}`
+        if (typeof Global[action] === 'function') {
+          types.push({ type, action })
+        }
+      }
+    })
+
+    return types
   }
 }
