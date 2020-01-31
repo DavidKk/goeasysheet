@@ -95,7 +95,7 @@ export default class ScheduleModel extends ListSheetModel {
 
       let extraNames = []
       let extraValues = []
-      if (typeof jsonExtraDataWithA1N === 'string') {
+      if (typeof jsonExtraDataWithA1N === 'string' && jsonExtraDataWithA1N.length > 0) {
         try {
           const extraDataWithA1N = JSON.parse(jsonExtraDataWithA1N)
           extraNames = Object.keys(extraDataWithA1N)

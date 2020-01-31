@@ -64,7 +64,7 @@ export default class WorkWeixinRobot extends Extension {
       template: string
       contents: Array<{
         content: string
-        extra: { [key: string]: string }
+        [key: string]: string
       }>
     }
 
@@ -98,7 +98,7 @@ export default class WorkWeixinRobot extends Extension {
         message.contents = []
       }
 
-      message.contents.push({ content, extra })
+      message.contents.push({ content, ...extra })
     })
 
     senders.forEach((sender) => {
