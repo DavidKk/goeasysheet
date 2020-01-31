@@ -1,5 +1,5 @@
 export function assign <T, U, I>(target: T, source: U, ...others: I[]): T & U & Required<I> {
-  const names = Object.keys(target)
+  const names = Object.keys(source)
   for (let i = 0; i < names.length; i ++) {
     const name = names[i]
     target[name] = source[name]

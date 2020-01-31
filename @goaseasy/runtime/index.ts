@@ -23,7 +23,8 @@ export default class Runtime extends Extension {
 
     if (Array.isArray(params.menus) && params.menus.length > 0) {
       try {
-        this.createMenus(params.menus).addToUi()
+        const uiMenu = this.createMenus(params.menus)
+        uiMenu && uiMenu.addToUi()
       } catch (error) {
         // 因为可能使用触发器, 导致UI无法使用报错
         // nothing todo...
@@ -54,6 +55,10 @@ export default class Runtime extends Extension {
   }
 
   private createMenus (menus: Goaseasy.Menu[] = Global.Menus || [], uiMenu: GoogleAppsScript.Base.Menu = SpreadsheetApp.getUi().createAddonMenu()) {
+    if (!(Array.isArray(menus) && menus.length > 0)) {
+      return null
+    }
+
     menus.forEach((menu) => {
       if (Array.isArray(menu.submenu)) {
         const uiSubmenu = SpreadsheetApp.getUi().createMenu(menu.name)
