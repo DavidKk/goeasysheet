@@ -26,13 +26,18 @@ export default class WorkWeixinRobot extends Extension {
     this.mSchedule.created()
   }
 
+  @useMenu('触发计划任务')
+  public report (): void {
+    this.dailyReport()
+    this.minutelyReport()
+  }
+
   @useMenu('卸载')
   public destroy (): void {
     super.destroy()
     this.mSchedule.destroy()
   }
 
-  @useMenu('触发每分触发器')
   @useTrigger('minutely')
   public minutelyReport (): void {
     const tasks = this.getMinutelyTasks()
@@ -43,7 +48,6 @@ export default class WorkWeixinRobot extends Extension {
     return this.sendMessage(tasks)
   }
 
-  @useMenu('触发每日触发器')
   @useTrigger('daily')
   public dailyReport (): void {
     const tasks = this.getDailyTasks()

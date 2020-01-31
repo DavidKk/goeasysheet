@@ -9,6 +9,13 @@ export default class Extension {
   protected $trigger: Goaseasy.Trigger[]
   protected minutelyInterval: number
   protected dailyTime: string
+  protected get app (): GoogleAppsScript.Spreadsheet.SpreadsheetApp | null {
+    return SpreadsheetApp.getActiveSpreadsheet() ? SpreadsheetApp : null
+  }
+
+  protected get ui (): GoogleAppsScript.Base.Ui | null {
+    return this.app ? this.app.getUi() : null
+  }
 
   constructor () {
     this.$runtime = null
@@ -174,13 +181,16 @@ export default class Extension {
   }
 
   protected alert (content: string): void {
-    SpreadsheetApp.getUi().alert(content)
+    this.ui && this.ui.alert(content)
   }
 
   protected confirm (content: string): boolean {
-    const ui = SpreadsheetApp.getUi()
-    const response = ui.alert(content, ui.ButtonSet.YES_NO)
-    return response === ui.Button.YES
+    if (this.ui) {
+      const response = this.ui.alert(content, this.ui.ButtonSet.YES_NO)
+      return response === this.ui.Button.YES
+    }
+
+    return false
   }
 
   public $setRuntime (runtime: Extension): void {

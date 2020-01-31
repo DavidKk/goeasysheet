@@ -21,7 +21,7 @@ export default class Runtime extends Extension {
       })
     }
 
-    if (Array.isArray(params.menus) && params.menus.length > 0) {
+    if (this.ui && Array.isArray(params.menus) && params.menus.length > 0) {
       try {
         const uiMenu = this.createMenus(params.menus)
         uiMenu && uiMenu.addToUi()
@@ -54,14 +54,18 @@ export default class Runtime extends Extension {
     return key ? this.mSettings.get(key) : this.mSettings.getValues()
   }
 
-  private createMenus (menus: Goaseasy.Menu[] = Global.Menus || [], uiMenu: GoogleAppsScript.Base.Menu = SpreadsheetApp.getUi().createAddonMenu()) {
+  private createMenus (menus: Goaseasy.Menu[] = Global.Menus || [], uiMenu: GoogleAppsScript.Base.Menu | null = this.createUiAddonMenu()): GoogleAppsScript.Base.Menu | null {
+    if (!this.ui) {
+      return null
+    }
+    
     if (!(Array.isArray(menus) && menus.length > 0)) {
       return null
     }
 
     menus.forEach((menu) => {
       if (Array.isArray(menu.submenu)) {
-        const uiSubmenu = SpreadsheetApp.getUi().createMenu(menu.name)
+        const uiSubmenu = this.createUiMenu(menu.name)
         uiMenu.addSubMenu(this.createMenus(menu.submenu, uiSubmenu))
   
       } else if (typeof menu.action === 'function') {
@@ -72,5 +76,13 @@ export default class Runtime extends Extension {
     })
   
     return uiMenu
+  }
+
+  private createUiAddonMenu (): GoogleAppsScript.Base.Menu | null {
+    return this.ui ? this.ui.createAddonMenu() : null
+  }
+
+  private createUiMenu (name: string): GoogleAppsScript.Base.Menu | null {
+    return this.ui ? this.ui.createMenu(name) : null
   }
 }
