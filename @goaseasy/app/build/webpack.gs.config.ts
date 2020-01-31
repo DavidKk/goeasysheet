@@ -17,74 +17,12 @@ delete process.env.TS_NODE_PROJECT
 export const Rules: webpack.RuleSetRule[] = [
   {
     test: /\.tsx?$/,
-    loader: 'ts-loader'
-  },
-  {
-    test: /\.html$/,
-    use: [
+    loaders: [
       {
-        loader: 'file-loader',
-        options: {
-          // 5.0之后默认开启
-          esModule: false
-        }
-      },
-      {
-        loader: 'extract-loader'
-      },
-      {
-        loader: 'html-loader',
-        options: {
-          interpolate: true,
-          attrs: ['link:href', 'script:src']
-        }
-      }
-    ]
-  },
-  {
-    test: /component\/.+?\/view\/.+?\.tsx?$/,
-    use: [
-      {
-        loader: 'file-loader',
-        options: {
-          esModule: false,
-          name: '[contenthash].html'
-        }
+        loader: 'es3ify-loader'
       },
       {
         loader: 'ts-loader'
-      }
-    ]
-  },
-  {
-    test: /\.s[ac]ss$/i,
-    use: [
-      {
-        loader: 'file-loader',
-        options: {
-          esModule: false,
-          name: '[contenthash].html'
-        }
-      },
-      {
-        loader: 'extract-loader'
-      },
-      {
-        loader: 'css-loader'
-      },
-      {
-        loader: 'postcss-loader',
-        options: {
-          plugins: [
-            require('autoprefixer')
-          ]
-        }
-      },
-      {
-        loader: 'sass-loader',
-        options: {
-          prependData: '@import "styles/bootstrap.scss";'
-        }
       }
     ]
   }
@@ -117,8 +55,8 @@ export const Plugins: webpack.Plugin[] = [
 
 export const Config: webpack.Configuration = {
   stats: 'errors-only',
-  mode: 'production',
-  devtool: 'cheap-source-map',
+  devtool: false,
+  mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
   entry: [
     path.join(srcDir, 'index.ts')
   ],
@@ -139,7 +77,13 @@ export const Config: webpack.Configuration = {
       ...Rules
     ]
   },
-  optimization: {
+  plugins: [
+    ...Plugins
+  ]
+}
+
+if (process.env.NODE_ENV === 'production') {
+  Config.optimization = {
     minimizer: [
       new UglifyJSPlugin({
         uglifyOptions: {
@@ -148,10 +92,7 @@ export const Config: webpack.Configuration = {
         }
       })
     ]
-  },
-  plugins: [
-    ...Plugins
-  ]
+  }
 }
 
 export default Config

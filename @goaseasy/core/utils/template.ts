@@ -10,9 +10,13 @@ export const BreakRegExp = /<break(?:\s+(\d+?)?\s*)?\/>/
 export const SplitRegExp = /<split\s+([a-zA-Z$][a-zA-Z0-9_$]*?)(?:\s+?([\w\W]+?))?\s*?\/>/
 
 export function EachLogic (matched: RegExpExecArray): Render {
-  const [, variable, innerTemplate] = matched
+  const [content, variable, innerTemplate] = matched
   return (data: any): string => {
-    const collection = variable === 'this' ? data : data[variable]
+    const collection = variable === 'this' ? data : data[variable] || []
+    if (!Array.isArray(collection)) {
+      throw new Error(`${content} ${variable} is not a array`)
+    }
+
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
     return collection.map(compile(innerTemplate)).join('')
   }
@@ -86,7 +90,7 @@ export function compile (template: string): Render {
 
       renders[index] = render
       code = code.replace(matchedContent, '')
-      content = content.replace(matchedContent, repeat(' ', matchedContent.length))
+      content = content.replace(matchedContent, repeat(String.fromCharCode(0), matchedContent.length))
     }
   })
 
