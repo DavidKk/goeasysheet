@@ -27,7 +27,8 @@ export function EchoLogic (matched: RegExpExecArray): Render {
   const [, content] = matched
   return (data: any): string => {
     const source = content.replace(/\{([\w\W]+?)\}/g, (_, path) => {
-      return path === 'this' ? data : get(data, path, '')
+      const content = path === 'this' ? data : get(data, path, '')
+      return typeof content === 'string' ? content.trim() : content
     })
 
     return pursue(source)
