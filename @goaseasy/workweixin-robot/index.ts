@@ -5,8 +5,9 @@ import { minutelyInterval } from '@goaseasy/runtime/constants/settings'
 import { render as renderTemplate } from '@goaseasy/core/utils/template'
 import ScheduleModel from './models/Schedule'
 import RobotServ from './services/Robot'
-import * as ScheduleTypings from './types/schedule'
 import { find } from '@goaseasy/core/utils/array'
+import * as ScheduleTypings from './types/schedule'
+import * as RobotTypings from './types/robot'
 
 @useMenu('微信机器人')
 export default class WorkWeixinRobot extends Extension {
@@ -61,21 +62,25 @@ export default class WorkWeixinRobot extends Extension {
   public sendMessage <T extends ScheduleTypings.ScheduleType>(tasks: Array<ScheduleTypings.Schedule<T>>): void {
     interface Message {
       template: string
-      contents: string[]
+      contents: Array<{
+        content: string
+        extra: { [key: string]: string }
+      }>
     }
 
     interface Sender {
       apikey: string
+      messageType: RobotTypings.MessageType
       messages: Message[]
     }
 
     const senders: Sender[] = []
     tasks.forEach((task) => {
-      const { apikey, template, content } = task
+      const { apikey, messageType, template, content, extra } = task
 
-      let sender: Sender = find(senders, { apikey })
+      let sender: Sender = find(senders, { apikey, messageType })
       if (!sender) {
-        sender = { apikey, messages: [] }
+        sender = { apikey, messageType, messages: [] }
         senders.push(sender)
       }
 
@@ -93,16 +98,28 @@ export default class WorkWeixinRobot extends Extension {
         message.contents = []
       }
 
-      message.contents.push(content)
+      message.contents.push({ content, extra })
     })
 
     senders.forEach((sender) => {
-      const { apikey, messages } = sender
+      const { apikey, messageType, messages } = sender
       if (Array.isArray(messages) && messages.length > 0) {
-        const content = messages.map(({ template, contents }) => template ? renderTemplate(contents, template) : contents.join(','))
+        const content = messages.map(({ template, contents }) => template ? renderTemplate(contents, template) : contents.map((item) => item.content).join(','))
         const message = content.join('\n')
-        const reason = this.sRobot.sendMessage(message, 'text', { apikey })
-        reason !== true && MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', reason)
+
+        let result: string | true = true
+        switch (messageType) {
+          case 'text':
+            result = this.sRobot.sendMessage(message, 'text', { apikey })
+            break
+          case 'markdown':
+            result = this.sRobot.sendMessage({ content: message }, 'markdown', { apikey })
+            break
+        }
+
+        if (result !== true) {
+          MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', result)
+        }
       }
     })
   }

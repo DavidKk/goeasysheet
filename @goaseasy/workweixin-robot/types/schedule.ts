@@ -1,3 +1,5 @@
+import { MessageType } from './robot'
+
 export interface ScheduleDate {
   year?: number
   // 一月为1, 而非0
@@ -30,7 +32,9 @@ export type ScheduleDatetime<T extends ScheduleType> =
 export interface Schedule<T extends ScheduleType> {
   content: string
   datetime: ScheduleDatetime<T> | Date
-  type: T
   apikey: string
+  type: T
+  messageType: MessageType
+  extra: { [key: string]: string }
   template?: string
 }

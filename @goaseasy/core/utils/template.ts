@@ -1,20 +1,21 @@
 import { hashCode, repeat, pursue } from './string'
+import { get } from './object'
 
 type Render = (data: any) => string
 
 const Caches = {}
 
-export const EachRegExp = /<each\s+([a-zA-Z$][a-zA-Z0-9_$]*?)>([\w\W]*)<\/each>/
+export const EachRegExp = /<each\s+([\w\W]*?)>([\w\W]*)<\/each>/
 export const EchoRegExp = /<echo\s*>([\w\W]*?)<\/echo>/
 export const BreakRegExp = /<break(?:\s+(\d+?)?\s*)?\/>/
-export const SplitRegExp = /<split\s+([a-zA-Z$][a-zA-Z0-9_$]*?)(?:\s+?([\w\W]+?))?\s*?\/>/
+export const SplitRegExp = /<split\s+([\w\W]*?)(?:\s+?([\w\W]+?))?\s*?\/>/
 
 export function EachLogic (matched: RegExpExecArray): Render {
-  const [content, variable, innerTemplate] = matched
+  const [matchedContent, path, innerTemplate] = matched
   return (data: any): string => {
-    const collection = variable === 'this' ? data : data[variable] || []
+    const collection = path === 'this' ? data : get(data, path, []) || []
     if (!Array.isArray(collection)) {
-      throw new Error(`${content} ${variable} is not a array`)
+      throw new Error(`${matchedContent} ${path} is not a array`)
     }
 
     // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -25,8 +26,8 @@ export function EachLogic (matched: RegExpExecArray): Render {
 export function EchoLogic (matched: RegExpExecArray): Render {
   const [, content] = matched
   return (data: any): string => {
-    const source = content.replace(/\{([a-zA-Z$][a-zA-Z0-9_$]*?)\}/g, (_, variable) => {
-      return variable === 'this' ? data : data[variable]
+    const source = content.replace(/\{([\w\W]+?)\}/g, (_, path) => {
+      return path === 'this' ? data : get(data, path, '')
     })
 
     return pursue(source)
@@ -41,9 +42,13 @@ export function BreakLogic (matched: RegExpExecArray): Render {
 }
 
 export function SplitLogic (matched: RegExpExecArray): Render {
-  const [, variable, content] = matched
+  const [matchedContent, path, content] = matched
   return (data: any): string => {
-    const collection = variable === 'this' ? data : data[variable]
+    const collection = path === 'this' ? data : get(data, path, []) || []
+    if (!Array.isArray(collection)) {
+      throw new Error(`${matchedContent} ${path} is not a array`)
+    }
+
     return collection.join(pursue(content))
   }
 }

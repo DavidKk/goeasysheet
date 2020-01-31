@@ -30,7 +30,17 @@ export default class ScheduleModel extends ListSheetModel {
       {
         id: 'type',
         name: '触发类型',
-        comment: '枚举类型; 决定时间触发时机; daily: 每日触发,  minutely: 每几分钟触发'
+        comment: '枚举类型; 决定时间触发时机; daily: 每日触发, minutely: 每几分钟触发'
+      },
+      {
+        id: 'extra',
+        name: '其他字段',
+        comment: 'JSON字符串; 对应数据表中横向字段引用: 例如: {"id":"!A2:A"}'
+      },
+      {
+        id: 'messageType',
+        name: '模板类型',
+        comment: '枚举类型; 具体参考机器人相关信息; text: 文本(默认), markdown: Markdown 标记语言'
       },
       {
         id: 'template',
@@ -53,17 +63,28 @@ export default class ScheduleModel extends ListSheetModel {
         task: sheetName,
         content: contentA1N,
         datetime: datetimeA1N,
-        type: triggerType,
         apikey,
+        type: triggerType,
+        extra: jsonExtraDataWithA1N,
+        messageType,
         template
       } = item
 
-      if (type && triggerType !== type) {
+      /**
+       * 因为无法遍历有效数据行,
+       * 因此判断如果该行为空,
+       * 则不需要往下遍历
+       */
+      if (Object.keys(item).filter((key) => item[key]).length === 0) {
         break
       }
 
+      if (type && triggerType !== type) {
+        continue
+      }
+
       if (!(sheetName && contentA1N && datetimeA1N && type && apikey)) {
-        break
+        continue
       }
 
       const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
@@ -72,9 +93,32 @@ export default class ScheduleModel extends ListSheetModel {
       const contents = sheet.getRange(contentA1N).getValues()
       const datetimes = sheet.getRange(datetimeA1N).getValues()
 
+      let extraNames = []
+      let extraValues = []
+      if (typeof jsonExtraDataWithA1N === 'string') {
+        try {
+          const extraDataWithA1N = JSON.parse(jsonExtraDataWithA1N)
+          extraNames = Object.keys(extraDataWithA1N)
+          extraValues = extraNames.map((name) => {
+            const valueA1N = extraDataWithA1N[name]
+            return sheet.getRange(valueA1N).getValues()
+          })
+        } catch (error) {
+          // nothing todo...
+        }
+      }
+
+      /**
+       * 整合引用值
+       */
       for (let i = 0; i < contents.length; i ++) {
         const content = contents[i][0]
         const daytime = datetimes[i][0]
+        const extra = {}
+        extraNames.forEach((name, index) => {
+          const value = extraValues[index]
+          extra[name] = value[i][0]
+        })
 
         if (!(content && daytime)) {
           break
@@ -85,7 +129,7 @@ export default class ScheduleModel extends ListSheetModel {
           continue
         }
 
-        tasks.push({ content, datetime, type, apikey, template })
+        tasks.push({ content, datetime, apikey, type, extra, messageType, template })
       }
     }
 

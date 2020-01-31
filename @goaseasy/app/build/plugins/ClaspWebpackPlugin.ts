@@ -16,10 +16,10 @@ export default class ClaspWebpackPlugin implements Plugin {
   }
 
   constructor () {
-    // const cert = path.join(rootDir, '.clasprc.json')
-    // if (!fs.existsSync(cert)) {
-    //   throw new Error('File .clasprc.json is not found, please execute `clasp login` fist.')
-    // }
+    const cert = path.join(rootDir, '.clasprc.json')
+    if (!fs.existsSync(cert)) {
+      throw new Error('File .clasprc.json is not found, please execute `clasp login` fist.')
+    }
   }
 
   public apply (compiler: Compiler) {
