@@ -1,2 +1,3 @@
 - About
+  - [Terms](zh-cn/terms)
   - [Policy](en-us/policy)
