@@ -1,6 +1,8 @@
 # Goaseasy
 
-## Install/安装
+- [Goaseasy](https://davidkk.github.io/goaseasy/#/)
+
+## Install
 
 ```bash
 $ npm i -g clasp
@@ -8,20 +10,20 @@ $ npm install
 ```
 
 
-## Login/登陆
+## Login
 
 ```bash
 $ npm run login
 ```
 
 
-## Develop/开发
+## Develop
 
 ```bash
 $ npm start
 ```
 
 
-## Configure Clasp Run/相关文档
+## Docs
 
 [Clasp Docs](https://github.com/google/clasp/blob/master/docs/run.md)
