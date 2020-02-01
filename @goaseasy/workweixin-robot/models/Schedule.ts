@@ -120,8 +120,12 @@ export default class ScheduleModel extends ListSheetModel {
           extra[name] = value[i][0]
         })
 
-        if (!(content && daytime)) {
+        if (!content && !daytime) {
           break
+        }
+
+        if (!(content && daytime)) {
+          continue
         }
 
         const datetime = this.convertDayTime(daytime, triggerType) as any
