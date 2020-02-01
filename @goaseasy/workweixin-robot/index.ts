@@ -34,9 +34,17 @@ export default class WorkWeixinRobot extends Extension {
   }
 
   @useMenu('卸载')
-  public destroy (): void {
+  public destroy (ui: boolean = true): void {
+    if (ui) {
+      if (!this.confirm('确认卸载')) {
+        return
+      }
+    }
+
     super.destroy()
     this.mSchedule.destroy()
+
+    ui && this.toast('卸载成功')
   }
 
   @useTrigger('minutely')

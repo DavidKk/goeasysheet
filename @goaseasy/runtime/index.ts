@@ -40,12 +40,18 @@ export default class Runtime extends Extension {
   }
 
   @useMenu('卸载')
-  public destroy (): void {
-    if (this.confirm('该操作会卸载所有插件, 确认卸载?')) {
-      super.destroy()
-      this.extensions.forEach((extension) => extension.destroy())
-      this.mSettings.destroy()
+  public destroy (ui: boolean = true): void {
+    if (ui) {
+      if (!this.confirm('该操作会卸载所有插件, 确认卸载?')) {
+        return
+      }
     }
+
+    super.destroy()
+    this.extensions.forEach((extension) => extension.destroy())
+    this.mSettings.destroy()
+
+    ui && this.toast('卸载成功')
   }
 
   public getOptions (): { [key: string]: any }

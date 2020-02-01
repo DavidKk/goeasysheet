@@ -193,6 +193,11 @@ export default class Extension {
     return false
   }
 
+  protected toast (content: string): void {
+    const ss = SpreadsheetApp.getActiveSpreadsheet()
+    typeof ss.toast === 'function' && ss.toast(content)
+  }
+
   public $setRuntime (runtime: Extension): void {
     Object.defineProperty(this, '$runtime', { writable: false, value: runtime })
   }
