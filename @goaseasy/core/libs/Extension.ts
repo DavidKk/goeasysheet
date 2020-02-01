@@ -1,10 +1,9 @@
-import Runtime from '@goaseasy/runtime'
 import { pascalCase } from '../utils/string'
 import { minutelyInterval, dailyTime } from '../constants/trigger'
 import { findIndex } from '../utils/array'
 
 export default class Extension {
-  protected $runtime: Runtime
+  protected $runtime: any
   protected $menu: Goaseasy.Menu[]
   protected $trigger: Goaseasy.Trigger[]
   protected minutelyInterval: number
