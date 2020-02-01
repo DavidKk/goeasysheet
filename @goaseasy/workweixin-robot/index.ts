@@ -114,21 +114,19 @@ export default class WorkWeixinRobot extends Extension {
         const content = messages.map(({ template, contents }) => template ? this.render(contents, template) : contents.map((item) => item.content).join(','))
         const message = content.join('\n')
 
-        Logger.log(message)
+        let result: string | true = true
+        switch (messageType) {
+          case 'text':
+            result = this.sRobot.sendMessage(message, 'text', { apikey })
+            break
+          case 'markdown':
+            result = this.sRobot.sendMessage({ content: message }, 'markdown', { apikey })
+            break
+        }
 
-        // let result: string | true = true
-        // switch (messageType) {
-        //   case 'text':
-        //     result = this.sRobot.sendMessage(message, 'text', { apikey })
-        //     break
-        //   case 'markdown':
-        //     result = this.sRobot.sendMessage({ content: message }, 'markdown', { apikey })
-        //     break
-        // }
-
-        // if (result !== true) {
-        //   MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', result)
-        // }
+        if (result !== true) {
+          MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', result)
+        }
       }
     })
   }
