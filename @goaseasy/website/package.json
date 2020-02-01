@@ -1,0 +1,12 @@
+{
+  "name": "@goaseasy/website",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "develop": "docsify start .",
+    "start": "npm run develop"
+  },
+  "peerDependencies": {
+    "docsify-cli": "^4.4.0"
+  }
+}
