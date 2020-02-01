@@ -110,9 +110,18 @@ export default class WorkWeixinRobot extends Extension {
 
     senders.forEach((sender) => {
       const { apikey, messageType, messages } = sender
+      const maxContentLength =
+        messageType === 'text' ? 2e3 :
+        messageType === 'markdown' ? 4e3 :
+        0
+
       if (Array.isArray(messages) && messages.length > 0) {
         const content = messages.map(({ template, contents }) => template ? this.render(contents, template) : contents.map((item) => item.content).join(','))
-        const message = content.join('\n')
+
+        let message = content.join('\n')
+        if (maxContentLength < message.length) {
+          message = message.substr(0, maxContentLength) + '\n...'
+        }
 
         let result: string | true = true
         switch (messageType) {
