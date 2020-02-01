@@ -1,5 +1,5 @@
 import SheetModel from './SheetModel'
-import { findIndex } from '../utils/array'
+import findIndex from 'lodash/findIndex'
 
 export default class KeyValueSheetModel extends SheetModel {
   public created (): void {

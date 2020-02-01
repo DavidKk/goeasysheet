@@ -45,7 +45,7 @@ export default class ScheduleModel extends ListSheetModel {
       {
         id: 'template',
         name: '消息模板',
-        comment: '发送消息模板, 可通过变量替换数据, 例如: <echo>列表:</echo><each this><echo>- {this}\n</echo></each>'
+        comment: '字符串; 发送消息模板, 可通过变量替换数据, 使用的模板引擎为 Handlebars; 例如: {{#each this}}{{content}}{{/each}}'
       }
     ])
   }

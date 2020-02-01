@@ -14,7 +14,13 @@
   "scripts": {
     "lint": "eslint --ext .ts ./ --fix"
   },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "handlebars": "^4.7.2"
+  },
   "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "@types/handlebars": "^4.1.0",
     "@types/goaseasy": "^1.0.0",
     "@types/google-apps-script": "1.0.7",
     "@typescript-eslint/eslint-plugin": "^2.16.0",

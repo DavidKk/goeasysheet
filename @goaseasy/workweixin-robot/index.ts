@@ -1,11 +1,10 @@
+import find from 'lodash/find'
 import { useMenu, useTrigger } from '@goaseasy/core/decorators/extension'
 import Extension from '@goaseasy/core/libs/Extension'
 import { inEffectTimeRange } from '@goaseasy/core/utils/datetime'
 import { minutelyInterval } from '@goaseasy/runtime/constants/settings'
-import { render as renderTemplate } from '@goaseasy/core/utils/template'
 import ScheduleModel from './models/Schedule'
 import RobotServ from './services/Robot'
-import { find } from '@goaseasy/core/utils/array'
 import * as ScheduleTypings from './types/schedule'
 import * as RobotTypings from './types/robot'
 
@@ -112,22 +111,24 @@ export default class WorkWeixinRobot extends Extension {
     senders.forEach((sender) => {
       const { apikey, messageType, messages } = sender
       if (Array.isArray(messages) && messages.length > 0) {
-        const content = messages.map(({ template, contents }) => template ? renderTemplate(contents, template) : contents.map((item) => item.content).join(','))
+        const content = messages.map(({ template, contents }) => template ? this.render(contents, template) : contents.map((item) => item.content).join(','))
         const message = content.join('\n')
 
-        let result: string | true = true
-        switch (messageType) {
-          case 'text':
-            result = this.sRobot.sendMessage(message, 'text', { apikey })
-            break
-          case 'markdown':
-            result = this.sRobot.sendMessage({ content: message }, 'markdown', { apikey })
-            break
-        }
+        Logger.log(message)
 
-        if (result !== true) {
-          MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', result)
-        }
+        // let result: string | true = true
+        // switch (messageType) {
+        //   case 'text':
+        //     result = this.sRobot.sendMessage(message, 'text', { apikey })
+        //     break
+        //   case 'markdown':
+        //     result = this.sRobot.sendMessage({ content: message }, 'markdown', { apikey })
+        //     break
+        // }
+
+        // if (result !== true) {
+        //   MailApp.sendEmail('qowera@gmail.com', '脚本执行错误', result)
+        // }
       }
     })
   }

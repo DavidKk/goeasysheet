@@ -1,6 +1,7 @@
+import findIndex from 'lodash/findIndex'
+import Handlebars from '../services/template'
 import { pascalCase } from '../utils/string'
 import { minutelyInterval, dailyTime } from '../constants/trigger'
-import { findIndex } from '../utils/array'
 
 export default class Extension {
   protected $runtime: any
@@ -199,5 +200,13 @@ export default class Extension {
 
   public $setRuntime (runtime: Extension): void {
     Object.defineProperty(this, '$runtime', { writable: false, value: runtime })
+  }
+
+  public compile (template: string, options?: CompileOptions): HandlebarsTemplateDelegate<any> {  
+    return Handlebars.compile(template, options)
+  }
+
+  public render (data: any, template: string): string {
+    return this.compile(template)(data)
   }
 }
