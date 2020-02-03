@@ -1,0 +1,30 @@
+{
+  "name": "@goaseasy/sync",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "types": "index.d.ts",
+  "contributors": [
+    {
+      "name": "DavidJones",
+      "email": "qowera@gmail.com",
+      "url": "https://github.com/DavidKk"
+    }
+  ],
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint --ext .ts ./ --fix"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "@goaseasy/core": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "@types/goaseasy": "^1.0.0",
+    "@types/google-apps-script": "1.0.7",
+    "@typescript-eslint/eslint-plugin": "^2.16.0",
+    "@typescript-eslint/parser": "^2.16.0",
+    "eslint": "^6.8.0",
+    "rimraf": "^2.6.2"
+  }
+}

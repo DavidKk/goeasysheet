@@ -1,9 +1,10 @@
 import findIndex from 'lodash/findIndex'
+import Goaseasy from './Goaseasy'
 import Handlebars from '../services/template'
 import { pascalCase } from '../utils/string'
 import { minutelyInterval, dailyTime } from '../constants/trigger'
 
-export default class Extension {
+export default class Extension extends Goaseasy {
   protected $runtime: any
   protected $menu: Goaseasy.Menu[]
   protected $trigger: Goaseasy.Trigger[]
@@ -22,6 +23,8 @@ export default class Extension {
   }
 
   constructor () {
+    super()
+
     this.$runtime = null
     this.minutelyInterval = minutelyInterval
     this.dailyTime = dailyTime
