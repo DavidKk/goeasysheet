@@ -14,7 +14,11 @@ export default class Extension {
   }
 
   protected get ui (): GoogleAppsScript.Base.Ui | null {
-    return this.app ? this.app.getUi() : null
+    try {
+      return this.app ? this.app.getUi() : null
+    } catch (error) {
+      return null
+    }
   }
 
   constructor () {
