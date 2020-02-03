@@ -58,7 +58,7 @@ export default class ScheduleModel extends ListSheetModel {
 
     const tasks: Array<Typings.Schedule<T>> = []
     for (let i = 0; i < rows.length; i ++) {
-      const item = rows[i]
+      const item = rows[i] || {}
       const {
         task: sheetName,
         content: contentA1N,
@@ -75,7 +75,7 @@ export default class ScheduleModel extends ListSheetModel {
        * 因此判断如果该行为空,
        * 则不需要往下遍历
        */
-      if (Object.keys(item).filter((key) => item[key]).length === 0) {
+      if (this.isEnd(item)) {
         break
       }
 
@@ -120,7 +120,7 @@ export default class ScheduleModel extends ListSheetModel {
           extra[name] = value[i][0]
         })
 
-        if (!content && !daytime) {
+        if (this.isEnd({ content, daytime }, ['content', 'daytime'])) {
           break
         }
 

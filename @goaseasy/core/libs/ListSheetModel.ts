@@ -46,7 +46,7 @@ export default class ListSheetModel extends SheetModel {
 
     for (let i = 0; i < metadata.length; i ++) {
       const row = metadata[i]
-      if (row.filter((item) => item).length === 0) {
+      if (this.isEnd(row)) {
         break
       }
 

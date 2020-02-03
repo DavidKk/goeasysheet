@@ -33,6 +33,10 @@ export default class SheetModel {
     return this.fields.map(item => item.id)
   }
 
+  protected isEnd (rowdata: { [key: string]: any }, keys: string[] = Object.keys(rowdata)): boolean {
+    return keys.filter((key) => rowdata[key]).length === 0
+  }
+
   public destroy (): void {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
     const sheet = spreadsheet.getSheetByName(this.name)
