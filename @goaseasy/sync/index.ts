@@ -1,15 +1,19 @@
 import without from 'lodash/without'
 import { useMenu, useTrigger } from '@goaseasy/core/decorators/extension'
+import CacheSheetModel from '@goaseasy/core/libs/CacheSheetModel'
 import Extension from '@goaseasy/core/libs/Extension'
 import SyncModel from './models/Sync'
 
 @useMenu('同步助手')
 export default class Sync extends Extension {
   protected mSync: SyncModel
+  protected mCache: CacheSheetModel
 
   constructor () {
     super()
+
     this.mSync = new SyncModel()
+    this.mCache = new CacheSheetModel()
   }
 
   @useMenu('安装')
@@ -17,18 +21,28 @@ export default class Sync extends Extension {
     super.created()
 
     this.mSync.created()
+    this.mCache.created()
   }
 
   @useMenu('同步数据')
-  @useTrigger('daily')
+  @useTrigger('minutely')
   public sync (): void {
+    const now = Date.now()
+    const token = 'excute@sync'
+    const cache = this.mCache.get(token)
+    const { lasttime = -Infinity } = cache || {}
+
     const tasks = this.mSync.fetchTasks()
     if (!(Array.isArray(tasks) && tasks.length > 0)) {
       return
     }
 
     const collections: { [key: string]: string[][] } = {}
-    tasks.forEach(({ sheet: sheetName, fields, url }) => {
+    tasks.forEach(({ sheet: sheetName, fields, url, interval }) => {
+      if (now < lasttime + interval) {
+        return
+      }
+
       const collection = this.fetchDatas(fields, url)
       if (Array.isArray(collection) && collection.length > 0) {
         if (!Array.isArray(collections[sheetName])) {
@@ -54,6 +68,8 @@ export default class Sync extends Extension {
         }
       })
     })
+
+    this.mCache.set(token, { lasttime: now })
   }
 
   @useMenu('卸载')
@@ -66,6 +82,7 @@ export default class Sync extends Extension {
 
     super.destroy()
     this.mSync.destroy()
+    this.mCache.destroy()
 
     ui && this.toast('卸载成功')
   }

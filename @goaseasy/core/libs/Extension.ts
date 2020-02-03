@@ -10,6 +10,7 @@ export default class Extension extends Goaseasy {
   protected $trigger: Goaseasy.Trigger[]
   protected minutelyInterval: number
   protected dailyTime: string
+
   protected get app (): GoogleAppsScript.Spreadsheet.SpreadsheetApp | null {
     return SpreadsheetApp.getActiveSpreadsheet() ? SpreadsheetApp : null
   }

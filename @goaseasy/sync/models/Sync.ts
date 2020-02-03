@@ -13,6 +13,11 @@ export default class SyncModel extends ListSheetModel {
         id: 'url',
         name: '需同步数据表',
         comment: '字符串; Spreadsheets URL 地址; https://docs.google.com/spreadsheets/d/xxx/edit'
+      },
+      {
+        id: 'interval',
+        name: '间隔时间',
+        comment: '数字; 同步间隔时间, 单位(分)'
       }
     ])
   }
@@ -23,12 +28,10 @@ export default class SyncModel extends ListSheetModel {
       return []
     }
 
-    Logger.log(rows)
-
     const results: Typings.SyncTask[] = []
     for (let i = 0; i < rows.length; i ++) {
       const item = rows[i] || {}
-      const { sheet: name, url } = item
+      const { sheet: name, url, interval } = item
 
       if (this.isEnd(item)) {
         break
@@ -40,7 +43,7 @@ export default class SyncModel extends ListSheetModel {
 
       const sheet = this.getSheet(name)
       const fields = this.getSheetFields(sheet)
-      results.push({ sheet: name, fields, url })
+      results.push({ sheet: name, fields, url, interval })
     }
 
     return results
