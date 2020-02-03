@@ -8,6 +8,20 @@ import RobotServ from './services/Robot'
 import * as ScheduleTypings from './types/schedule'
 import * as RobotTypings from './types/robot'
 
+interface Message {
+  template: string
+  contents: Array<{
+    content: string
+    [key: string]: string
+  }>
+}
+
+interface Sender {
+  apikey: string
+  messageType: RobotTypings.MessageType
+  messages: Message[]
+}
+
 @useMenu('微信机器人')
 export default class WorkWeixinRobot extends Extension {
   protected mSchedule: ScheduleModel
@@ -67,25 +81,11 @@ export default class WorkWeixinRobot extends Extension {
   }
 
   public sendMessage <T extends ScheduleTypings.ScheduleType>(tasks: Array<ScheduleTypings.Schedule<T>>): void {
-    interface Message {
-      template: string
-      contents: Array<{
-        content: string
-        [key: string]: string
-      }>
-    }
-
-    interface Sender {
-      apikey: string
-      messageType: RobotTypings.MessageType
-      messages: Message[]
-    }
-
     const senders: Sender[] = []
     tasks.forEach((task) => {
       const { apikey, messageType, template, content, extra } = task
 
-      let sender: Sender = find(senders, { apikey, messageType })
+      let sender: Sender = find(senders, { apikey, messageType: messageType || 'text' })
       if (!sender) {
         sender = { apikey, messageType, messages: [] }
         senders.push(sender)
@@ -97,7 +97,7 @@ export default class WorkWeixinRobot extends Extension {
 
       let message: Message = find(sender.messages, { template })
       if (!message) {
-        message = { template, contents: [] }
+        message = { template: template || '', contents: [] }
         sender.messages.push(message)
       }
 
@@ -109,11 +109,11 @@ export default class WorkWeixinRobot extends Extension {
     })
 
     senders.forEach((sender) => {
-      const { apikey, messageType, messages } = sender
+      const { apikey, messageType = 'text', messages } = sender
       const maxContentLength =
         messageType === 'text' ? 2e3 :
         messageType === 'markdown' ? 4e3 :
-        0
+        2e3
 
       if (Array.isArray(messages) && messages.length > 0) {
         const content = messages.map(({ template, contents }) => template ? this.render(contents, template) : contents.map((item) => item.content).join(','))
@@ -125,11 +125,12 @@ export default class WorkWeixinRobot extends Extension {
 
         let result: string | true = true
         switch (messageType) {
-          case 'text':
-            result = this.sRobot.sendMessage(message, 'text', { apikey })
-            break
           case 'markdown':
             result = this.sRobot.sendMessage({ content: message }, 'markdown', { apikey })
+            break
+          case 'text':
+          default:
+            result = this.sRobot.sendMessage(message, 'text', { apikey })
             break
         }
 

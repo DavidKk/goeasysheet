@@ -6,8 +6,8 @@ export default class SyncModel extends ListSheetModel {
     super('同步助手', [
       {
         id: 'sheet',
-        name: '容器表明',
-        comment: '字符串; 对应数据表名称; 例如: 微信提醒'
+        name: '任务名称',
+        comment: '字符串; 对应数据表名称'
       },
       {
         id: 'url',
@@ -17,17 +17,32 @@ export default class SyncModel extends ListSheetModel {
     ])
   }
 
-  public fetch (): Typings.SyncTask[] {
+  public fetchTasks (): Typings.SyncTask[] {
     const rows = this.select()
     if (rows.length === 0) {
       return []
     }
 
-    const tasks: Typings.SyncTask[] = []
-    for (let i = 0; i < rows.length; i ++) {
+    Logger.log(rows)
 
+    const results: Typings.SyncTask[] = []
+    for (let i = 0; i < rows.length; i ++) {
+      const item = rows[i] || {}
+      const { sheet: name, url } = item
+
+      if (this.isEnd(item)) {
+        break
+      }
+
+      if (!(name && url)) {
+        continue
+      }
+
+      const sheet = this.getSheet(name)
+      const fields = this.getSheetFields(sheet)
+      results.push({ sheet: name, fields, url })
     }
 
-    return tasks
+    return results
   }
 }

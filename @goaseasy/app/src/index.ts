@@ -1,9 +1,9 @@
 import Runtime from '@goaseasy/runtime'
-import WorkWeixinRobot from '@goaseasy/workweixin-robot'
 import Sync from '@goaseasy/sync'
+import WorkWeixinRobot from '@goaseasy/workweixin-robot'
 
-Global.Extensions.push(WorkWeixinRobot)
 Global.Extensions.push(Sync)
+Global.Extensions.push(WorkWeixinRobot)
 
 export default new Runtime({
   extensions: Global.Extensions,

@@ -8,9 +8,9 @@ export default class ScheduleModel extends ListSheetModel {
   constructor () {
     super('企业微信机器人', [
       {
-        id: 'task',
+        id: 'sheet',
         name: '任务名称',
-        comment: '字符串; 对应数据表名称; 例如: 微信提醒'
+        comment: '字符串; 对应数据表名称'
       },
       {
         id: 'content',
@@ -60,21 +60,16 @@ export default class ScheduleModel extends ListSheetModel {
     for (let i = 0; i < rows.length; i ++) {
       const item = rows[i] || {}
       const {
-        task: sheetName,
+        sheet: sheetName,
         content: contentA1N,
         datetime: datetimeA1N,
         apikey,
         type: triggerType,
         extra: jsonExtraDataWithA1N,
-        messageType,
+        messageType = 'text',
         template
       } = item
 
-      /**
-       * 因为无法遍历有效数据行,
-       * 因此判断如果该行为空,
-       * 则不需要往下遍历
-       */
       if (this.isEnd(item)) {
         break
       }
@@ -87,9 +82,7 @@ export default class ScheduleModel extends ListSheetModel {
         continue
       }
 
-      const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
-      const sheet = spreadsheet.getSheetByName(sheetName)
-
+      const sheet = this.getSheet(sheetName)
       const contents = sheet.getRange(contentA1N).getValues()
       const datetimes = sheet.getRange(datetimeA1N).getValues()
 
@@ -133,7 +126,7 @@ export default class ScheduleModel extends ListSheetModel {
           continue
         }
 
-        tasks.push({ content, datetime, apikey, type, extra, messageType, template })
+        tasks.push({ content, datetime, apikey, type, extra, messageType: messageType || 'text', template })
       }
     }
 
