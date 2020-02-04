@@ -39,9 +39,9 @@ export default class Sync extends Extension {
 
     const collections: { [key: string]: string[][] } = {}
     tasks.forEach(({ sheet: sheetName, fields, url, interval }) => {
-      // if (now < lasttime + interval) {
-      //   return
-      // }
+      if (now < lasttime + interval) {
+        return
+      }
 
       const collection = this.fetchFields(fields, url)
       if (Array.isArray(collection) && collection.length > 0) {
