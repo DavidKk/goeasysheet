@@ -2,6 +2,15 @@ import SheetModel from './SheetModel'
 import findIndex from 'lodash/findIndex'
 
 export default class KeyValueSheetModel extends SheetModel {
+  protected get keyCol (): number {
+    const sheet = this.getSheet()
+    return sheet.getFrozenColumns() || 1
+  }
+
+  protected get valueCol (): number {
+    return this.keyCol + 1
+  }
+
   public created (): void {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
     if (!spreadsheet.getSheetByName(this.name)) {
@@ -37,13 +46,13 @@ export default class KeyValueSheetModel extends SheetModel {
   protected getKeyRange (start: number, end: number): GoogleAppsScript.Spreadsheet.Range {
     start = start || 1
     end = end || this.fields.length
-    return this.getRange(start, 1, end)
+    return this.getRange(start, this.keyCol, end)
   }
 
   protected getValueRange (start?: number, end?: number): GoogleAppsScript.Spreadsheet.Range {
     start = start || 1
     end = end || this.fields.length
-    return this.getRange(start, 2, end)
+    return this.getRange(start, this.valueCol, end)
   }
 
   public getValues (): { [key: string]: any } {
@@ -66,7 +75,7 @@ export default class KeyValueSheetModel extends SheetModel {
     }
   
     const row = index + 1
-    const range = this.getRange(row, 2)
+    const range = this.getRange(row, this.valueCol)
     const item = range.getValues()
     return item[0]
   }
@@ -78,7 +87,7 @@ export default class KeyValueSheetModel extends SheetModel {
     }
   
     const row = index + 1
-    const range = this.getRange(row, 2)
+    const range = this.getRange(row, this.valueCol)
     range.setValues([value])
   
     SpreadsheetApp.flush()

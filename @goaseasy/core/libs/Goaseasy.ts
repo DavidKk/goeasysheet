@@ -8,13 +8,17 @@ export default class Goaseasy {
     return sheet
   }
 
-  protected getSheetFields (sheet: string | GoogleAppsScript.Spreadsheet.Sheet, row: number = 1): string[] {
+  protected getSheetFields (sheet: string | GoogleAppsScript.Spreadsheet.Sheet, row?: number): string[] {
     if (!sheet) {
       return []
     }
 
     if (typeof sheet === 'string') {
       sheet = this.getSheet(sheet)
+    }
+
+    if (typeof row !== 'number') {
+      row = sheet.getFrozenRows() || 1
     }
 
     const count = sheet.getMaxColumns()

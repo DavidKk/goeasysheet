@@ -1,6 +1,15 @@
 import SheetModel from './SheetModel'
 
 export default class ListSheetModel extends SheetModel {
+  protected get keyRows (): number {
+    const sheet = this.getSheet()
+    return sheet.getFrozenRows() || 1
+  }
+
+  protected get valueRows (): number {
+    return this.keyRows + 1
+  }
+
   public created (): void {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
     if (!spreadsheet.getSheetByName(this.name)) {
@@ -40,7 +49,7 @@ export default class ListSheetModel extends SheetModel {
       }
     })
 
-    const range = this.getRange(2, 1, count, this.fields.length)
+    const range = this.getRange(this.valueRows, 1, count, this.fields.length)
     const metadata = range.getValues()
     const results = []
 

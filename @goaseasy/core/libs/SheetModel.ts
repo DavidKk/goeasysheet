@@ -1,8 +1,8 @@
 import Goaseasy from './Goaseasy'
 
 export default class SheetModel extends Goaseasy {
-  public name: string
-  public fields: Goaseasy.ModelFileds
+  protected name: string
+  protected fields: Goaseasy.ModelFileds
 
   constructor (name: string, fields: Goaseasy.ModelFileds) {
     super()
