@@ -201,7 +201,7 @@ export default class ScheduleModel extends ListSheetModel {
     }
 
     if (typeof datetime === 'string') {
-      const regexp = /^((?:\d{2}:\d{2},?)+)(?:\/((?:(?:Weekday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?)+))?$/i
+      const regexp = /^((?:\d{1,2}:\d{1,2},?)+)(?:\/((?:(?:Weekday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?)+))?$/i
       const matched = regexp.exec(datetime)
 
       if (matched) {
