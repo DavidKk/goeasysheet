@@ -1,4 +1,5 @@
 import without from 'lodash/without'
+import uniqBy from 'lodash/uniqBy'
 import { useMenu, useTrigger } from '@goaseasy/core/decorators/extension'
 import CacheSheetModel from '@goaseasy/core/libs/CacheSheetModel'
 import Extension from '@goaseasy/core/libs/Extension'
@@ -61,7 +62,7 @@ export default class Sync extends Extension {
       const range = sheet.getRange(valueRow, 1, sheet.getMaxRows(), sheet.getMaxColumns())
       range.setValue('')
 
-      collection.forEach((values, index) => {
+      uniqBy(collection, (item) => item.join('')).forEach((values, index) => {
         if (Array.isArray(values) && values.length > 0) {
           const row = index + valueRow
           const range = sheet.getRange(row, 1, 1, values.length)

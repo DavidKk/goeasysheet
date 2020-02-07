@@ -118,7 +118,7 @@ export default class WorkWeixinRobot extends Extension {
       if (Array.isArray(messages) && messages.length > 0) {
         const content = messages.map(({ template, contents }) => template ? this.render(contents, template) : contents.map((item) => item.content).join(','))
 
-        let message = content.join('\n')
+        let message = content.join('\n\n')
         if (maxContentLength < message.length) {
           message = message.substr(0, maxContentLength) + '\n...'
         }
