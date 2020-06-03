@@ -27,7 +27,7 @@ export default class WorkWeixinRobot extends Extension {
   protected mSchedule: ScheduleModel
   protected sRobot: RobotServ
 
-  constructor () {
+  constructor() {
     super()
 
     this.mSchedule = new ScheduleModel()
@@ -35,19 +35,19 @@ export default class WorkWeixinRobot extends Extension {
   }
 
   @useMenu('安装')
-  public created (): void {
+  public created(): void {
     super.created()
     this.mSchedule.created()
   }
 
   @useMenu('触发计划任务')
-  public report (): void {
+  public report(): void {
     this.dailyReport()
     this.minutelyReport()
   }
 
   @useMenu('卸载')
-  public destroy (ui: boolean = true): void {
+  public destroy(ui: boolean = true): void {
     if (ui) {
       if (!this.confirm('确认卸载')) {
         return
@@ -61,7 +61,7 @@ export default class WorkWeixinRobot extends Extension {
   }
 
   @useTrigger('minutely')
-  public minutelyReport (): void {
+  public minutelyReport(): void {
     const tasks = this.getMinutelyTasks()
     if (!(Array.isArray(tasks) && tasks.length > 0)) {
       return
@@ -71,7 +71,7 @@ export default class WorkWeixinRobot extends Extension {
   }
 
   @useTrigger('daily')
-  public dailyReport (): void {
+  public dailyReport(): void {
     const tasks = this.getDailyTasks()
     if (!(Array.isArray(tasks) && tasks.length > 0)) {
       return
@@ -80,7 +80,7 @@ export default class WorkWeixinRobot extends Extension {
     return this.sendMessage(tasks)
   }
 
-  public sendMessage <T extends ScheduleTypings.ScheduleType>(tasks: Array<ScheduleTypings.Schedule<T>>): void {
+  public sendMessage<T extends ScheduleTypings.ScheduleType>(tasks: Array<ScheduleTypings.Schedule<T>>): void {
     const senders: Sender[] = []
     tasks.forEach((task) => {
       const { apikey, messageType, template, content, extra } = task
@@ -110,13 +110,10 @@ export default class WorkWeixinRobot extends Extension {
 
     senders.forEach((sender) => {
       const { apikey, messageType = 'text', messages } = sender
-      const maxContentLength =
-        messageType === 'text' ? 2e3 :
-        messageType === 'markdown' ? 4e3 :
-        2e3
+      const maxContentLength = messageType === 'text' ? 2e3 : messageType === 'markdown' ? 4e3 : 2e3
 
       if (Array.isArray(messages) && messages.length > 0) {
-        const content = messages.map(({ template, contents }) => template ? this.render(contents, template) : contents.map((item) => item.content).join(','))
+        const content = messages.map(({ template, contents }) => (template ? this.render(contents, template) : contents.map((item) => item.content).join(',')))
 
         let message = content.join('\n')
         if (maxContentLength < message.length) {
@@ -141,7 +138,7 @@ export default class WorkWeixinRobot extends Extension {
     })
   }
 
-  public getMinutelyTasks (): Array<ScheduleTypings.Schedule<'minutely'>> {
+  public getMinutelyTasks(): Array<ScheduleTypings.Schedule<'minutely'>> {
     const perMinutes = parseInt(this.$runtime.getOptions('minutely'), 10) || minutelyInterval
     if (!(perMinutes > 0)) {
       return []
@@ -167,10 +164,12 @@ export default class WorkWeixinRobot extends Extension {
       }
 
       if (datetime instanceof Date) {
-        return datetime.getFullYear() === year
-          && datetime.getMonth() === month
-          && datetime.getDate() === date
-          && inEffectTimeRange(datetime.getHours(), datetime.getMinutes(), hours, minutes, perMinutes)
+        return (
+          datetime.getFullYear() === year &&
+          datetime.getMonth() === month &&
+          datetime.getDate() === date &&
+          inEffectTimeRange(datetime.getHours(), datetime.getMinutes(), hours, minutes, perMinutes)
+        )
       }
 
       const { days, clocks } = datetime
@@ -178,7 +177,7 @@ export default class WorkWeixinRobot extends Extension {
         return false
       }
 
-      for (let i = 0; i < clocks.length; i ++) {
+      for (let i = 0; i < clocks.length; i++) {
         const clock = clocks[i]
         if (clock instanceof Date) {
           if (inEffectTimeRange(clock.getHours(), clock.getMinutes(), hours, minutes, perMinutes)) {
@@ -193,7 +192,7 @@ export default class WorkWeixinRobot extends Extension {
     })
   }
 
-  public getDailyTasks (): Array<ScheduleTypings.Schedule<'daily'>> {
+  public getDailyTasks(): Array<ScheduleTypings.Schedule<'daily'>> {
     const tasks = this.mSchedule.fetchTasks('daily')
     if (tasks.length === 0) {
       return []
@@ -205,9 +204,7 @@ export default class WorkWeixinRobot extends Extension {
     const date = now.getDate()
 
     const isSameDate = (datetime: Date) => {
-      return datetime.getFullYear() === year
-        && datetime.getMonth() === month
-        && datetime.getDate() === date
+      return datetime.getFullYear() === year && datetime.getMonth() === month && datetime.getDate() === date
     }
 
     return tasks.filter((task) => {
@@ -221,7 +218,7 @@ export default class WorkWeixinRobot extends Extension {
       }
 
       const { dates } = datetime
-      for (let i = 0; i < dates.length; i ++) {
+      for (let i = 0; i < dates.length; i++) {
         const item = dates[i]
         if (item instanceof Date) {
           if (isSameDate(item)) {

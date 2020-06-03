@@ -19,67 +19,60 @@ export const Rules: webpack.RuleSetRule[] = [
     test: /\.tsx?$/,
     loaders: [
       {
-        loader: 'es3ify-loader'
+        loader: 'es3ify-loader',
       },
       {
-        loader: 'ts-loader'
-      }
-    ]
-  }
+        loader: 'ts-loader',
+      },
+    ],
+  },
 ]
 
 export const Plugins: webpack.Plugin[] = [
   new CleanWebpackPlugin({
-    cleanOnceBeforeBuildPatterns: [
-      outDir
-    ]
+    cleanOnceBeforeBuildPatterns: [outDir],
   }),
-  new webpack.WatchIgnorePlugin([
-    /\.d\.ts$/
-  ]),
-  new CopyPlugin([
+  new webpack.WatchIgnorePlugin([/\.d\.ts$/]),
+  new CopyPlugin(
+    [
+      {
+        from: 'pioneer/*',
+        to: '[contenthash].[ext]',
+        flatten: true,
+      },
+      'appsscript.json',
+      'creds.json',
+      '.clasp.json',
+      '.clasprc.json',
+    ],
     {
-      from: 'pioneer/*',
-      to: '[contenthash].[ext]',
-      flatten: true
-    },
-    'appsscript.json',
-    'creds.json',
-    '.clasp.json',
-    '.clasprc.json'
-  ], {
-    copyUnmodified: true
-  }),
-  new ClaspPlugin()
+      copyUnmodified: true,
+    }
+  ),
+  new ClaspPlugin(),
 ]
 
 export const Config: webpack.Configuration = {
   stats: 'errors-only',
   devtool: false,
   mode: process.env.NODE_ENV === 'development' ? 'development' : 'production',
-  entry: [
-    path.join(srcDir, 'index.ts')
-  ],
+  entry: [path.join(srcDir, 'index.ts')],
   output: {
     path: outDir,
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
     plugins: [
       new TsconfigPathsPlugin({
-        configFile: path.join(srcDir, './tsconfig.json')
-      })
-    ]
+        configFile: path.join(srcDir, './tsconfig.json'),
+      }),
+    ],
   },
   module: {
-    rules: [
-      ...Rules
-    ]
+    rules: [...Rules],
   },
-  plugins: [
-    ...Plugins
-  ]
+  plugins: [...Plugins],
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -88,10 +81,11 @@ if (process.env.NODE_ENV === 'production') {
       new UglifyJSPlugin({
         uglifyOptions: {
           ie8: true,
-          keep_fnames: true
-        }
-      })
-    ]
+          /* eslint-disable-next-line @typescript-eslint/camelcase */
+          keep_fnames: true,
+        },
+      }),
+    ],
   }
 }
 

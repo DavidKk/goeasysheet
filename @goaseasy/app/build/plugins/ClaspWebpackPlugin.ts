@@ -11,26 +11,26 @@ export default class ClaspWebpackPlugin implements Plugin {
   public output: string
   public json: string | boolean
 
-  static toString (): string {
+  static toString(): string {
     return 'clasp-webpack-plugin'
   }
 
-  constructor () {
+  constructor() {
     const cert = path.join(rootDir, '.clasprc.json')
     if (!fs.existsSync(cert)) {
       throw new Error('File .clasprc.json is not found, please execute `clasp login` fist.')
     }
   }
 
-  public apply (compiler: Compiler) {
-    compiler.hooks.afterEmit.tapPromise(ClaspWebpackPlugin.toString(), () => this.command(['push']))
+  public apply(compiler: Compiler) {
+    compiler.hooks.afterEmit.tapPromise(ClaspWebpackPlugin.toString(), () => this.command(['push', '-f']))
   }
 
-  private command (commands: string | string[]) {
+  private command(commands: string | string[]) {
     return new Promise((resolve, reject) => {
       const options: SpawnOptions = {
         stdio: 'inherit',
-        cwd: outDir
+        cwd: outDir,
       }
 
       const cp = spawn('clasp', Array.isArray(commands) ? commands : [commands], options)

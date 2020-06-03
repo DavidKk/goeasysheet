@@ -4,28 +4,28 @@ Global.Menus = []
 Global.Triggers = []
 Global.Extensions = []
 
-function trigger (type: Get<Goaseasy.Trigger, 'type'>): void {
+function trigger(type: Get<Goaseasy.Trigger, 'type'>): void {
   Global.Triggers.filter((trigger) => trigger.type === type).forEach((trigger) => {
     typeof trigger.action === 'function' && trigger.action()
   })
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function onOpen (): void {
+function onOpen(): void {
   // nothing todo...
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function onInstall (): void {
+function onInstall(): void {
   onOpen()
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function onDaily (): void {
+function onDaily(): void {
   trigger('daily')
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-function onMinutely (): void {
+function onMinutely(): void {
   trigger('minutely')
 }

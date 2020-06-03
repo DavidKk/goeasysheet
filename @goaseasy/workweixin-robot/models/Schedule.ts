@@ -2,73 +2,64 @@ import ListSheetModel from '@goaseasy/core/libs/ListSheetModel'
 import { sub, mul } from '@goaseasy/core/utils/math'
 import { parseGMTHours, parseGMTSeconds } from '@goaseasy/core/utils/datetime'
 import { Days } from '../constants/day'
-import * as Typings from '../types/schedule'
+import * as Types from '../types/schedule'
 
 export default class ScheduleModel extends ListSheetModel {
-  constructor () {
+  constructor() {
     super('企业微信机器人', [
       {
         id: 'sheet',
         name: '任务名称',
-        comment: '字符串; 对应数据表名称'
+        comment: '字符串; 对应数据表名称',
       },
       {
         id: 'content',
         name: '发送内容',
-        comment: '字符串; 对应数据表中发送内容的引用; 例如: !A1:A'
+        comment: '字符串; 对应数据表中发送内容的引用; 例如: !A1:A',
       },
       {
         id: 'datetime',
         name: '执行时间',
-        comment: '字符串; 对应数据表中发送时间的引用; 例如: !B1:B'
+        comment: '字符串; 对应数据表中发送时间的引用; 例如: !B1:B',
       },
       {
         id: 'apikey',
         name: 'API_KEY',
-        comment: '字符串; 企业微信机器人提供的 API KEY'
+        comment: '字符串; 企业微信机器人提供的 API KEY',
       },
       {
         id: 'type',
         name: '触发类型',
-        comment: '枚举类型; 决定时间触发时机; daily: 每日触发, minutely: 每几分钟触发'
+        comment: '枚举类型; 决定时间触发时机; daily: 每日触发, minutely: 每几分钟触发',
       },
       {
         id: 'extra',
         name: '其他字段',
-        comment: 'JSON字符串; 对应数据表中横向字段引用: 例如: {"id":"!A2:A"}'
+        comment: 'JSON字符串; 对应数据表中横向字段引用: 例如: {"id":"!A2:A"}',
       },
       {
         id: 'messageType',
         name: '模板类型',
-        comment: '枚举类型; 具体参考机器人相关信息; text: 文本(默认), markdown: Markdown 标记语言'
+        comment: '枚举类型; 具体参考机器人相关信息; text: 文本(默认), markdown: Markdown 标记语言',
       },
       {
         id: 'template',
         name: '消息模板',
-        comment: '字符串; 发送消息模板, 可通过变量替换数据, 使用的模板引擎为 Handlebars; 例如: {{#each this}}{{content}}{{/each}}'
-      }
+        comment: '字符串; 发送消息模板, 可通过变量替换数据, 使用的模板引擎为 Handlebars; 例如: {{#each this}}{{content}}{{/each}}',
+      },
     ])
   }
 
-  public fetchTasks <T extends Typings.ScheduleType>(type?: T): Array<Typings.Schedule<T>> {
+  public fetchTasks<T extends Types.ScheduleType>(type?: T): Array<Types.Schedule<T>> {
     const rows = this.select()
     if (rows.length === 0) {
       return []
     }
 
-    const tasks: Array<Typings.Schedule<T>> = []
-    for (let i = 0; i < rows.length; i ++) {
+    const tasks: Array<Types.Schedule<T>> = []
+    for (let i = 0; i < rows.length; i++) {
       const item = rows[i] || {}
-      const {
-        sheet: sheetName,
-        content: contentA1N,
-        datetime: datetimeA1N,
-        apikey,
-        type: triggerType,
-        extra: jsonExtraDataWithA1N,
-        messageType = 'text',
-        template
-      } = item
+      const { sheet: sheetName, content: contentA1N, datetime: datetimeA1N, apikey, type: triggerType, extra: jsonExtraDataWithA1N, messageType = 'text', template } = item
 
       if (this.isEnd(item)) {
         break
@@ -104,7 +95,7 @@ export default class ScheduleModel extends ListSheetModel {
       /**
        * 整合引用值
        */
-      for (let i = 0; i < contents.length; i ++) {
+      for (let i = 0; i < contents.length; i++) {
         const content = contents[i][0]
         const daytime = datetimes[i][0]
         const extra = {}
@@ -133,7 +124,7 @@ export default class ScheduleModel extends ListSheetModel {
     return tasks
   }
 
-  protected convertDayTime <T extends Typings.ScheduleType>(datetime: Date | string, type: T): Typings.ScheduleDatetime<T> {
+  protected convertDayTime<T extends Types.ScheduleType>(datetime: Date | string, type: T): Types.ScheduleDatetime<T> {
     switch (type) {
       case 'daily':
         return this.convertSpecifiedDateTime(datetime) as any
@@ -146,7 +137,7 @@ export default class ScheduleModel extends ListSheetModel {
    * 转化成指定的任务时间格式
    * @param datetime 时间
    */
-  protected convertSpecifiedDateTime (datetime: Date | string): Typings.ScheduleSpecifiedDateTime {
+  protected convertSpecifiedDateTime(datetime: Date | string): Types.ScheduleSpecifiedDateTime {
     const dates = []
     if (datetime instanceof Date) {
       if (datetime.getTime() < 0) {
@@ -184,7 +175,7 @@ export default class ScheduleModel extends ListSheetModel {
    * 转化成周期性任务时间格式
    * @param datetime 时间
    */
-  protected convertPeriodicDateTime (datetime: Date | string): Typings.SchedulePeriodicDateTime {
+  protected convertPeriodicDateTime(datetime: Date | string): Types.SchedulePeriodicDateTime {
     if (datetime instanceof Date) {
       const days = []
       if (datetime.getTime() < 0) {
@@ -219,13 +210,13 @@ export default class ScheduleModel extends ListSheetModel {
           const [hours, minutes, seconds] = time.split(':')
           return { hours: parseInt(hours, 10), minutes: parseInt(minutes, 10), seconds: parseInt(seconds, 10) }
         })
-  
+
         return { days, clocks }
       }
     }
   }
 
-  protected convertTime (datetime: Date): Typings.ScheduleClock {
+  protected convertTime(datetime: Date): Types.ScheduleClock {
     const seconds = parseGMTSeconds(datetime)
     const floatHours = parseGMTHours(datetime)
     const hours = Math.floor(floatHours)

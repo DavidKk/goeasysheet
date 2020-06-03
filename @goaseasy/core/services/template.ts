@@ -1,38 +1,38 @@
 import Handlebars, { HelperOptions } from 'handlebars'
 
 const operators = {
-  '==' (lValue: string, rValue: string) {
+  '=='(lValue: string, rValue: string) {
     /* eslValueint eqeqeq:off */
     return lValue == rValue
   },
-  '===' (lValue: string, rValue: string) {
+  '==='(lValue: string, rValue: string) {
     return lValue === rValue
   },
-  '!=' (lValue: string, rValue: string) {
+  '!='(lValue: string, rValue: string) {
     /* eslValueint eqeqeq:off */
     return lValue != rValue
   },
-  '!==' (lValue: string, rValue: string) {
+  '!=='(lValue: string, rValue: string) {
     return lValue !== rValue
   },
-  '<' (lValue: string, rValue: string) {
+  '<'(lValue: string, rValue: string) {
     return lValue < rValue
   },
-  '>' (lValue: string, rValue: string) {
+  '>'(lValue: string, rValue: string) {
     return lValue > rValue
   },
-  '<=' (lValue: string, rValue: string) {
+  '<='(lValue: string, rValue: string) {
     return lValue <= rValue
   },
-  '>=' (lValue: string, rValue: string) {
+  '>='(lValue: string, rValue: string) {
     return lValue >= rValue
   },
-  'typeof' (lValue: string, rValue: string) {
+  typeof(lValue: string, rValue: string) {
     return typeof lValue == rValue
-  }
+  },
 }
 
-function compare (lValue: string, operator: string, rValue: string, options: HelperOptions) {
+function compare(lValue: string, operator: string, rValue: string, options: HelperOptions) {
   if (!operators[operator]) {
     throw new Error(`Handlerbars Helper 'compare' doesn't know the operator ${operator}`)
   }
@@ -41,7 +41,7 @@ function compare (lValue: string, operator: string, rValue: string, options: Hel
   return result ? options.fn(this) : options.inverse(this)
 }
 
-function exists (value: any, options: HelperOptions) {
+function exists(value: any, options: HelperOptions) {
   return value ? options.fn(this) : options.inverse(this)
 }
 

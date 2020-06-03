@@ -1,6 +1,6 @@
 import { div } from './math'
 
-export function parseGMTSeconds (datetime: Date): number { 
+export function parseGMTSeconds(datetime: Date): number {
   const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
   const spreadsheetTimezone = spreadsheet.getSpreadsheetTimeZone()
   const dateString = Utilities.formatDate(datetime, spreadsheetTimezone, 'EEE, d MMM yyyy HH:mm:ss')
@@ -10,22 +10,22 @@ export function parseGMTSeconds (datetime: Date): number {
   return Math.round(diff / 1000)
 }
 
-export function parseGMTMinutes (datetime: Date): number {
+export function parseGMTMinutes(datetime: Date): number {
   const seconds = parseGMTSeconds(datetime)
   return div(seconds, 60)
 }
 
-export function parseGMTHours (datetime: Date): number {
+export function parseGMTHours(datetime: Date): number {
   const minutes = parseGMTMinutes(datetime)
   return div(minutes, 60)
 }
 
-export function inEffectTimeRange (hitHours: number, hitMinutes: number, hours: number, minutes: number, minutely: number): boolean {
+export function inEffectTimeRange(hitHours: number, hitMinutes: number, hours: number, minutes: number, minutely: number): boolean {
   if (hitHours === hours && hitMinutes === minutes) {
     return true
   }
 
-  if (hours === hitHours - 1 || hitHours === 0 && hours === 23) {
+  if (hours === hitHours - 1 || (hitHours === 0 && hours === 23)) {
     if (hitMinutes - minutely < 0 && minutes + minutely > 60) {
       return true
     }
@@ -38,7 +38,7 @@ export function inEffectTimeRange (hitHours: number, hitMinutes: number, hours: 
   return false
 }
 
-export function isSameDate (aDate: Date, bDate: Date) {
+export function isSameDate(aDate: Date, bDate: Date) {
   if (aDate.getFullYear() == bDate.getFullYear()) {
     if (aDate.getMonth() == bDate.getMonth()) {
       if (aDate.getDate() == bDate.getDate()) {
@@ -46,6 +46,6 @@ export function isSameDate (aDate: Date, bDate: Date) {
       }
     }
   }
-  
+
   return false
 }

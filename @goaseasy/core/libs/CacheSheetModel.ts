@@ -1,11 +1,11 @@
 import SheetModel from './SheetModel'
 
 export default class CacheSheetModel extends SheetModel {
-  constructor (name: string = 'Cache') {
+  constructor(name: string = 'Cache') {
     super(name, [])
   }
 
-  public created (): void {
+  public created(): void {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
     if (!spreadsheet.getSheetByName(this.name)) {
       const activeSheet = spreadsheet.getActiveSheet()
@@ -27,14 +27,14 @@ export default class CacheSheetModel extends SheetModel {
     }
   }
 
-  protected getRangeValues (column: number, numColumns: number = 1): string[][] {
+  protected getRangeValues(column: number, numColumns: number = 1): string[][] {
     const sheet = this.getSheet()
     const count = sheet.getMaxRows()
     const range = sheet.getRange(1, column, count, numColumns)
     const values = range.getValues()
 
     const results = []
-    for (let i = 0; i < values.length; i ++) {
+    for (let i = 0; i < values.length; i++) {
       const data = values[i]
       if (data.join('') === '') {
         break
@@ -46,10 +46,10 @@ export default class CacheSheetModel extends SheetModel {
     return results
   }
 
-  protected getKeys (): string[] {
+  protected getKeys(): string[] {
     const values = this.getRangeValues(1, 1)
     const keys = []
-    for (let i = 0; i < values.length; i ++) {
+    for (let i = 0; i < values.length; i++) {
       const item = values[i][0]
       item && keys.push(item)
     }
@@ -57,17 +57,17 @@ export default class CacheSheetModel extends SheetModel {
     return keys
   }
 
-  protected getValues (): string[] {
+  protected getValues(): string[] {
     const values = this.getRangeValues(2, 1)
     const keys = []
-    for (let i = 0; i < values.length; i ++) {
+    for (let i = 0; i < values.length; i++) {
       keys.push(values[i][0])
     }
 
     return keys
   }
 
-  public get (name: string): any {
+  public get(name: string): any {
     const names = this.getKeys()
     const index = names.indexOf(name)
     if (-1 === index) {
@@ -86,7 +86,7 @@ export default class CacheSheetModel extends SheetModel {
     }
   }
 
-  public set (name: string, value: any): void {
+  public set(name: string, value: any): void {
     const names = this.getKeys()
     const index = names.indexOf(name)
     const row = (-1 === index ? this.getKeys().length : index) + 1
@@ -101,7 +101,7 @@ export default class CacheSheetModel extends SheetModel {
     }
   }
 
-  public del (name: string): void {
+  public del(name: string): void {
     const names = this.getKeys()
     const index = names.indexOf(name)
     if (-1 === index) {

@@ -1,7 +1,7 @@
 {
   "name": "@types/goaseasy",
   "version": "1.0.0",
-  "types": "typings.d.ts",
+  "types": "types.d.ts",
   "contributors": [
     {
       "name": "DavidJones",

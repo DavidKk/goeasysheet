@@ -9,20 +9,17 @@ $ npm i -g clasp
 $ npm install
 ```
 
-
 ## 登陆
 
 ```bash
 $ npm run login
 ```
 
-
 ## 开发
 
 ```bash
 $ npm start
 ```
-
 
 ## 相关文档
 

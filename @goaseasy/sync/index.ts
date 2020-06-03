@@ -1,16 +1,18 @@
+import findIndex from 'lodash/findIndex'
 import without from 'lodash/without'
 import uniqBy from 'lodash/uniqBy'
 import { useMenu, useTrigger } from '@goaseasy/core/decorators/extension'
 import CacheSheetModel from '@goaseasy/core/libs/CacheSheetModel'
 import Extension from '@goaseasy/core/libs/Extension'
 import SyncModel from './models/Sync'
+import * as Types from './types/sync'
 
 @useMenu('同步助手')
 export default class Sync extends Extension {
   protected mSync: SyncModel
   protected mCache: CacheSheetModel
 
-  constructor () {
+  constructor() {
     super()
 
     this.mSync = new SyncModel()
@@ -18,7 +20,7 @@ export default class Sync extends Extension {
   }
 
   @useMenu('安装')
-  public created (): void {
+  public created(): void {
     super.created()
 
     this.mSync.created()
@@ -27,7 +29,7 @@ export default class Sync extends Extension {
 
   @useMenu('同步数据')
   @useTrigger('minutely')
-  public sync (): void {
+  public sync(): void {
     const now = Date.now()
     const token = 'excute@sync'
     const cache = this.mCache.get(token)
@@ -39,17 +41,17 @@ export default class Sync extends Extension {
     }
 
     const collections: { [key: string]: string[][] } = {}
-    tasks.forEach(({ sheet: sheetName, fields, url, interval }) => {
+    tasks.forEach(({ sheet: sheetName, fields, url, interval, filter }) => {
       if (now < lasttime + interval) {
         return
       }
 
-      const collection = this.fetchFields(fields, url)
+      const collection = this.fetchFields(fields, url, filter)
       if (Array.isArray(collection) && collection.length > 0) {
         if (!Array.isArray(collections[sheetName])) {
           collections[sheetName] = []
         }
-  
+
         collections[sheetName] = collections[sheetName].concat(collection)
       }
     })
@@ -75,7 +77,7 @@ export default class Sync extends Extension {
   }
 
   @useMenu('卸载')
-  public destroy (ui: boolean = true): void {
+  public destroy(ui: boolean = true): void {
     if (ui) {
       if (!this.confirm('确认卸载')) {
         return
@@ -89,9 +91,16 @@ export default class Sync extends Extension {
     ui && this.toast('卸载成功')
   }
 
-  public fetchFields (fields: string[], url: string): string[][] {
+  public fetchFields(fields: string[], url: string, filterString: string): string[][] {
     const spreadsheet = SpreadsheetApp.openByUrl(url)
     const sheets = spreadsheet.getSheets()
+
+    let filter: Types.Filter = {}
+    try {
+      filter = JSON.parse(filterString)
+    } catch (error) {
+      // nothing todo...
+    }
 
     let results: string[][] = []
     sheets.forEach((sheet) => {
@@ -101,9 +110,16 @@ export default class Sync extends Extension {
 
       if (without(fields, ...sheetFields).length === 0) {
         const cols = fields.map((field) => sheetFields.indexOf(field))
+        const overTimeFilterCols = Array.isArray(filter.overtime) ? filter.overtime.map((field) => sheetFields.indexOf(field)) : []
         const count = sheet.getMaxRows()
         const range = sheet.getRange(valueRow, 1, count, sheetFields.length)
-        const values = range.getValues().filter((item) => item.join('').trim() !== '')
+        const values = range
+          .getValues()
+          // 过滤空白行
+          .filter((item) => item.join('').trim() !== '')
+          // 时间过滤器
+          .filter((item) => -1 !== findIndex(overTimeFilterCols, (col) => item[col] > Date.now()))
+
         const result = values.map((item) => cols.map((col) => item[col] || ''))
         results = results.concat(result)
       }

@@ -6,21 +6,21 @@ declare namespace Goaseasy {
     action?: Function
     submenu?: Menu[]
   }
-  
+
   interface Trigger {
     type: 'daily' | 'minutely'
     action: Function
     payload?: { [key: string]: any }
   }
 
-  type Extension = { new(...args: any[]): any }
+  type Extension = { new (...args: any[]): any }
 
   interface ModelFiled {
     id: string
     name: string
     comment?: string
   }
-  
+
   type ModelFileds = ModelFiled[]
 
   interface Global {
@@ -30,7 +30,7 @@ declare namespace Goaseasy {
   }
 }
 
-declare var Global: typeof globalThis & Goaseasy.Global
+declare let Global: typeof globalThis & Goaseasy.Global
 
 // eslint-disable-next-line @typescript-eslint/camelcase
 declare const __webpack_public_path__: string

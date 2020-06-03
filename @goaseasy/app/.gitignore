@@ -1,41 +1,11 @@
-# Source folders
-/src
-
-
-# eslint files
-.eslintrc
-.eslintrc.js
-
-
-# CI config files
-.travis.yml
-appveyor.yml
-
-
-# ESDoc files
-.esdoc.json
-esdoc.sh
-
-
-# Source versions
-.git
-.hg
-.svn
-.gitignore
-
-
-# Dependency folders
+# Npm or Yarn
 node_modules
 npm-debug.log
-
-
-# NPM
 npm-shrinkwrap.json
+package-lock.json
 .npmrc
-
-
-# YARN
 yarn.lock
+.yarnrc
 
 
 # Numerous always-ignore extensions

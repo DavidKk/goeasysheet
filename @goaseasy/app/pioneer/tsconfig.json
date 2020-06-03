@@ -7,11 +7,6 @@
     "experimentalDecorators": true,
     "sourceMap": true
   },
-  "include": [
-    "**/*.ts",
-    "**/*.d.ts"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["**/*.ts", "**/*.d.ts"],
+  "exclude": ["node_modules"]
 }

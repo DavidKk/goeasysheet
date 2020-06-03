@@ -44,7 +44,7 @@ export const mul = (noA: number, noB: number) => {
   const intA = Number(strA.replace('.', ''))
   const intB = Number(strB.replace('.', ''))
 
-  return intA * intB / Math.pow(10, decimalSize)
+  return (intA * intB) / Math.pow(10, decimalSize)
 }
 
 export const div = (noA: number, noB: number) => {

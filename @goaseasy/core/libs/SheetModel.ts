@@ -4,26 +4,26 @@ export default class SheetModel extends Goaseasy {
   protected name: string
   protected fields: Goaseasy.ModelFileds
 
-  constructor (name: string, fields: Goaseasy.ModelFileds) {
+  constructor(name: string, fields: Goaseasy.ModelFileds) {
     super()
 
     this.name = name
     this.fields = fields
   }
 
-  protected getKeys (): string[] {
+  protected getKeys(): string[] {
     return this.fields.map((item) => item.id)
   }
 
-  protected getSheet (name: string = this.name, spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet = SpreadsheetApp.getActiveSpreadsheet()): GoogleAppsScript.Spreadsheet.Sheet {
+  protected getSheet(name: string = this.name, spreadsheet: GoogleAppsScript.Spreadsheet.Spreadsheet = SpreadsheetApp.getActiveSpreadsheet()): GoogleAppsScript.Spreadsheet.Sheet {
     return super.getSheet(name, spreadsheet)
   }
 
-  protected getRange (row: number, column: number, sheet?: GoogleAppsScript.Spreadsheet.Sheet): GoogleAppsScript.Spreadsheet.Range
-  protected getRange (row: number, column: number, numRows: number, sheet?: GoogleAppsScript.Spreadsheet.Sheet): GoogleAppsScript.Spreadsheet.Range
-  protected getRange (row: number, column: number, numRows: number, numColumns: number, sheet?: GoogleAppsScript.Spreadsheet.Sheet): GoogleAppsScript.Spreadsheet.Range
-  protected getRange (a1Notation: string, sheet?: GoogleAppsScript.Spreadsheet.Sheet): GoogleAppsScript.Spreadsheet.Range
-  protected getRange (...args: any[]): GoogleAppsScript.Spreadsheet.Range {
+  protected getRange(row: number, column: number, sheet?: GoogleAppsScript.Spreadsheet.Sheet): GoogleAppsScript.Spreadsheet.Range
+  protected getRange(row: number, column: number, numRows: number, sheet?: GoogleAppsScript.Spreadsheet.Sheet): GoogleAppsScript.Spreadsheet.Range
+  protected getRange(row: number, column: number, numRows: number, numColumns: number, sheet?: GoogleAppsScript.Spreadsheet.Sheet): GoogleAppsScript.Spreadsheet.Range
+  protected getRange(a1Notation: string, sheet?: GoogleAppsScript.Spreadsheet.Sheet): GoogleAppsScript.Spreadsheet.Range
+  protected getRange(...args: any[]): GoogleAppsScript.Spreadsheet.Range {
     let sheet: GoogleAppsScript.Spreadsheet.Sheet = args[args.length - 1]
     if (typeof sheet === 'number') {
       sheet = this.getSheet()
@@ -45,11 +45,11 @@ export default class SheetModel extends Goaseasy {
    * 因此判断如果该行为空,
    * 则不需要往下遍历
    */
-  protected isEnd (rowdata: { [key: string]: any }, keys: string[] = Object.keys(rowdata)): boolean {
+  protected isEnd(rowdata: { [key: string]: any }, keys: string[] = Object.keys(rowdata)): boolean {
     return keys.filter((key) => rowdata[key]).length === 0
   }
 
-  public destroy (): void {
+  public destroy(): void {
     const spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
     const sheet = spreadsheet.getSheetByName(this.name)
     sheet && spreadsheet.deleteSheet(sheet)

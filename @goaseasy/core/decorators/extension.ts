@@ -1,7 +1,7 @@
-export function useMenu (name: string) {
-  function Decorator <T extends { new(...args: any[]): any }>(constructor: T): T
-  function Decorator (target: { [key: string]: any }, propertyKey: string, descriptor: PropertyDescriptor): void
-  function Decorator (...args: any[]): any {
+export function useMenu(name: string) {
+  function Decorator<T extends { new (...args: any[]): any }>(constructor: T): T
+  function Decorator(target: { [key: string]: any }, propertyKey: string, descriptor: PropertyDescriptor): void
+  function Decorator(...args: any[]): any {
     switch (args.length) {
       case 3: {
         const target: { [key: string]: any } = args[0]
@@ -13,7 +13,7 @@ export function useMenu (name: string) {
       }
 
       case 1: {
-        const Constructor: { new(...args: any[]): any } = args[0]
+        const Constructor: { new (...args: any[]): any } = args[0]
         const submenu = Constructor.prototype.$menu
 
         !Array.isArray(submenu) && Object.defineProperty(Constructor.prototype, '$menu', { writable: true, value: [] })
@@ -27,7 +27,7 @@ export function useMenu (name: string) {
   return Decorator
 }
 
-export function useTrigger (type: Get<Goaseasy.Trigger, 'type'>, payload?: { [key: string]: any }) {
+export function useTrigger(type: Get<Goaseasy.Trigger, 'type'>, payload?: { [key: string]: any }) {
   return function (target: { [key: string]: any }, _propertyKey: string, descriptor: PropertyDescriptor): void {
     !Array.isArray(target.$trigger) && Object.defineProperty(target, '$trigger', { writable: true, value: [] })
     target.$trigger.push({ type, payload, action: descriptor.value })

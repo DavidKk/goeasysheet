@@ -9,20 +9,17 @@ $ npm i -g clasp
 $ npm install
 ```
 
-
 ## Login
 
 ```bash
 $ npm run login
 ```
 
-
 ## Develop
 
 ```bash
 $ npm start
 ```
-
 
 ## Docs
 

@@ -8,5 +8,5 @@ Global.Extensions.push(WorkWeixinRobot)
 export default new Runtime({
   extensions: Global.Extensions,
   menus: Global.Menus,
-  triggers: Global.Triggers
+  triggers: Global.Triggers,
 })

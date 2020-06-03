@@ -2,16 +2,18 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": ".",
-    "module": "commonjs",
     "target": "es5",
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noImplicitAny": true,
     "esModuleInterop": true,
-    "sourceMap": false
+    "removeComments": false,
+    "skipLibCheck": true,
+    "sourceMap": false,
+    "declaration": true,
+    "resolveJsonModule": true
   },
-  "typeRoots": ["node_modules/@types"],
   "include": ["**/*.ts", "**/*.d.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "typeRoots": ["node_modules/@types"],
+  "exclude": ["node_modules"]
 }

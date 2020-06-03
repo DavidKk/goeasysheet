@@ -24,10 +24,7 @@ export interface SchedulePeriodicDateTime {
 
 export type ScheduleType = Get<Goaseasy.Trigger, 'type'>
 
-export type ScheduleDatetime<T extends ScheduleType> =
-  T extends 'daily' ? ScheduleSpecifiedDateTime :
-  T extends 'minutely' ? SchedulePeriodicDateTime :
-  null
+export type ScheduleDatetime<T extends ScheduleType> = T extends 'daily' ? ScheduleSpecifiedDateTime : T extends 'minutely' ? SchedulePeriodicDateTime : null
 
 export interface Schedule<T extends ScheduleType> {
   content: string
