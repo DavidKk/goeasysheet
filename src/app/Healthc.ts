@@ -51,7 +51,7 @@ export class Healthc extends Extension {
         return Promise.resolve()
       }
 
-      this.logger.info(`execute "${name}" task, check ${url}.`)
+      this.logger.info(`execute "${name}" task, check "${url}".`)
       return ping(url)
     })
 
