@@ -30,58 +30,47 @@ export class Healthc extends Extension {
   @Action('立即检测')
   @Trigger('minutely')
   public async check() {
-    this.logger.info('start check.')
+    this.logger.info('Starting health check.')
 
     const now = Date.now()
-    const token = 'excute@check'
+    const token = 'execute@check'
     const cache = this.cacheModel.get(token)
     const { lasttime = -Infinity } = cache || {}
 
     const tasks = this.healthModel.fetchServices()
-    this.logger.info(`fetch health check ${tasks.length} task.`)
+    this.logger.info(`Fetched ${tasks.length} health check tasks.`)
 
     if (!(Array.isArray(tasks) && tasks.length > 0)) {
-      this.logger.warn('no task, skip.')
+      this.logger.warn('No tasks found, skipping.')
       return
     }
 
     const promises = tasks.map(({ name, url, interval }) => {
       if (now < lasttime + interval) {
-        this.logger.warn(`skip "${name}" task, lasttime "${lasttime}", interval "${interval}".`)
+        this.logger.warn(`Skipping "${name}" health check task, last check time "${lasttime}", interval "${interval}".`)
         return Promise.resolve()
       }
 
-      this.logger.info(`execute "${name}" task, check "${url}".`)
+      this.logger.info(`Executing "${name}" health check task, checking "${url}".`)
       return ping(url)
     })
 
     const results = await Promise.allSettled(promises)
-    const errors = Object.fromEntries(
-      function* (this: Healthc) {
-        for (let i = 0; i < results.length; i++) {
-          const result = results[i]
-          const task = tasks[i]
+    results.forEach((result, index) => {
+      const task = tasks[index]
 
-          if (result.status === 'rejected') {
-            const { name } = task
-            const { reason } = result
-            yield [name, reason]
+      if (result.status === 'rejected') {
+        const { reason } = result
+        this.logger.fail(`Health check "${task.name}" failed: ${reason}.`)
+      } else {
+        this.logger.ok(`Health check "${task.name}" succeeded.`)
+      }
+    })
 
-            this.logger.fail(`health check "${name}" failed: ${reason}`)
-            continue
-          }
-        }
-      }.apply(this)
-    )
-
-    if (Object.keys(errors).length === 0) {
-      this.logger.ok('all tasks success.')
-    }
-
-    this.logger.info(`cache data with token "${token}" and lasttime "${now}"`)
+    this.logger.info(`Caching data with token "${token}" and last check time "${now}".`)
     this.cacheModel.set(token, { lasttime: now })
 
-    this.logger.info('sync success.')
+    this.logger.info('Health check completed.')
   }
 
   @Action('卸载')
