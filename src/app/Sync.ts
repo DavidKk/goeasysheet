@@ -34,7 +34,7 @@ export class Sync extends Extension {
     this.logger.info('start sync.')
 
     const now = Date.now()
-    const token = 'excute@sync'
+    const token = `minutely@${this.alias}`
     const cache = this.cacheModel.get(token)
     const { lasttime = -Infinity } = cache || {}
 

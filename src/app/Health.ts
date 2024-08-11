@@ -6,8 +6,8 @@ import HealthModel from '@/models/Health'
 import { ping } from '@/utils/request'
 
 @Menu('健康检查')
-export class Healthc extends Extension {
-  static NAME = 'Healthc'
+export class Health extends Extension {
+  static NAME = 'Health'
 
   protected healthModel: HealthModel
   protected cacheModel: CacheModel
@@ -33,7 +33,7 @@ export class Healthc extends Extension {
     this.logger.info('Starting health check.')
 
     const now = Date.now()
-    const token = 'execute@check'
+    const token = `minutely@${this.alias}`
     const cache = this.cacheModel.get(token)
     const { lasttime = -Infinity } = cache || {}
 
