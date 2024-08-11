@@ -18,7 +18,8 @@ export function Trigger(type: Trigger['type'], payload?: Record<string, any>) {
 
     // 修改原方法的行为
     const action = function (this: Extension, ...args: any[]) {
-      this.logger.info(`trigger ${type} action.\n${JSON.stringify(payload, null, 2)}`)
+      const content = payload ? JSON.stringify(payload, null, 2) : undefined
+      this.logger.info(`trigger ${type} action.\n${content}`)
       return originalMethod.apply(this, args)
     }
 
