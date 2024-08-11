@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    "target": "es2021",
+    "lib": ["es2021"],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "checkJs": false,
+    "experimentalDecorators": true,
+    "isolatedModules": true,
+    "strictPropertyInitialization": false,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": false,
+    "strict": true,
+    "skipLibCheck": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "typeRoots": ["./node_modules/@types", "./node_modules/@types/node", "./typings.d"],
+    // 插件
+    "plugins": [
+      // 路径别名，编译成 .js
+      {
+        "transform": "typescript-transform-paths",
+        "useRootDirs": true,
+        "exclude": ["**/node_modules/**"]
+      },
+      // 路径别名，编译成 .d.ts
+      {
+        "transform": "typescript-transform-paths",
+        "useRootDirs": true,
+        "afterDeclarations": true,
+        "exclude": ["**/node_modules/**"]
+      }
+    ]
+  },
+  "include": ["**/*.ts", "**/*.tsx", "**/*.d.ts", "**/*.spec.ts"],
+  "exclude": ["node_modules"]
+}
