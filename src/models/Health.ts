@@ -11,7 +11,7 @@ const DTO_SERVICE_NAME = {
 
 const DTO_URL = {
   id: 'url',
-  name: '需同步数据表',
+  name: '服务地址',
   comment: '字符串; https://',
 }
 
