@@ -26,7 +26,7 @@
     "@types/google-apps-script": "^1.0.83",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^12.0.2",
-    "lodash": "^4.17.21",
+    "lodash": "^4.18.1",
     "utility-types": "^3.11.0"
   },
   "devDependencies": {
